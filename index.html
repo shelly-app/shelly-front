@@ -5,6 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
+
+    <style>
+      /* Keeping text-wrap here due to not being compatible with postcss */
+      @layer reset {
+        :not([class]) {
+          h1&,
+          h2&,
+          h3&,
+          h4&,
+          h5&,
+          h6& {
+            text-wrap: balance;
+          }
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
