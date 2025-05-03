@@ -9,12 +9,15 @@
     "preview": "vite preview",
     "prepare": "husky",
     "lint": "eslint src",
-    "check-types": "tsc --project tsconfig.json --pretty --noEmit"
+    "check-types": "tsc --project tsconfig.json --pretty --noEmit",
+    "prettier": "prettier --write ."
   },
   "lint-staged": {
-    "*.+(ts|tsx)": [
+    "*.+(ts|tsx|config.js|json)": [
       "pnpm lint",
-      "bash -c 'pnpm check-types'"
+      "bash -c 'pnpm check-types'",
+      "pnpm prettier",
+      "bash -c 'git add .'"
     ]
   },
   "dependencies": {
