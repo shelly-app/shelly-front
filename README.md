@@ -1,54 +1,85 @@
-# React + TypeScript + Vite
+# Shelly Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React application front-end for the Shelly project.
 
-Currently, two official plugins are available:
+## 🚀 Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - Latest React version with modern features
+- **TypeScript** - Type safety for your JavaScript code
+- **Vite** - Next-generation frontend tooling
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Query** - Data fetching and state management
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **Zod** - Schema validation
+- **React Hook Form** - Form handling
+- **JWT Authentication** - Secure user authentication
 
-## Expanding the ESLint configuration
+## 📋 Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v18 or newer)
+- pnpm package manager
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+## 🔧 Installation
+
+1. Clone the repository
+
+   ```bash
+   git clone https://github.com/yourusername/shelly-front.git
+   cd shelly-front
+   ```
+
+2. Install dependencies
+   ```bash
+   pnpm install
+   ```
+3. Create a `.env` file in the root directory and add your environment variables. You can use the `.env.example` file as a reference.
+   ```bash
+   cp .env.example .env
+   ```
+
+## 🏗️ Development
+
+1. Start the development server
+   ```bash
+   pnpm dev
+   ```
+2. Open your browser and navigate to `http://localhost:5173` to view the application.
+
+# 📦 Build
+
+1. Build the application for production
+   ```bash
+   pnpm build
+   ```
+2. The production build will be generated in the `dist` directory.
+3. You can preview the production build locally using:
+   ```bash
+   pnpm preview
+   ```
+
+# 💅 Code Quality
+
+- Lint Code:
+
+```bash
+pnpm lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Type check:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
+```bash
+pnpm check-types
 ```
+
+- Format Code:
+
+```bash
+pnpm prettier
+```
+
+# 📝 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+Codebase structure and standards based on [bulletproof-react](https://github.com/alan2207/bulletproof-react/tree/master).
