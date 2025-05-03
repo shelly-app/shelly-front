@@ -13,11 +13,16 @@
     "prettier": "prettier --write ."
   },
   "lint-staged": {
-    "*.+(ts|tsx|config.js|json)": [
-      "pnpm lint",
-      "bash -c 'pnpm check-types'",
-      "pnpm prettier",
-      "bash -c 'git add .'"
+    "*.{ts,tsx}": [
+      "eslint --cache",
+      "prettier --write"
+    ],
+    "*.config.js": [
+      "eslint --cache",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
     ]
   },
   "dependencies": {
