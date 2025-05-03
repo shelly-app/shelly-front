@@ -14,12 +14,12 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --cache",
-      "prettier --write"
+      "prettier --write",
+      "eslint --cache"
     ],
     "*.config.js": [
-      "eslint --cache",
-      "prettier --write"
+      "prettier --write",
+      "eslint --cache"
     ],
     "*.json": [
       "prettier --write"
