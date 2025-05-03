@@ -1,10 +1,10 @@
-const App = () => {
+import { AppProvider } from './provider';
+import { AppRouter } from './router';
+
+export const App = () => {
   return (
-    <div>
-      <h1>Hello, world!</h1>
-      <p>This is a simple React app.</p>
-    </div>
+    <AppProvider>
+      <AppRouter />
+    </AppProvider>
   );
 };
-
-export default App;
