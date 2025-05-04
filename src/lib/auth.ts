@@ -10,8 +10,8 @@ import { api } from './api-client';
 // api call definitions for auth (types, schemas, requests):
 // these are not part of features as this is a module shared across features
 
-// TODO: Review this; do we want to make a request for each navigation?
-// TODO: If we go the jwt route, we should update this
+// TODO: We might want to implement our own auth feature
+
 const getUser = async (): Promise<User> => {
   const response = await api.get('/auth/me');
 
