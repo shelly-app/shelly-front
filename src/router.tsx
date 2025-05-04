@@ -9,8 +9,9 @@ import { ProtectedRoute } from '@/lib/auth';
 import {
   default as AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
-} from './routes/app/root';
+} from '@/routes/app/root';
 
+// TODO: do we need this?
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
@@ -21,7 +22,7 @@ const convert = (queryClient: QueryClient) => (m: any) => {
   };
 };
 
-export const createAppRouter = (queryClient: QueryClient) =>
+const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
       path: paths.home.path,
@@ -37,9 +38,9 @@ export const createAppRouter = (queryClient: QueryClient) =>
       ErrorBoundary: AppRootErrorBoundary,
       children: [
         // {
-        //   path: paths.app.discussions.path,
+        //   path: paths.app.dashboard.path,
         //   lazy: () =>
-        //     import('./routes/app/discussions/discussions.tsx').then(
+        //     import('./routes/app/dashboard.tsx').then(
         //       convert(queryClient),
         //     ),
         // },
@@ -51,10 +52,12 @@ export const createAppRouter = (queryClient: QueryClient) =>
     },
   ]);
 
-export const AppRouter = () => {
+const AppRouter = () => {
   const queryClient = useQueryClient();
 
   const router = useMemo(() => createAppRouter(queryClient), [queryClient]);
 
   return <RouterProvider router={router} />;
 };
+
+export default AppRouter;

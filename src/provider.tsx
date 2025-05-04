@@ -13,7 +13,7 @@ type AppProviderProps = {
   children: React.ReactNode;
 };
 
-export const AppProvider = ({ children }: AppProviderProps) => {
+const AppProvider = ({ children }: AppProviderProps) => {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -47,3 +47,5 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     </React.Suspense>
   );
 };
+
+export default AppProvider;
