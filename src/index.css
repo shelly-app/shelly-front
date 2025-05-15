@@ -4,6 +4,18 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --text-sm: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 3.75rem;
+  --text-6xl: 4.5rem;
+  --text-7xl: 5.25rem;
+  --text-8xl: 6rem;
+  --text-9xl: 7.5rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
