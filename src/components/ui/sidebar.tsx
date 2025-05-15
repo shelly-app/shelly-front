@@ -483,7 +483,7 @@ const SidebarMenuItem = ({
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn('group/menu-item relative', className)}
+      className={cn('group/menu-item relative flex justify-center', className)}
       {...props}
     />
   );
@@ -499,9 +499,9 @@ const sidebarMenuButtonVariants = cva(
           'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
       },
       size: {
-        default: 'h-8 text-sm',
-        sm: 'h-7 text-xs',
-        lg: 'h-12 text-sm group-data-[collapsible=icon]:p-0!',
+        default: 'h-12 text-sm',
+        sm: 'h-10 text-xs',
+        lg: 'h-16 text-sm group-data-[collapsible=icon]:p-0!',
       },
     },
     defaultVariants: {

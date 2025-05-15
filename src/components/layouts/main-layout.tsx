@@ -9,7 +9,6 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <SidebarTrigger />
         {children}
       </main>
-      {children}
     </>
   );
 };
