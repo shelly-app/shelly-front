@@ -19,8 +19,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Shelter } from '@/types/api';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useShelters } from '@/components/providers/shelters-provider';
 
 // Menu items.
 const items = [
@@ -42,23 +42,6 @@ const userMenuItems = [
   },
 ];
 
-// Shelters should be retrieved from a context or a global state.
-const MOCK_SHELTERS: Shelter[] = [
-  {
-    id: 1,
-    name: 'Shelter 1',
-    address: 'string',
-    phone: 'string',
-    email: 'string',
-    website: 'string',
-    createdAt: 0,
-  },
-  // {
-  //   id: 2,
-  //   name: 'Shelter 2',
-  // },
-];
-
 const AppSidebar = () => {
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
@@ -69,7 +52,7 @@ const AppSidebar = () => {
   };
 
   return (
-    <Sidebar collapsible="icon" className="gap-24">
+    <Sidebar collapsible="icon" className="gap-24 bg-amber-300">
       <SidebarHeader>
         <SidebarHeaderContent />
       </SidebarHeader>
@@ -119,33 +102,32 @@ const AppSidebar = () => {
 };
 
 const SidebarHeaderContent = () => {
-  const [currentShelter, setCurrentShelter] = useState<
-    (typeof MOCK_SHELTERS)[0] | null
-  >(MOCK_SHELTERS[0] ?? null);
   const { state } = useSidebar();
+  const { shelters, currentShelter, setCurrentShelter, isLoading } =
+    useShelters();
   const isCollapsed = state === 'collapsed';
 
-  if (!currentShelter)
-    return <Skeleton className="h-12 w-full bg-sidebar-border" />;
+  if (isLoading) return <Skeleton className="h-12 w-full bg-sidebar-border" />;
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        {MOCK_SHELTERS.length > 0 ? (
+        {shelters.length > 0 ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton className="cursor-pointer justify-center text-nowrap">
                 {isCollapsed
-                  ? currentShelter.name[0].toUpperCase()
-                  : currentShelter.name}
+                  ? currentShelter?.name[0].toUpperCase()
+                  : currentShelter?.name}
                 {!isCollapsed && <ChevronDown className="ml-auto" />}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-              {MOCK_SHELTERS.map((shelter) => (
+              {shelters.map((shelter) => (
                 <DropdownMenuItem
                   key={shelter.id}
                   onClick={() => setCurrentShelter(shelter)}
+                  className="cursor-pointer"
                 >
                   <span>{shelter.name}</span>
                 </DropdownMenuItem>

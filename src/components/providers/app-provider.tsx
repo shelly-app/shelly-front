@@ -9,6 +9,7 @@ import { MainErrorFallback } from '@/components/errors/main';
 // import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { SheltersProvider } from '@/components/providers/shelters-provider';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -33,8 +34,10 @@ const AppProvider = ({ children }: AppProviderProps) => {
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <QueryClientProvider client={queryClient}>
           <SidebarProvider>
-            {import.meta.env.DEV && <ReactQueryDevtools />}
-            {children}
+            <SheltersProvider>
+              {import.meta.env.DEV && <ReactQueryDevtools />}
+              {children}
+            </SheltersProvider>
           </SidebarProvider>
         </QueryClientProvider>
       </ErrorBoundary>
