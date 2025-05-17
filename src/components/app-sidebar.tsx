@@ -21,11 +21,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useShelters } from '@/components/providers/shelters-provider';
+import { Text } from '@/components/text';
 
 // Menu items.
 const items = [
   {
-    title: 'Pets',
+    title: 'Mascotas',
     url: '#',
     icon: LucideDog,
   },
@@ -52,18 +53,18 @@ const AppSidebar = () => {
   };
 
   return (
-    <Sidebar collapsible="icon" className="gap-24 bg-amber-300">
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarHeaderContent />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="px-2">
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
                 <a href={item.url}>
                   <item.icon />
-                  <span>{item.title}</span>
+                  <Text>{item.title}</Text>
                 </a>
               </SidebarMenuButton>
               {!!newPetsCount && (
@@ -73,13 +74,16 @@ const AppSidebar = () => {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="px-2">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="cursor-pointer text-nowrap">
-                  <User2 /> {userData.firstName} {userData.lastName}
+                  <User2 />{' '}
+                  <Text>
+                    {userData.firstName} {userData.lastName}
+                  </Text>
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -89,7 +93,7 @@ const AppSidebar = () => {
               >
                 {userMenuItems.map((item) => (
                   <DropdownMenuItem key={item.title} className="cursor-pointer">
-                    <span>{item.title}</span>
+                    <Text>{item.title}</Text>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -115,21 +119,23 @@ const SidebarHeaderContent = () => {
         {shelters.length > 0 ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton className="cursor-pointer justify-center text-nowrap">
-                {isCollapsed
-                  ? currentShelter?.name[0].toUpperCase()
-                  : currentShelter?.name}
+              <SidebarMenuButton className="cursor-pointer justify-center">
+                <Text variant="ellipsis">
+                  {isCollapsed
+                    ? currentShelter?.name[0].toUpperCase()
+                    : currentShelter?.name}
+                </Text>
                 {!isCollapsed && <ChevronDown className="ml-auto" />}
               </SidebarMenuButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+            <DropdownMenuContent className="max-w-3xs">
               {shelters.map((shelter) => (
                 <DropdownMenuItem
                   key={shelter.id}
                   onClick={() => setCurrentShelter(shelter)}
                   className="cursor-pointer"
                 >
-                  <span>{shelter.name}</span>
+                  <Text variant="ellipsis">{shelter.name}</Text>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -142,4 +148,4 @@ const SidebarHeaderContent = () => {
   );
 };
 
-export default AppSidebar;
+export { AppSidebar };

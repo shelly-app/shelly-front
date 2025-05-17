@@ -1,4 +1,4 @@
-import AppSidebar from '@/components/app-sidebar';
+import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -13,4 +13,4 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default MainLayout;
+export { MainLayout };
