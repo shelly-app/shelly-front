@@ -34,11 +34,11 @@ const items = [
 
 const userMenuItems = [
   {
-    title: 'Account',
+    title: 'Cuenta',
     url: '#',
   },
   {
-    title: 'Sign out',
+    title: 'Cerrar sesión',
     url: '#',
   },
 ];
