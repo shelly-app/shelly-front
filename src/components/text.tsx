@@ -24,7 +24,6 @@ const textVariants = cva('text-sm', {
 type TextProps = {
   className?: string;
   variant?: VariantProps<typeof textVariants>['variant'];
-  size?: VariantProps<typeof textVariants>['size'];
 } & React.ComponentPropsWithoutRef<'span'>;
 
 const Text = ({ children, className, variant, ...props }: TextProps) => {
