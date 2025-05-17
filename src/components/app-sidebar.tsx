@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { LucideDog, ChevronDown, ChevronUp, User2 } from 'lucide-react';
+import { LucidePawPrint, ChevronDown, ChevronUp, User2 } from 'lucide-react';
 
 import {
   Sidebar,
@@ -28,7 +28,7 @@ const items = [
   {
     title: 'Mascotas',
     url: '#',
-    icon: LucideDog,
+    icon: LucidePawPrint,
   },
 ];
 
@@ -46,14 +46,14 @@ const userMenuItems = [
 const AppSidebar = () => {
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
-  // const { userData } = useAuth(); // or something like this
+  // const { userData } = useUser(); //useAuth() or something like this
   const userData = {
     firstName: 'John',
     lastName: 'Doe',
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <SidebarHeaderContent />
       </SidebarHeader>
@@ -64,7 +64,7 @@ const AppSidebar = () => {
               <SidebarMenuButton asChild>
                 <a href={item.url}>
                   <item.icon />
-                  <Text>{item.title}</Text>
+                  <Text className="text-inherit">{item.title}</Text>
                 </a>
               </SidebarMenuButton>
               {!!newPetsCount && (

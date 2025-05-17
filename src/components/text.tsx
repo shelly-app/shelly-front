@@ -5,14 +5,6 @@ const textVariants = cva('text-sm', {
   variants: {
     variant: {
       default: 'text-primary',
-      primary: 'text-primary',
-      secondary: 'text-secondary',
-      destructive: 'text-destructive',
-      muted: 'text-muted-foreground',
-      subtle: 'text-subtle',
-      accent: 'text-accent',
-      ghost: 'text-ghost',
-      link: 'text-link',
       ellipsis: 'overflow-ellipsis overflow-hidden text-nowrap',
     },
   },
