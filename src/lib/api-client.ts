@@ -4,14 +4,14 @@ import Axios, { InternalAxiosRequestConfig } from 'axios';
 import { env } from '@/config/env';
 import { paths } from '@/config/paths';
 
-function authRequestInterceptor(config: InternalAxiosRequestConfig) {
+const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
   if (config.headers) {
     config.headers.Accept = 'application/json';
   }
 
   config.withCredentials = true;
   return config;
-}
+};
 
 export const api = Axios.create({
   baseURL: env.API_URL,

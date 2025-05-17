@@ -32,22 +32,33 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      'react/react-in-jsx-scope': 'off',
+      'react-refresh/only-export-components': ['off'],
+
       'jsx-a11y/anchor-is-valid': 'off',
+
       '@typescript-eslint/no-unused-vars': ['error'],
       '@typescript-eslint/explicit-function-return-type': ['off'],
       '@typescript-eslint/explicit-module-boundary-types': ['off'],
       '@typescript-eslint/no-empty-function': ['off'],
       '@typescript-eslint/no-explicit-any': ['off'],
+
       'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+
+      'func-style': ['warn', 'expression', { allowArrowFunctions: true }],
+
+      'react/react-in-jsx-scope': 'off',
+      'react/function-component-definition': [
+        'warn',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
+
       'check-file/filename-naming-convention': [
         'error',
         {
           '**/*.{ts,tsx}': 'KEBAB_CASE',
-        },
-        {
-          // ignore the middle extensions of the filename to support filename like bable.config.js or smoke.spec.ts
-          ignoreMiddleExtensions: true,
         },
       ],
       'check-file/folder-naming-convention': [
