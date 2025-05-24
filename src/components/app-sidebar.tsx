@@ -137,13 +137,8 @@ const SidebarHeaderContent = ({ isCollapsed = false }) => {
 
   return (
     <>
-      <Text
-        className={cn(
-          'pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-3xl font-bold text-transparent select-none',
-          isCollapsed && 'hidden',
-        )}
-      >
-        Shelly
+      <Text className="pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-3xl font-bold text-transparent select-none">
+        {isCollapsed ? 'S' : 'Shelly'}
       </Text>
       {isLoading ? (
         <Skeleton className="bg-sidebar-border h-12 w-full" />
