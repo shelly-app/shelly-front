@@ -6,7 +6,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <AppSidebar />
       <main>
-        <SidebarTrigger className="cursor-pointer mt-2" />
+        <SidebarTrigger className="mt-2 cursor-pointer" />
         {children}
       </main>
     </>
