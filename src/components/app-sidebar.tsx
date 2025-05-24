@@ -1,0 +1,182 @@
+import { useMemo, useState } from 'react';
+
+import { LucidePawPrint, ChevronDown, ChevronUp } from 'lucide-react';
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/components/ui/sidebar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useShelters } from '@/components/providers/shelters-provider';
+import { Text } from '@/components/text';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn, nameInitials } from '@/lib/utils';
+
+// Menu items.
+const items = [
+  {
+    title: 'Mascotas',
+    url: '#',
+    icon: LucidePawPrint,
+  },
+];
+
+const userMenuItems = [
+  {
+    title: 'Cuenta',
+    url: '#',
+  },
+  {
+    title: 'Cerrar sesión',
+    url: '#',
+  },
+];
+
+const AppSidebar = () => {
+  const { state: sidebarState } = useSidebar();
+  const isCollapsed = useMemo(
+    () => sidebarState === 'collapsed',
+    [sidebarState],
+  );
+  // Should access this from a state that pulls count periodically.
+  const [newPetsCount] = useState(0);
+  // const { userData } = useUser(); //useAuth() or something like this
+  const userData = {
+    firstName: 'John',
+    lastName: 'Doe',
+    profilePictureUrl: 'https://avatar.iran.liara.run/public/45',
+  };
+
+  const fullName = `${userData.firstName} ${userData.lastName}`;
+
+  return (
+    <Sidebar collapsible="icon" variant="floating">
+      <SidebarHeader className="flex items-center gap-6">
+        <SidebarHeaderContent isCollapsed={isCollapsed} />
+      </SidebarHeader>
+      <SidebarContent className="px-2">
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton asChild>
+                <a href={item.url}>
+                  <item.icon />
+                  <Text className="text-inherit">{item.title}</Text>
+                </a>
+              </SidebarMenuButton>
+              {!!newPetsCount && (
+                <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>
+              )}
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarFooter className="px-2">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  className={cn(
+                    'cursor-pointer text-nowrap',
+                    isCollapsed &&
+                      'relative rounded-full transition-transform hover:scale-110',
+                  )}
+                >
+                  <Avatar
+                    className={cn(isCollapsed && 'absolute top-0 left-0')}
+                  >
+                    <AvatarImage
+                      src={userData.profilePictureUrl}
+                      alt={fullName}
+                    />
+                    <AvatarFallback>{nameInitials(fullName)}</AvatarFallback>
+                  </Avatar>{' '}
+                  {sidebarState !== 'collapsed' && (
+                    <>
+                      <Text>{fullName}</Text>
+                      <ChevronUp className="ml-auto" />
+                    </>
+                  )}
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                {userMenuItems.map((item) => (
+                  <DropdownMenuItem key={item.title} className="cursor-pointer">
+                    <Text>{item.title}</Text>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
+};
+
+const SidebarHeaderContent = ({ isCollapsed = false }) => {
+  const { shelters, currentShelter, setCurrentShelter, isLoading } =
+    useShelters();
+
+  return (
+    <>
+      <Text className="pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-3xl font-bold text-transparent select-none">
+        {isCollapsed ? 'S' : 'Shelly'}
+      </Text>
+      {isLoading ? (
+        <Skeleton className="bg-sidebar-border h-12 w-full" />
+      ) : (
+        <SidebarMenu>
+          <SidebarMenuItem>
+            {shelters.length > 0 ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton className="cursor-pointer justify-center">
+                    <Text variant="ellipsis">
+                      {isCollapsed
+                        ? currentShelter?.name[0].toUpperCase()
+                        : currentShelter?.name}
+                    </Text>
+                    {!isCollapsed && <ChevronDown className="ml-auto" />}
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="max-w-3xs bg-amber-50">
+                  {shelters.map((shelter) => (
+                    <DropdownMenuItem
+                      key={shelter.id}
+                      onClick={() => setCurrentShelter(shelter)}
+                      className="cursor-pointer"
+                    >
+                      <Text variant="ellipsis">{shelter.name}</Text>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              currentShelter?.name
+            )}
+          </SidebarMenuItem>
+        </SidebarMenu>
+      )}
+    </>
+  );
+};
+
+export { AppSidebar };

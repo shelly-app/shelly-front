@@ -242,7 +242,10 @@ const Sidebar = ({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+          className={cn(
+            'bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col gap-6 group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm',
+            { 'p-2': state !== 'collapsed' },
+          )}
         >
           {children}
         </div>
@@ -483,7 +486,7 @@ const SidebarMenuItem = ({
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn('group/menu-item relative', className)}
+      className={cn('group/menu-item relative flex justify-center', className)}
       {...props}
     />
   );
@@ -494,14 +497,15 @@ const sidebarMenuButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+        default:
+          'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:bg-amber-200 transition-colors active:bg-amber-300',
         outline:
           'bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
       },
       size: {
-        default: 'h-8 text-sm',
-        sm: 'h-7 text-xs',
-        lg: 'h-12 text-sm group-data-[collapsible=icon]:p-0!',
+        default: 'h-12 text-sm',
+        sm: 'h-10 text-xs',
+        lg: 'h-16 text-sm group-data-[collapsible=icon]:p-0!',
       },
     },
     defaultVariants: {

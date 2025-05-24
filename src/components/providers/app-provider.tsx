@@ -8,6 +8,8 @@ import { MainErrorFallback } from '@/components/errors/main';
 // import { Spinner } from '@/components/ui/spinner';
 // import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { SheltersProvider } from '@/components/providers/shelters-provider';
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -31,8 +33,12 @@ const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <QueryClientProvider client={queryClient}>
-          {import.meta.env.DEV && <ReactQueryDevtools />}
-          {children}
+          <SidebarProvider>
+            <SheltersProvider>
+              {import.meta.env.DEV && <ReactQueryDevtools />}
+              {children}
+            </SheltersProvider>
+          </SidebarProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     </React.Suspense>
