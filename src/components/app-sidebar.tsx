@@ -24,6 +24,7 @@ import { useShelters } from '@/components/providers/shelters-provider';
 import { Text } from '@/components/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, nameInitials } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Menu items.
 const items = [
@@ -47,6 +48,7 @@ const userMenuItems = [
 
 const AppSidebar = () => {
   const { state: sidebarState } = useSidebar();
+  const isMobile = useIsMobile();
   const isCollapsed = useMemo(
     () => sidebarState === 'collapsed',
     [sidebarState],
@@ -65,7 +67,7 @@ const AppSidebar = () => {
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader className="flex items-center gap-6">
-        <SidebarHeaderContent isCollapsed={isCollapsed} />
+        <SidebarHeaderContent isCollapsed={isCollapsed} isMobile={isMobile} />
       </SidebarHeader>
       <SidebarContent className="px-2">
         <SidebarMenu>
@@ -93,11 +95,14 @@ const AppSidebar = () => {
                   className={cn(
                     'cursor-pointer text-nowrap',
                     isCollapsed &&
+                      !isMobile &&
                       'relative rounded-full transition-transform hover:scale-110',
                   )}
                 >
                   <Avatar
-                    className={cn(isCollapsed && 'absolute top-0 left-0')}
+                    className={cn(
+                      isCollapsed && !isMobile && 'absolute top-0 left-0',
+                    )}
                   >
                     <AvatarImage
                       src={userData.profilePictureUrl}
@@ -105,7 +110,7 @@ const AppSidebar = () => {
                     />
                     <AvatarFallback>{nameInitials(fullName)}</AvatarFallback>
                   </Avatar>{' '}
-                  {sidebarState !== 'collapsed' && (
+                  {(!isCollapsed || isMobile) && (
                     <>
                       <Text>{fullName}</Text>
                       <ChevronUp className="ml-auto" />
@@ -131,14 +136,14 @@ const AppSidebar = () => {
   );
 };
 
-const SidebarHeaderContent = ({ isCollapsed = false }) => {
+const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
   const { shelters, currentShelter, setCurrentShelter, isLoading } =
     useShelters();
 
   return (
     <>
       <Text className="pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-3xl font-bold text-transparent select-none">
-        {isCollapsed ? 'S' : 'Shelly'}
+        {isCollapsed && !isMobile ? 'S' : 'Shelly'}
       </Text>
       {isLoading ? (
         <Skeleton className="bg-sidebar-border h-12 w-full" />
@@ -150,11 +155,13 @@ const SidebarHeaderContent = ({ isCollapsed = false }) => {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="cursor-pointer justify-center">
                     <Text variant="ellipsis">
-                      {isCollapsed
+                      {isCollapsed && !isMobile
                         ? currentShelter?.name[0].toUpperCase()
                         : currentShelter?.name}
                     </Text>
-                    {!isCollapsed && <ChevronDown className="ml-auto" />}
+                    {(!isCollapsed || isMobile) && (
+                      <ChevronDown className="ml-auto" />
+                    )}
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="max-w-3xs bg-amber-50">
