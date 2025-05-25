@@ -25,7 +25,7 @@ A modern React application front-end for the Shelly project.
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/yourusername/shelly-front.git
+   git clone git@github.com:shelly-app/shelly-front.git
    cd shelly-front
    ```
 
