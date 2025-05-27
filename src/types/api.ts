@@ -3,7 +3,7 @@
 // with the backend instead of manually writing them out
 
 export type BaseEntity = {
-  id: string;
+  id: number;
   createdAt: number;
 };
 
@@ -31,3 +31,11 @@ export type AuthResponse = {
   jwt: string;
   user: User;
 };
+
+export type Shelter = Entity<{
+  name: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
+}>;

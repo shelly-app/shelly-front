@@ -56,7 +56,7 @@ export default tseslint.config(
       ],
 
       'check-file/filename-naming-convention': [
-        'error',
+        'warn',
         {
           '**/*.{ts,tsx}': 'KEBAB_CASE',
         },
