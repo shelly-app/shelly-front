@@ -1,10 +1,14 @@
-name: Example workflow for S3 Deploy
+name: S3 Deploy
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   run:
     runs-on: ubuntu-latest
+    environment: main-deployment
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
