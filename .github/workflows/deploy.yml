@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: ${{ secrets.NODE_VERSION }}
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -29,15 +29,14 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Deploy
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: dist
-          bucket: ${{ secrets.S3_BUCKET }}
-          bucket-region: ${{ secrets.S3_BUCKET_REGION }}
-          dist-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          invalidation: /
-          delete-removed: true
-          no-cache: false
-          private: false
-          files-to-include: '{.*/**,**}'
+      - name: Sync static assets (cache forever)
+        run: |
+          aws s3 sync build/ s3://${{ secrets.S3_BUCKET }}/ \
+            --exclude "index.html" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+      - name: Upload index.html (no cache)
+        run: |
+          aws s3 cp build/index.html s3://${{ secrets.S3_BUCKET }}/index.html \
+            --cache-control "no-cache, no-store, must-revalidate"
