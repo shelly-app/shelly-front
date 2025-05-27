@@ -6,7 +6,10 @@ export const cn = (...inputs: ClassValue[]) => {
 };
 
 export const nameInitials = (name: string) => {
-  const names = name.trim().split(' ').filter(segment => segment.length > 0);
+  const names = name
+    .trim()
+    .split(' ')
+    .filter((segment) => segment.length > 0);
 
   if (names.length === 1) return names[0].charAt(0).toUpperCase();
 
