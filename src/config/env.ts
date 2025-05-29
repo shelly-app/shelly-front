@@ -1,15 +1,23 @@
 import * as z from 'zod';
 
 const createEnv = () => {
+  const cognitoUrlRegex =
+    /^https:\/\/cognito-idp\.(?<region>[a-z]{2}-[a-z]+-\d)\.amazonaws\.com\/\k<region>_[\w-]+$/;
+
   const EnvSchema = z.object({
     API_URL: z.string(),
-    ENABLE_API_MOCKING: z
+    DEV: z
       .string()
       .refine((s) => s === 'true' || s === 'false')
       .transform((s) => s === 'true')
       .optional(),
-    APP_URL: z.string().optional().default('http://localhost:3000'),
-    APP_MOCK_API_PORT: z.string().optional().default('8080'),
+    COGNITO_AUTHORITY: z.string(),
+    COGNITO_CLIENT_ID: z.string(),
+    COGNITO_REDIRECT_URI: z.string().regex(cognitoUrlRegex, {
+      message: 'Invalid Cognito URL format',
+    }),
+    COGNITO_RESPONSE_TYPE: z.string(),
+    COGNITO_SCOPE: z.string(),
   });
 
   const envVars = Object.entries(import.meta.env).reduce<
