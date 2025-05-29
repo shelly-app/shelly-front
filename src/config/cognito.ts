@@ -6,4 +6,7 @@ export const cognitoAuthConfig = {
   redirect_uri: env.COGNITO_REDIRECT_URI,
   response_type: env.COGNITO_RESPONSE_TYPE,
   scope: env.COGNITO_SCOPE,
+  onSigninCallback: () => {
+    window.history.replaceState({}, document.title, window.location.pathname);
+  },
 };

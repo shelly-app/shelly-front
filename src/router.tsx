@@ -4,12 +4,12 @@ import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
 import { paths } from '@/config/paths';
-// import { ProtectedRoute } from '@/lib/auth';
 
 import {
   default as AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
 } from '@/routes/app/root';
+import ProtectedRoute from '@/components/protected-route.tsx';
 
 // TODO: do we need this?
 const convert = (queryClient: QueryClient) => (m: any) => {
@@ -31,9 +31,9 @@ const createAppRouter = (queryClient: QueryClient) =>
     {
       path: paths.app.root.path,
       element: (
-        // <ProtectedRoute>
-        <AppRoot />
-        // </ProtectedRoute>
+        <ProtectedRoute>
+          <AppRoot />
+        </ProtectedRoute>
       ),
       ErrorBoundary: AppRootErrorBoundary,
       children: [

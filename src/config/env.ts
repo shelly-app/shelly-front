@@ -1,11 +1,9 @@
 import * as z from 'zod';
 
 const createEnv = () => {
-  const cognitoUrlRegex =
-    /^https:\/\/cognito-idp\.(?<region>[a-z]{2}-[a-z]+-\d)\.amazonaws\.com\/\k<region>_[\w-]+$/;
-
   const EnvSchema = z.object({
     API_URL: z.string(),
+    // Optional environment variable for development mode, is automatically set according to vite run mode
     DEV: z
       .string()
       .refine((s) => s === 'true' || s === 'false')
@@ -13,9 +11,7 @@ const createEnv = () => {
       .optional(),
     COGNITO_AUTHORITY: z.string(),
     COGNITO_CLIENT_ID: z.string(),
-    COGNITO_REDIRECT_URI: z.string().regex(cognitoUrlRegex, {
-      message: 'Invalid Cognito URL format',
-    }),
+    COGNITO_REDIRECT_URI: z.string(),
     COGNITO_RESPONSE_TYPE: z.string(),
     COGNITO_SCOPE: z.string(),
   });
