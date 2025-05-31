@@ -37,13 +37,16 @@ const createAppRouter = (queryClient: QueryClient) =>
       ),
       ErrorBoundary: AppRootErrorBoundary,
       children: [
-        // {
-        //   path: paths.app.dashboard.path,
-        //   lazy: () =>
-        //     import('./routes/app/dashboard.tsx').then(
-        //       convert(queryClient),
-        //     ),
-        // },
+        {
+          path: paths.app.pets.path,
+          lazy: () =>
+            import('./routes/app/pets/pets.tsx').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.pet.path,
+          lazy: () =>
+            import('./routes/app/pets/pet.tsx').then(convert(queryClient)),
+        },
       ],
     },
     {
