@@ -3,8 +3,7 @@ import { cva } from 'class-variance-authority';
 import GoogleIcon from '@/assets/svg/google-icon.svg';
 import { useAuth } from 'react-oidc-context';
 import { type AuthProvider } from '@/features/auth/types';
-import { Skeleton } from '@/components/ui/skeleton';
-import useSignInRedirect from '@/features/auth/hooks/use-sign-in-redirect';
+import { useSearchParams } from 'react-router';
 
 const SVG_ICONS = {
   Google: GoogleIcon,
@@ -28,20 +27,21 @@ const SignInButton = ({
   provider: AuthProvider;
   className?: string;
 }) => {
-  const { signinRedirect, isLoading } = useAuth();
-  useSignInRedirect();
+  const [searchParams] = useSearchParams();
+  const { signinRedirect } = useAuth();
 
   const handleSignIn = async () => {
     await signinRedirect({
       extraQueryParams: {
         identity_provider: provider,
       },
+      state: btoa(
+        JSON.stringify({ redirectTo: searchParams.get('redirectTo') }),
+      ),
     });
   };
 
-  return isLoading ? (
-    <Skeleton className="h-[42px] w-[252px]" />
-  ) : (
+  return (
     <button
       onClick={handleSignIn}
       className={cn(signInButtonVariants({ variant: provider, className }))}
