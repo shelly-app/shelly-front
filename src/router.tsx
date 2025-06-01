@@ -30,7 +30,8 @@ const createAppRouter = (queryClient: QueryClient) =>
     },
     {
       path: paths.auth.signIn.path,
-      lazy: () => import('./routes/sign-in.tsx').then(convert(queryClient)),
+      lazy: () =>
+        import('./routes/auth/sign-in.tsx').then(convert(queryClient)),
     },
     {
       path: paths.app.root.path,
