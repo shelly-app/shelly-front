@@ -4,29 +4,37 @@ import { cva, type VariantProps } from 'class-variance-authority';
 const textVariants = cva('text-sm', {
   variants: {
     variant: {
-      default: 'text-primary',
+      primary: 'text-primary',
+      secondary: 'text-secondary',
       ellipsis: 'overflow-ellipsis overflow-hidden text-nowrap',
     },
   },
   defaultVariants: {
-    variant: 'default',
+    variant: 'primary',
   },
 });
 
 type TextProps = {
+  element?: 'span' | 'p' | 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   className?: string;
   variant?: VariantProps<typeof textVariants>['variant'];
 } & React.ComponentPropsWithoutRef<'span'>;
 
-const Text = ({ children, className, variant, ...props }: TextProps) => {
+const Text = ({
+  children,
+  element: Element = 'span',
+  className,
+  variant,
+  ...props
+}: TextProps) => {
   return (
-    <span
+    <Element
       data-slot="text"
       className={cn(textVariants({ variant, className }))}
       {...props}
     >
       {children}
-    </span>
+    </Element>
   );
 };
 
