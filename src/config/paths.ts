@@ -22,5 +22,13 @@ export const paths = {
       path: '/app',
       getHref: () => '/app',
     },
+    pets: {
+      path: 'pets',
+      getHref: () => '/app/pets',
+    },
+    pet: {
+      path: 'pets/:petId',
+      getHref: (id: string) => `/app/pets/${id}`,
+    },
   },
 } as const;
