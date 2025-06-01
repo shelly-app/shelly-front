@@ -18,11 +18,11 @@ export const paths = {
       getHref: () => '/app',
     },
     pets: {
-      path: 'pets',
+      path: '/app/pets',
       getHref: () => '/app/pets',
     },
     pet: {
-      path: 'pets/:petId',
+      path: '/app/pets/:petId',
       getHref: (id: string) => `/app/pets/${id}`,
     },
   },

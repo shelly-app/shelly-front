@@ -25,12 +25,13 @@ import { Text } from '@/components/ui/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, nameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { paths } from '@/config/paths';
 
 // Menu items.
 const items = [
   {
     title: 'Mascotas',
-    url: '#',
+    url: paths.app.pets.path,
     icon: LucidePawPrint,
   },
 ];
@@ -70,21 +71,23 @@ const AppSidebar = () => {
         <SidebarHeaderContent isCollapsed={isCollapsed} isMobile={isMobile} />
       </SidebarHeader>
       <SidebarContent className="px-2">
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <Text className="text-inherit">{item.title}</Text>
-                </a>
-              </SidebarMenuButton>
-              {!!newPetsCount && (
-                <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>
-              )}
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        <nav>
+          <SidebarMenu>
+            {items.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <a href={item.url}>
+                    <item.icon />
+                    <Text className="text-inherit">{item.title}</Text>
+                  </a>
+                </SidebarMenuButton>
+                {!!newPetsCount && (
+                  <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>
+                )}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </nav>
       </SidebarContent>
       <SidebarFooter className="px-2">
         <SidebarMenu>
