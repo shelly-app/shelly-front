@@ -31,8 +31,8 @@ const SignInRoute = () => {
       secondContent={
         <TwoSectionsLayout.SecondSection ratio={4}>
           <article className="flex h-full items-center justify-center">
-            <figure className="relative flex h-full w-full items-center justify-center">
-              <img src={DogPetGraphic} alt="Dog Pet Graphic" />
+            <figure className="relative flex h-full max-w-[600px] items-center justify-center">
+              <img src={DogPetGraphic} alt="Dog Pet Graphic" loading="eager" />
             </figure>
           </article>
         </TwoSectionsLayout.SecondSection>
