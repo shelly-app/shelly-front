@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useShelters } from '@/components/providers/shelters-provider';
-import { Text } from '@/components/text';
+import { Text } from '@/components/ui/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, nameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
