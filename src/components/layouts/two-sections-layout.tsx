@@ -22,7 +22,10 @@ const TwoSectionsLayout = ({
 
   return (
     <section
-      className={cn('flex flex-col gap-4 px-12 py-8 md:flex-row', className)}
+      className={cn(
+        'flex h-full w-full flex-col gap-4 px-12 py-8 md:flex-row',
+        className,
+      )}
     >
       {firstContent}
       {secondContent}
@@ -44,9 +47,9 @@ const LayoutSection = ({
   }
 
   return (
-    <div style={{ flex: ratio }} className={cn(className)}>
+    <section style={{ flex: ratio }} className={cn(className)}>
       {children}
-    </div>
+    </section>
   );
 };
 
