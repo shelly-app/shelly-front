@@ -27,12 +27,13 @@ import { cn, nameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { paths } from '@/config/paths';
 import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
+import { useNavigate } from 'react-router';
 
 // Menu items.
 const items = [
   {
     title: 'Mascotas',
-    url: paths.app.pets.path,
+    path: paths.app.pets.path,
     icon: LucidePawPrint,
   },
 ];
@@ -63,6 +64,7 @@ const AppSidebar = () => {
   );
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
+  const navigate = useNavigate();
   // const { userData } = useUser(); //useAuth() or something like this
   const userData = {
     firstName: 'John',
@@ -83,10 +85,13 @@ const AppSidebar = () => {
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <a href={item.url}>
+                  <div
+                    onClick={() => navigate(item.path)}
+                    className="flex cursor-pointer items-center gap-2"
+                  >
                     <item.icon />
                     <Text className="text-inherit">{item.title}</Text>
-                  </a>
+                  </div>
                 </SidebarMenuButton>
                 {!!newPetsCount && (
                   <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>

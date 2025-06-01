@@ -1,12 +1,13 @@
-import TwoSectionsLayout from '@/components/layouts/two-sections-layout';
-import { Text } from '@/components/ui/text';
-import SignInButton from '@/features/auth/components/sign-in-button';
-import DogPetGraphic from '@/assets/images/dog-pet-graphic.webp';
 import { useAuth } from 'react-oidc-context';
-import { Spinner } from '@/components/ui/spinner';
-import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+
+import TwoSectionsLayout from '@/components/layouts/two-sections-layout';
+import { Text } from '@/components/ui/text';
+import { Spinner } from '@/components/ui/spinner';
+import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
+import SignInButton from '@/features/auth/components/sign-in-button';
+import DogPetGraphic from '@/assets/images/dog-pet-graphic.webp';
 import { paths } from '@/config/paths';
 
 const SignInRoute = () => {
