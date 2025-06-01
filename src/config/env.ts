@@ -9,7 +9,9 @@ const createEnv = () => {
       .refine((s) => s === 'true' || s === 'false')
       .transform((s) => s === 'true')
       .optional(),
+    COGNITO_DOMAIN: z.string(),
     COGNITO_AUTHORITY: z.string(),
+    COGNITO_LOGOUT_URI: z.string(),
     COGNITO_CLIENT_ID: z.string(),
     COGNITO_REDIRECT_URI: z.string(),
     COGNITO_RESPONSE_TYPE: z.string(),

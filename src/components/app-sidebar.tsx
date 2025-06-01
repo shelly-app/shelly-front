@@ -26,6 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, nameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { paths } from '@/config/paths';
+import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
 
 // Menu items.
 const items = [
@@ -36,18 +37,24 @@ const items = [
   },
 ];
 
-const userMenuItems = [
-  {
-    title: 'Cuenta',
-    url: '#',
-  },
-  {
-    title: 'Cerrar sesión',
-    url: '#',
-  },
-];
-
 const AppSidebar = () => {
+  const signOutAction = useSignOutAction();
+
+  const userMenuItems = useMemo(
+    () => [
+      {
+        title: 'Cuenta',
+        url: '#',
+      },
+      {
+        title: 'Cerrar sesión',
+        url: '#',
+        action: signOutAction,
+      },
+    ],
+    [signOutAction],
+  );
+
   const { state: sidebarState } = useSidebar();
   const isMobile = useIsMobile();
   const isCollapsed = useMemo(
@@ -126,7 +133,11 @@ const AppSidebar = () => {
                 className="w-[--radix-popper-anchor-width]"
               >
                 {userMenuItems.map((item) => (
-                  <DropdownMenuItem key={item.title} className="cursor-pointer">
+                  <DropdownMenuItem
+                    key={item.title}
+                    className="cursor-pointer"
+                    onClick={item.action}
+                  >
                     <Text>{item.title}</Text>
                   </DropdownMenuItem>
                 ))}
