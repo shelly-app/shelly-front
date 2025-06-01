@@ -23,7 +23,7 @@ const TwoSectionsLayout = ({
   return (
     <section
       className={cn(
-        'flex h-full w-full flex-col gap-4 px-12 py-8 md:flex-row',
+        'flex h-full w-full flex-col gap-4 px-8 py-4 md:flex-row md:px-12 md:py-8',
         className,
       )}
     >

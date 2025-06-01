@@ -36,9 +36,9 @@ const SignInRoute = () => {
       <TwoSectionsLayout
         firstContent={
           <TwoSectionsLayout.FirstSection ratio={3}>
-            <article className="flex h-full justify-center py-48">
+            <article className="flex h-full justify-center py-24 md:py-48">
               <div className="flex flex-col items-start gap-4">
-                <div className="flex flex-col items-start">
+                <div className="flex w-full flex-col items-center md:items-start">
                   <Text element="h1" className="text-4xl font-bold">
                     Iniciar
                   </Text>
@@ -46,7 +46,7 @@ const SignInRoute = () => {
                     Sesión
                   </Text>
                 </div>
-                <div className="flex flex-col items-start gap-12">
+                <div className="flex flex-col items-center gap-24 md:items-start md:gap-12">
                   <Text element="h2" className="text-3xl">
                     Shelly
                   </Text>
