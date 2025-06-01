@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import {
   ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -19,20 +22,21 @@ import { Badge } from '@/components/ui/badge';
 import { petStatusColorMap } from '../utils/pet-table-utils';
 import { useNavigate } from 'react-router';
 import { paths } from '@/config/paths';
+import SearchPet from './search-pet';
 
 export const columns: ColumnDef<Pet>[] = [
   {
-    accessorKey: 'photoUrl',
+    accessorKey: 'name',
     header: 'Nombre',
     cell: ({ row }) => {
-      const { name, species } = row.original;
+      const { photoUrl, species } = row.original;
       return (
         <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage src={row.getValue('photoUrl')} />
+            <AvatarImage src={photoUrl} />
             <AvatarFallback>{species === 'gato' ? 'CT' : 'DG'}</AvatarFallback>
           </Avatar>
-          <div className="font-medium">{name}</div>
+          <div className="font-medium">{row.getValue('name')}</div>
         </div>
       );
     },
@@ -75,14 +79,23 @@ interface MainPetsTableProps {
 
 export const MainPetsTable = ({ data }: MainPetsTableProps) => {
   const navigate = useNavigate();
+  const [petSearchFilter, setPetSearchFilter] = useState<ColumnFiltersState>(
+    [],
+  );
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnFiltersChange: setPetSearchFilter,
+    state: {
+      columnFilters: petSearchFilter,
+    },
   });
   return (
     <div className="w-full">
+      <SearchPet table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
