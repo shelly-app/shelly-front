@@ -4,12 +4,12 @@ import { Navigate, useLocation } from 'react-router';
 import { paths } from '@/config/paths';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const auth = useAuth();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (!auth.isAuthenticated) {
+  if (!isAuthenticated) {
     return (
-      <Navigate to={paths.auth.login.getHref(location.pathname)} replace />
+      <Navigate to={paths.auth.signIn.getHref(location.pathname)} replace />
     );
   }
 
