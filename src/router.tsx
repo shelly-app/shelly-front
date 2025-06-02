@@ -1,6 +1,6 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
 import { paths } from '@/config/paths';
@@ -29,6 +29,11 @@ const createAppRouter = (queryClient: QueryClient) =>
       lazy: () => import('./routes/landing.tsx').then(convert(queryClient)),
     },
     {
+      path: paths.auth.signIn.path,
+      lazy: () =>
+        import('./routes/auth/sign-in.tsx').then(convert(queryClient)),
+    },
+    {
       path: paths.app.root.path,
       element: (
         <ProtectedRoute>
@@ -37,6 +42,10 @@ const createAppRouter = (queryClient: QueryClient) =>
       ),
       ErrorBoundary: AppRootErrorBoundary,
       children: [
+        {
+          index: true,
+          element: <Navigate to={paths.app.pets.path} replace />,
+        },
         {
           path: paths.app.pets.path,
           lazy: () =>

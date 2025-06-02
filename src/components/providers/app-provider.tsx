@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { AuthProvider } from 'react-oidc-context';
 
@@ -12,15 +11,15 @@ import { MainErrorFallback } from '@/components/errors/main';
 // import { Spinner } from '@/components/ui/spinner';
 // import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from '@/lib/react-query';
-import { SidebarProvider } from '@/components/ui/sidebar';
 import { SheltersProvider } from '@/components/providers/shelters-provider';
+import { Suspense, useState } from 'react';
 
 type AppProviderProps = {
   children: React.ReactNode;
 };
 
 const AppProvider = ({ children }: AppProviderProps) => {
-  const [queryClient] = React.useState(
+  const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: queryConfig,
@@ -28,7 +27,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
   );
 
   return (
-    <React.Suspense
+    <Suspense
       fallback={
         <div className="flex h-screen w-screen items-center justify-center">
           Loading...
@@ -38,16 +37,14 @@ const AppProvider = ({ children }: AppProviderProps) => {
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <QueryClientProvider client={queryClient}>
           <AuthProvider {...cognitoAuthConfig}>
-            <SidebarProvider>
-              <SheltersProvider>
-                {env.DEV && <ReactQueryDevtools />}
-                {children}
-              </SheltersProvider>
-            </SidebarProvider>
+            <SheltersProvider>
+              {env.DEV && <ReactQueryDevtools />}
+              {children}
+            </SheltersProvider>
           </AuthProvider>
         </QueryClientProvider>
       </ErrorBoundary>
-    </React.Suspense>
+    </Suspense>
   );
 };
 

@@ -21,32 +21,41 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useShelters } from '@/components/providers/shelters-provider';
-import { Text } from '@/components/text';
+import { Text } from '@/components/ui/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, nameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { paths } from '@/config/paths';
+import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
+import { useNavigate } from 'react-router';
 
 // Menu items.
 const items = [
   {
     title: 'Mascotas',
-    url: '#',
+    path: paths.app.pets.path,
     icon: LucidePawPrint,
   },
 ];
 
-const userMenuItems = [
-  {
-    title: 'Cuenta',
-    url: '#',
-  },
-  {
-    title: 'Cerrar sesión',
-    url: '#',
-  },
-];
-
 const AppSidebar = () => {
+  const signOutAction = useSignOutAction();
+
+  const userMenuItems = useMemo(
+    () => [
+      {
+        title: 'Cuenta',
+        url: '#',
+      },
+      {
+        title: 'Cerrar sesión',
+        url: '#',
+        action: signOutAction,
+      },
+    ],
+    [signOutAction],
+  );
+
   const { state: sidebarState } = useSidebar();
   const isMobile = useIsMobile();
   const isCollapsed = useMemo(
@@ -55,6 +64,7 @@ const AppSidebar = () => {
   );
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
+  const navigate = useNavigate();
   // const { userData } = useUser(); //useAuth() or something like this
   const userData = {
     firstName: 'John',
@@ -70,21 +80,26 @@ const AppSidebar = () => {
         <SidebarHeaderContent isCollapsed={isCollapsed} isMobile={isMobile} />
       </SidebarHeader>
       <SidebarContent className="px-2">
-        <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <Text className="text-inherit">{item.title}</Text>
-                </a>
-              </SidebarMenuButton>
-              {!!newPetsCount && (
-                <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>
-              )}
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        <nav>
+          <SidebarMenu>
+            {items.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <div
+                    onClick={() => navigate(item.path)}
+                    className="flex cursor-pointer items-center gap-2"
+                  >
+                    <item.icon />
+                    <Text className="text-inherit">{item.title}</Text>
+                  </div>
+                </SidebarMenuButton>
+                {!!newPetsCount && (
+                  <SidebarMenuBadge>{newPetsCount}</SidebarMenuBadge>
+                )}
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </nav>
       </SidebarContent>
       <SidebarFooter className="px-2">
         <SidebarMenu>
@@ -123,7 +138,11 @@ const AppSidebar = () => {
                 className="w-[--radix-popper-anchor-width]"
               >
                 {userMenuItems.map((item) => (
-                  <DropdownMenuItem key={item.title} className="cursor-pointer">
+                  <DropdownMenuItem
+                    key={item.title}
+                    className="cursor-pointer"
+                    onClick={item.action}
+                  >
                     <Text>{item.title}</Text>
                   </DropdownMenuItem>
                 ))}

@@ -10,3 +10,9 @@ export const cognitoAuthConfig = {
     window.history.replaceState({}, document.title, window.location.pathname);
   },
 };
+
+export const cognitoLogoutConfig = {
+  client_id: env.COGNITO_CLIENT_ID,
+  logout_uri: env.COGNITO_LOGOUT_URI,
+  cognito_domain: env.COGNITO_DOMAIN,
+};
