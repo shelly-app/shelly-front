@@ -31,7 +31,7 @@ const SignInRoute = () => {
       <Dialog open={isLoading}>
         <DialogPortal>
           <DialogOverlay />
-          <Spinner absolute size="large" />
+          <Spinner absolute size="large" show={isLoading} />
         </DialogPortal>
       </Dialog>
       <TwoSectionsLayout

@@ -5,7 +5,9 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
-export const nameInitials = (name: string) => {
+export const getNameInitials = (name?: string) => {
+  if (!name || name.trim().length === 0) return '';
+
   const names = name
     .trim()
     .split(' ')
@@ -17,4 +19,13 @@ export const nameInitials = (name: string) => {
     names[0].charAt(0).toUpperCase() +
     names[names.length - 1].charAt(0).toUpperCase()
   );
+};
+
+export const getFullName = (firstName?: string, lastName?: string) => {
+  const fullName = [firstName, lastName]
+    .filter((name) => name && name.trim().length > 0)
+    .join(' ')
+    .trim();
+
+  return fullName;
 };
