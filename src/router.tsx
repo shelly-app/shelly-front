@@ -1,15 +1,15 @@
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, Navigate } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
 
 import { paths } from '@/config/paths';
-// import { ProtectedRoute } from '@/lib/auth';
 
 import {
   default as AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
 } from '@/routes/app/root';
+import ProtectedRoute from '@/components/protected-route.tsx';
 
 // TODO: do we need this?
 const convert = (queryClient: QueryClient) => (m: any) => {
@@ -29,21 +29,33 @@ const createAppRouter = (queryClient: QueryClient) =>
       lazy: () => import('./routes/landing.tsx').then(convert(queryClient)),
     },
     {
+      path: paths.auth.signIn.path,
+      lazy: () =>
+        import('./routes/auth/sign-in.tsx').then(convert(queryClient)),
+    },
+    {
       path: paths.app.root.path,
       element: (
-        // <ProtectedRoute>
-        <AppRoot />
-        // </ProtectedRoute>
+        <ProtectedRoute>
+          <AppRoot />
+        </ProtectedRoute>
       ),
       ErrorBoundary: AppRootErrorBoundary,
       children: [
-        // {
-        //   path: paths.app.dashboard.path,
-        //   lazy: () =>
-        //     import('./routes/app/dashboard.tsx').then(
-        //       convert(queryClient),
-        //     ),
-        // },
+        {
+          index: true,
+          element: <Navigate to={paths.app.pets.path} replace />,
+        },
+        {
+          path: paths.app.pets.path,
+          lazy: () =>
+            import('./routes/app/pets/pets.tsx').then(convert(queryClient)),
+        },
+        {
+          path: paths.app.pet.path,
+          lazy: () =>
+            import('./routes/app/pets/pet.tsx').then(convert(queryClient)),
+        },
       ],
     },
     {
