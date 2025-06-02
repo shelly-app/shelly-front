@@ -65,7 +65,8 @@ const AppSidebar = () => {
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
   const navigate = useNavigate();
-  // const { userData } = useUser(); //useAuth() or something like this
+  //useAuth() has user.profile, but we should use the User model from our db.
+  // const { userData } = useUser();
   const userData = {
     firstName: 'John',
     lastName: 'Doe',

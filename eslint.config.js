@@ -54,20 +54,6 @@ export default tseslint.config(
           unnamedComponents: 'arrow-function',
         },
       ],
-
-      'check-file/filename-naming-convention': [
-        'warn',
-        {
-          '**/*.{ts,tsx}': 'KEBAB_CASE',
-        },
-      ],
-      'check-file/folder-naming-convention': [
-        'error',
-        {
-          // all folders within src (except __tests__)should be named in kebab-case
-          'src/**/!(__tests__)': 'KEBAB_CASE',
-        },
-      ],
     },
   },
 );
