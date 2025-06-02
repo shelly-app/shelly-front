@@ -23,11 +23,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useShelters } from '@/components/providers/shelters-provider';
 import { Text } from '@/components/ui/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn, nameInitials } from '@/lib/utils';
+import { cn, getFullName, getNameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { paths } from '@/config/paths';
 import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
 import { useNavigate } from 'react-router';
+import { useAuth } from 'react-oidc-context';
 
 // Menu items.
 const items = [
@@ -65,15 +66,24 @@ const AppSidebar = () => {
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
   const navigate = useNavigate();
-  //useAuth() has user.profile, but we should use the User model from our db.
-  // const { userData } = useUser();
-  const userData = {
-    firstName: 'John',
-    lastName: 'Doe',
-    profilePictureUrl: 'https://avatar.iran.liara.run/public/45',
-  };
+  // We should use the User model from our db.
+  // const { user } = useUser();
+  const { user } = useAuth();
 
-  const fullName = `${userData.firstName} ${userData.lastName}`;
+  const userProfile = useMemo(() => {
+    if (!user) return null;
+    return {
+      firstName: user.profile?.given_name,
+      lastName: user.profile?.family_name,
+      fullName: getFullName(
+        user.profile?.given_name,
+        user.profile?.family_name,
+      ),
+      picture: user.profile?.picture,
+    };
+  }, [user]);
+
+  console.log('userProfile', userProfile);
 
   return (
     <Sidebar collapsible="icon" variant="floating">
@@ -121,14 +131,16 @@ const AppSidebar = () => {
                     )}
                   >
                     <AvatarImage
-                      src={userData.profilePictureUrl}
-                      alt={fullName}
+                      src={userProfile?.picture}
+                      alt={userProfile?.fullName}
                     />
-                    <AvatarFallback>{nameInitials(fullName)}</AvatarFallback>
+                    <AvatarFallback>
+                      {getNameInitials(userProfile?.fullName)}
+                    </AvatarFallback>
                   </Avatar>{' '}
                   {(!isCollapsed || isMobile) && (
                     <>
-                      <Text>{fullName}</Text>
+                      <Text>{userProfile?.fullName}</Text>
                       <ChevronUp className="ml-auto" />
                     </>
                   )}
