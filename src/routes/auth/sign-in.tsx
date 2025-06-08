@@ -8,6 +8,7 @@ import { SocialSignIn } from '@/features/auth/components/social-sign-in';
 import { SignInPetsFigure } from '@/features/auth/components/sign-in-pets-figure';
 
 import { paths } from '@/config/paths';
+import { NavigationLayout } from '@/components/layouts/navigation-layout';
 
 export const SignInRoute = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const SignInRoute = () => {
   }, [isAuthenticated, navigate, searchParams, user?.state]);
 
   return (
-    <>
+    <NavigationLayout>
       <SignInLoadingDialog isLoading={isLoading} />
       <TwoSectionsLayout
         firstContent={
@@ -40,6 +41,6 @@ export const SignInRoute = () => {
           </TwoSectionsLayout.SecondSection>
         }
       />
-    </>
+    </NavigationLayout>
   );
 };
