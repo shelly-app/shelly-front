@@ -1,7 +1,7 @@
 import { cognitoLogoutConfig } from '@/config/cognito';
 import { useCallback } from 'react';
 
-const useSignOutAction = () => {
+export const useSignOutAction = () => {
   const signOutAction = useCallback(() => {
     const {
       cognito_domain: cognitoDomain,
@@ -14,5 +14,3 @@ const useSignOutAction = () => {
 
   return signOutAction;
 };
-
-export default useSignOutAction;

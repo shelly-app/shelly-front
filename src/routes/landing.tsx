@@ -1,7 +1,8 @@
 import { Text } from '@/components/ui/text';
-import SignInLink from '@/features/auth/components/sign-in-link';
-import useSessionInvalidate from '@/features/auth/hooks/use-session-invalidate';
-const LandingRoute = () => {
+import { SignInLink } from '@/features/auth/components/sign-in-link';
+import { useSessionInvalidate } from '@/features/auth/hooks/use-session-invalidate';
+
+export const LandingRoute = () => {
   useSessionInvalidate();
 
   return (
@@ -16,5 +17,3 @@ const LandingRoute = () => {
     </div>
   );
 };
-
-export default LandingRoute;

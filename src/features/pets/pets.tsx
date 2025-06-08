@@ -1,7 +1,7 @@
 import { MainPetsTable } from './components/main-pets-table';
-import usePets from './hooks/use-pets';
+import { usePets } from './hooks/use-pets';
 
-const Pets = () => {
+export const Pets = () => {
   const { pets } = usePets();
 
   return (
@@ -10,5 +10,3 @@ const Pets = () => {
     </div>
   );
 };
-
-export default Pets;

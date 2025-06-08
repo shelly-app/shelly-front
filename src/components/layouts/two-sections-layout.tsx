@@ -11,7 +11,7 @@ type TwoSectionsLayoutProps = {
   secondClassName?: string;
 };
 
-const TwoSectionsLayout = ({
+export const TwoSectionsLayout = ({
   firstContent,
   secondContent,
   className = '',
@@ -55,5 +55,3 @@ const LayoutSection = ({
 
 TwoSectionsLayout.FirstSection = LayoutSection;
 TwoSectionsLayout.SecondSection = LayoutSection;
-
-export default TwoSectionsLayout;

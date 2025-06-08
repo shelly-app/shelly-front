@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-const PetRoute = () => {
+export const PetRoute = () => {
   const params = useParams();
   const petId = params.petId as string;
   return (
@@ -10,5 +10,3 @@ const PetRoute = () => {
     </h1>
   );
 };
-
-export default PetRoute;

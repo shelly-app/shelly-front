@@ -20,7 +20,7 @@ type TextProps = {
   variant?: VariantProps<typeof textVariants>['variant'];
 } & React.ComponentPropsWithoutRef<'span'>;
 
-const Text = ({
+export const Text = ({
   children,
   element: Element = 'span',
   className,
@@ -37,5 +37,3 @@ const Text = ({
     </Element>
   );
 };
-
-export { Text };

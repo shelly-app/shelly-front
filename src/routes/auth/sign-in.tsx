@@ -2,15 +2,14 @@ import { useAuth } from 'react-oidc-context';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-import TwoSectionsLayout from '@/components/layouts/two-sections-layout';
+import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
 import { Text } from '@/components/ui/text';
-import { Spinner } from '@/components/ui/spinner';
-import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
-import SignInButton from '@/features/auth/components/sign-in-button';
+import { SignInButton } from '@/features/auth/components/sign-in-button';
 import DogPetGraphic from '@/assets/images/dog-pet-graphic.webp';
 import { paths } from '@/config/paths';
+import { SignInLoadingDialog } from '@/features/auth/components/sign-in-loading-dialog';
 
-const SignInRoute = () => {
+export const SignInRoute = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { isLoading, isAuthenticated, user } = useAuth();
@@ -28,12 +27,7 @@ const SignInRoute = () => {
 
   return (
     <>
-      <Dialog open={isLoading}>
-        <DialogPortal>
-          <DialogOverlay />
-          <Spinner absolute size="large" show={isLoading} />
-        </DialogPortal>
-      </Dialog>
+      <SignInLoadingDialog isLoading={isLoading} />
       <TwoSectionsLayout
         firstContent={
           <TwoSectionsLayout.FirstSection ratio={3}>
@@ -74,5 +68,3 @@ const SignInRoute = () => {
     </>
   );
 };
-
-export default SignInRoute;

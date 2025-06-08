@@ -1,7 +1,7 @@
 import { AppSidebar } from '@/components/app-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
+export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -12,5 +12,3 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
     </SidebarProvider>
   );
 };
-
-export { AppLayout };

@@ -26,7 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, getFullName, getNameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { paths } from '@/config/paths';
-import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
+import { useSignOutAction } from '@/features/auth/hooks/use-sign-out-action';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'react-oidc-context';
 
@@ -82,8 +82,6 @@ const AppSidebar = () => {
       picture: user.profile?.picture,
     };
   }, [user]);
-
-  console.log('userProfile', userProfile);
 
   return (
     <Sidebar collapsible="icon" variant="floating">

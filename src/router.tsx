@@ -6,19 +6,26 @@ import { RouterProvider } from 'react-router/dom';
 import { paths } from '@/config/paths';
 
 import {
-  default as AppRoot,
+  AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
 } from '@/routes/app/root';
-import ProtectedRoute from '@/components/protected-route.tsx';
+import { ProtectedRoute } from '@/components/protected-route.tsx';
 
 // TODO: do we need this?
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
+  // Handle both default exports and named exports
+  const ActualComponent =
+    Component ||
+    Object.values(rest).find(
+      (value) => typeof value === 'function' && value.name,
+    );
+
   return {
     ...rest,
     loader: clientLoader?.(queryClient),
     action: clientAction?.(queryClient),
-    Component,
+    Component: ActualComponent,
   };
 };
 

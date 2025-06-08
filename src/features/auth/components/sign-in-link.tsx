@@ -1,7 +1,7 @@
 import { Text } from '@/components/ui/text';
 import { NavLink } from 'react-router';
 
-const SignInLink = () => {
+export const SignInLink = () => {
   return (
     <NavLink to="/auth/sign-in">
       <div className="rounded-lg bg-amber-200 px-4 py-2">
@@ -12,5 +12,3 @@ const SignInLink = () => {
     </NavLink>
   );
 };
-
-export default SignInLink;
