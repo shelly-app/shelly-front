@@ -1,4 +1,4 @@
-import { cognitoLogoutConfig } from '@/config/cognito';
+import { cognitoLogoutConfig } from '@/config/auth';
 import { useCallback } from 'react';
 
 export const useSignOutAction = () => {
