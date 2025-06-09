@@ -1,12 +1,15 @@
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const textVariants = cva('text-sm', {
+const textVariants = cva('text-md', {
   variants: {
     variant: {
       primary: 'text-primary',
       secondary: 'text-secondary',
       ellipsis: 'overflow-ellipsis overflow-hidden text-nowrap',
+      title: 'text-5xl leading-tight font-bold',
+      subtitle1: 'text-xl text-gray-700',
+      subtitle2: 'text-lg text-gray-600',
     },
   },
   defaultVariants: {
