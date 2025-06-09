@@ -15,15 +15,15 @@ export const LandingRoute = () => {
             ratio={3}
             className="flex flex-col justify-center gap-6"
           >
-            <Text element="h1" className="text-5xl leading-tight font-bold">
+            <Text element="h1" variant="title">
               Gestiona tu refugio de animales con facilidad
             </Text>
             <div className="space-y-3">
-              <Text element="h2" className="text-xl text-gray-700">
+              <Text element="h2" variant="subtitle1">
                 Organiza el cuidado, seguimiento médico y adopciones de tus
                 animales rescatados desde una sola plataforma.
               </Text>
-              <Text element="p" className="text-lg text-gray-600">
+              <Text element="h3" variant="subtitle2">
                 Simplifica la administración de tu refugio y ayuda a más
                 animales a encontrar un hogar a su medida.
               </Text>
@@ -31,9 +31,9 @@ export const LandingRoute = () => {
           </TwoSectionsLayout.FirstSection>
         }
         secondContent={
-          <TwoSectionsLayout.SecondSection
-            ratio={4}
-          ></TwoSectionsLayout.SecondSection>
+          <TwoSectionsLayout.SecondSection ratio={4}>
+            <></>
+          </TwoSectionsLayout.SecondSection>
         }
       />
     </NavigationLayout>
