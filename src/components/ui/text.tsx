@@ -7,9 +7,8 @@ const textVariants = cva('text-md', {
       primary: 'text-primary',
       secondary: 'text-secondary',
       ellipsis: 'overflow-ellipsis overflow-hidden text-nowrap',
-      title: 'text-5xl leading-tight font-bold',
-      subtitle1: 'text-xl text-gray-700',
-      subtitle2: 'text-lg text-gray-600',
+      title: 'text-4xl leading-tight font-bold',
+      subtitle: 'text-xl text-gray-600',
     },
   },
   defaultVariants: {

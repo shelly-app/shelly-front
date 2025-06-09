@@ -13,7 +13,7 @@ export const SocialSignIn = () => (
         </Text>
       </div>
       <div className="flex flex-col items-center gap-24 md:items-start md:gap-12">
-        <Text element="h2" variant="subtitle1">
+        <Text element="h2" variant="subtitle">
           Refugios
         </Text>
         <SignInButton provider="Google" />
