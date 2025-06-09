@@ -30,8 +30,12 @@ export const SignInRoute = () => {
     <NavigationLayout>
       <SignInLoadingDialog isLoading={isLoading} />
       <TwoSectionsLayout
+        className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
         firstContent={
-          <TwoSectionsLayout.FirstSection ratio={3}>
+          <TwoSectionsLayout.FirstSection
+            className="flex flex-col justify-center gap-6"
+            ratio={3}
+          >
             <SocialSignIn />
           </TwoSectionsLayout.FirstSection>
         }
