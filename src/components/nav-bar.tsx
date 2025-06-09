@@ -13,7 +13,7 @@ export const NavBar = () => {
     <nav className="md:py-8' fixed z-40 flex w-full items-center justify-between bg-amber-100 px-8 py-4 shadow-sm md:px-12">
       <Text className="cursor-default text-xl font-bold">Shelly</Text>
       <div className="flex gap-12">
-        <menu className="flex items-center gap-8">
+        <menu className="flex items-center gap-10">
           {NAV_ITEMS.map((item) => (
             <NavItem key={item.href} href={item.href}>
               {item.label}
@@ -35,7 +35,9 @@ const NavItem = ({
 }) => {
   return (
     <li className="transition-transform hover:scale-110">
-      <NavLink to={href}>{children}</NavLink>
+      <NavLink to={href}>
+        <Text>{children}</Text>
+      </NavLink>
     </li>
   );
 };
