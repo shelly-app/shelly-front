@@ -12,7 +12,7 @@ export const Hero = () => {
   };
 
   return (
-    <section id="#" className="h-full">
+    <section id="#" className="bg-radial-amber h-10/12">
       <TwoSectionsLayout
         className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
         firstContent={
@@ -24,7 +24,7 @@ export const Hero = () => {
               Gestiona tu refugio de animales con facilidad
             </Text>
             <div className="space-y-3">
-              <Text element="h2" variant="subtitle" className="text-slate-600">
+              <Text element="h2" variant="primary">
                 Simplifica la administración de tu refugio y ayuda a más
                 animales a encontrar un hogar a su medida.
               </Text>

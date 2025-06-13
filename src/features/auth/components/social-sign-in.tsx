@@ -1,5 +1,5 @@
 import { Text } from '@/components/ui/text';
-import { SignInButton } from '@/features/auth/components/sign-in-button';
+import { ProviderSignInButton } from '@/features/auth/components/provider-sign-in-button';
 
 export const SocialSignIn = () => (
   <article className="flex h-full justify-center py-24 md:py-48">
@@ -16,7 +16,7 @@ export const SocialSignIn = () => (
         <Text element="h2" variant="subtitle">
           Refugios
         </Text>
-        <SignInButton provider="Google" />
+        <ProviderSignInButton provider="Google" />
       </div>
     </div>
   </article>

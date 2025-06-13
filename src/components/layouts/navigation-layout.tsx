@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react';
-import { NavBar } from '@/components/nav-bar';
+import { Navbar } from '@/components/navbar';
 import { cn } from '@/lib/utils';
 
 export const NavigationLayout = ({
@@ -11,8 +11,8 @@ export const NavigationLayout = ({
 }) => {
   return (
     <>
-      <NavBar />
-      <div className={cn('h-full pt-[75px]', className)}>{children}</div>
+      <Navbar />
+      <div className={cn('h-full', className)}>{children}</div>
     </>
   );
 };

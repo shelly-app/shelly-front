@@ -20,7 +20,7 @@ const signInButtonVariants = cva(
   },
 );
 
-export const SignInButton = ({
+export const ProviderSignInButton = ({
   provider,
   className,
 }: {
