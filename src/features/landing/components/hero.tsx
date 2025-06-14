@@ -31,7 +31,7 @@ export const Hero = () => {
       id="hero"
       className="relative grid min-h-[93vh] place-items-center overflow-hidden bg-gradient-to-b from-amber-200/80 to-amber-300/70"
     >
-      <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-16 md:flex-row md:gap-8 md:py-24">
+      <div className="mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-12 px-4 py-20 md:flex-row md:gap-8 md:py-24">
         <div className="flex flex-1 flex-col gap-6 text-center md:text-left">
           <div className="flex flex-col gap-4">
             <H1 className="text-4xl font-bold md:text-5xl lg:text-6xl">

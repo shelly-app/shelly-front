@@ -30,18 +30,18 @@ export const SignInRoute = () => {
     <>
       <SignInLoadingDialog isLoading={isLoading} />
       <TwoSectionsLayout
-        className="flex-col-reverse gap-8 px-0 py-0 md:px-0 md:py-0"
+        className="flex-col-reverse gap-4 px-0 py-0 md:flex-row md:gap-8 md:px-0 md:py-0"
         firstSectionContent={
           <TwoSectionsLayout.SectionContent ratio={3} className="bg-amber-200">
             <NavLink to={paths.home.path}>
-              <ArrowLeft className="absolute top-6 left-6 z-10 h-10 w-10 cursor-pointer rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-400/10" />
+              <ArrowLeft className="absolute top-4 left-4 z-10 h-8 w-8 cursor-pointer rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-400/10 md:top-6 md:left-6 md:h-10 md:w-10" />
             </NavLink>
-            <SignInPetsFigure className="bg-radial-amber px-8 opacity-80" />
+            <SignInPetsFigure className="bg-radial-amber px-4 opacity-80 md:px-8" />
           </TwoSectionsLayout.SectionContent>
         }
         secondSectionContent={
           <TwoSectionsLayout.SectionContent
-            className="flex flex-col justify-center gap-6"
+            className="flex flex-col justify-center gap-4 md:gap-6"
             ratio={3}
           >
             <SocialSignIn />

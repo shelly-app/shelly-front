@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router';
 
-export const SignInLink = () => {
+export const SignInLink = ({ className }: { className?: string }) => {
   const { isAuthenticated } = useAuth();
   const isScrolled = useIsScrolled(50);
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ export const SignInLink = () => {
         isScrolled
           ? 'shadow-lg hover:shadow-xl active:scale-95'
           : 'backdrop-blur-sm hover:shadow-md active:scale-95',
+        className,
       )}
     >
       {isAuthenticated ? 'Acceder' : 'Iniciar sesión'}
