@@ -1,4 +1,4 @@
-import { H1, Lead } from '@/components/ui/text';
+import { H1, H3 } from '@/components/ui/text';
 import { PetShowcaseCard } from '@/features/landing/components/pet-showcase-card';
 import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
 
@@ -12,7 +12,10 @@ export const Hero = () => {
   };
 
   return (
-    <section id="#" className="bg-radial-amber h-11/12">
+    <section
+      id="#"
+      className="h-11/12 bg-gradient-to-b from-amber-200 to-amber-300/80"
+    >
       <TwoSectionsLayout
         className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
         firstSectionContent={
@@ -20,13 +23,13 @@ export const Hero = () => {
             ratio={3}
             className="flex flex-col justify-center gap-6"
           >
-            <H1>Gestiona tu refugio de animales con facilidad</H1>
-            <div className="space-y-3">
-              <Lead>
-                Simplifica la administración de tu refugio y ayuda a más
-                animales a encontrar un hogar a su medida.
-              </Lead>
-            </div>
+            <H1 weight="medium">
+              Gestiona tu refugio de mascotas con facilidad
+            </H1>
+            <H3 size="lg">
+              Simplifica la administración de tu refugio y ayuda a más animales
+              a encontrar un hogar a su medida.
+            </H3>
           </TwoSectionsLayout.SectionContent>
         }
         secondSectionContent={

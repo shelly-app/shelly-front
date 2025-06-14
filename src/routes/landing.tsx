@@ -11,9 +11,9 @@ export const LandingRoute = () => {
   return (
     <NavigationLayout>
       <Hero />
+      <About />
       <Adopt />
       <Donate />
-      <About />
     </NavigationLayout>
   );
 };

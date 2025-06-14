@@ -2,7 +2,7 @@ export const Donate = () => {
   return (
     <section
       id="donate"
-      className="flex h-[800px] flex-col items-center justify-center gap-8 px-4 py-8"
+      className="flex h-[800px] flex-col items-center justify-center gap-8 bg-gradient-to-b from-amber-100 to-amber-50 px-4 py-8"
     >
       <h2 className="text-3xl font-bold">Dona para ayudar</h2>
       <p className="text-lg text-gray-600">

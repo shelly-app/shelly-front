@@ -134,7 +134,7 @@ body {
 
 @layer components {
   .bg-radial-amber {
-    background: radial-gradient(ellipse at center, rgb(254 243 199), rgb(253 230 138));
+    background: radial-gradient(ellipse at center, rgb(254 243 199), rgb(253 230 138) 70%, rgb(252 211 77));
   }
 }
 

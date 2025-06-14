@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useShelters } from '@/components/providers/shelters-provider';
-import { Text, H1 } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, getFullName, getNameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -29,6 +29,8 @@ import { paths } from '@/config/paths';
 import { useSignOutAction } from '@/features/auth/hooks/use-sign-out-action';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'react-oidc-context';
+import { ShellyGradient } from '@/components/ui/shelly-gradient';
+import { Separator } from '@/components/ui/separator';
 
 // Menu items.
 const items = [
@@ -99,9 +101,7 @@ const AppSidebar = () => {
                     className="flex cursor-pointer items-center gap-2"
                   >
                     <item.icon />
-                    <Text variant="primary" className="text-inherit">
-                      {item.title}
-                    </Text>
+                    <Text variant="primary">{item.title}</Text>
                   </div>
                 </SidebarMenuButton>
                 {!!newPetsCount && (
@@ -174,9 +174,10 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
 
   return (
     <>
-      <H1 className="pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-transparent select-none">
+      <ShellyGradient className="text-4xl">
         {isCollapsed && !isMobile ? 'S' : 'Shelly'}
-      </H1>
+      </ShellyGradient>
+      <Separator orientation="horizontal" className="w-full" />
       {isLoading ? (
         <Skeleton className="bg-sidebar-border h-12 w-full" />
       ) : (
@@ -186,7 +187,7 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="cursor-pointer justify-center">
-                    <Text variant="ellipsis" className="text-primary">
+                    <Text variant="ellipsis">
                       {isCollapsed && !isMobile
                         ? currentShelter?.name[0].toUpperCase()
                         : currentShelter?.name}
@@ -203,9 +204,7 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
                       onClick={() => setCurrentShelter(shelter)}
                       className="cursor-pointer"
                     >
-                      <Text variant="ellipsis" className="text-primary">
-                        {shelter.name}
-                      </Text>
+                      <Text variant="ellipsis">{shelter.name}</Text>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>

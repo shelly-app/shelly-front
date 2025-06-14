@@ -1,21 +1,22 @@
 import { Image } from '@/components/ui/image';
-import { Text, H1 } from '@/components/ui/text';
+import { Text } from '@/components/ui/text';
 import { SignInLink } from '@/features/auth/components/sign-in-link';
 import { useHashScroll } from '@/hooks/use-hash-scroll';
 import { useIsScrolled } from '@/hooks/use-is-scrolled';
 import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router';
 import ShellyLogo from '@/assets/images/shelly-logo.webp';
+import { ShellyGradient } from '@/components/ui/shelly-gradient';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Inicio' },
+  { href: '/#about', label: 'Sobre Nosotros' },
   { href: '/#adopt', label: 'Adoptar' },
   { href: '/#donate', label: 'Donar' },
-  { href: '/#about', label: 'Sobre Nosotros' },
 ];
 
 export const Navbar = () => {
-  const isScrolled = useIsScrolled(100);
+  const isScrolled = useIsScrolled(50);
 
   return (
     <nav
@@ -35,14 +36,14 @@ export const Navbar = () => {
             isScrolled && 'h-10 w-10',
           )}
         />
-        <H1
+        <ShellyGradient
           className={cn(
-            'cursor-default text-amber-800 transition-all duration-500',
+            'cursor-default text-4xl transition-all duration-500',
             isScrolled && 'lg:text-xl',
           )}
         >
           Shelly
-        </H1>
+        </ShellyGradient>
       </div>
 
       <div className="flex items-center gap-12">
