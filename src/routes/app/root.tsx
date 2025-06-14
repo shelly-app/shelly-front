@@ -5,12 +5,10 @@ export const ErrorBoundary = () => {
   return <div>Something went wrong!</div>;
 };
 
-const AppRoot = () => {
+export const AppRoot = () => {
   return (
     <AppLayout>
       <Outlet />
     </AppLayout>
   );
 };
-
-export default AppRoot;

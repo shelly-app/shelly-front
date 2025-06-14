@@ -1,4 +1,6 @@
-export const cognitoAuthConfig = {
+import { WebStorageStateStore } from 'oidc-client-ts';
+
+const cognitoAuthConfig = {
   authority: import.meta.env.VITE_APP_COGNITO_AUTHORITY,
   client_id: import.meta.env.VITE_APP_COGNITO_CLIENT_ID,
   redirect_uri: import.meta.env.VITE_APP_COGNITO_REDIRECT_URI,
@@ -7,6 +9,11 @@ export const cognitoAuthConfig = {
   onSigninCallback: () => {
     window.history.replaceState({}, document.title, window.location.pathname);
   },
+};
+
+export const authConfig = {
+  ...cognitoAuthConfig,
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
 };
 
 export const cognitoLogoutConfig = {

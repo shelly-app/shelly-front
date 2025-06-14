@@ -26,9 +26,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn, getFullName, getNameInitials } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { paths } from '@/config/paths';
-import useSignOutAction from '@/features/auth/hooks/use-sign-out-action';
+import { useSignOutAction } from '@/features/auth/hooks/use-sign-out-action';
 import { useNavigate } from 'react-router';
 import { useAuth } from 'react-oidc-context';
+import { ShellyGradient } from '@/components/ui/shelly-gradient';
+import { Separator } from '@/components/ui/separator';
 
 // Menu items.
 const items = [
@@ -83,8 +85,6 @@ const AppSidebar = () => {
     };
   }, [user]);
 
-  console.log('userProfile', userProfile);
-
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader className="flex items-center gap-6">
@@ -101,7 +101,7 @@ const AppSidebar = () => {
                     className="flex cursor-pointer items-center gap-2"
                   >
                     <item.icon />
-                    <Text className="text-inherit">{item.title}</Text>
+                    <Text variant="primary">{item.title}</Text>
                   </div>
                 </SidebarMenuButton>
                 {!!newPetsCount && (
@@ -140,7 +140,7 @@ const AppSidebar = () => {
                   </Avatar>{' '}
                   {(!isCollapsed || isMobile) && (
                     <>
-                      <Text>{userProfile?.fullName}</Text>
+                      <Text variant="primary">{userProfile?.fullName}</Text>
                       <ChevronUp className="ml-auto" />
                     </>
                   )}
@@ -156,7 +156,7 @@ const AppSidebar = () => {
                     className="cursor-pointer"
                     onClick={item.action}
                   >
-                    <Text>{item.title}</Text>
+                    <Text variant="primary">{item.title}</Text>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -174,9 +174,10 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
 
   return (
     <>
-      <Text className="pointer-events-none bg-gradient-to-t from-amber-400 to-amber-500 bg-clip-text text-3xl font-bold text-transparent select-none">
+      <ShellyGradient className="text-4xl">
         {isCollapsed && !isMobile ? 'S' : 'Shelly'}
-      </Text>
+      </ShellyGradient>
+      <Separator orientation="horizontal" className="w-full" />
       {isLoading ? (
         <Skeleton className="bg-sidebar-border h-12 w-full" />
       ) : (

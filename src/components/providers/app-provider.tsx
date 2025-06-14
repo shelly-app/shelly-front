@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
 import { AuthProvider } from 'react-oidc-context';
 
-import { cognitoAuthConfig } from '@/config/cognito';
+import { authConfig } from '@/config/auth';
 
 import { MainErrorFallback } from '@/components/errors/main';
 // import { Notifications } from '@/components/ui/notifications';
@@ -35,7 +35,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider {...cognitoAuthConfig}>
+          <AuthProvider {...authConfig}>
             <SheltersProvider>
               {import.meta.env.DEV && <ReactQueryDevtools />}
               {children}

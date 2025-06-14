@@ -55,7 +55,7 @@ const fetchPets = async (): Promise<Pet[]> => {
   return MOCK_PETS;
 };
 
-const usePets = () => {
+export const usePets = () => {
   const {
     data: pets = [],
     isLoading,
@@ -70,5 +70,3 @@ const usePets = () => {
 
   return { pets, isLoading, isError, error, refetch };
 };
-
-export default usePets;

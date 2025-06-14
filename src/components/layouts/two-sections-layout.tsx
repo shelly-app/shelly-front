@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
 type TwoSectionsLayoutProps = {
-  firstContent: React.ReactNode;
-  secondContent: React.ReactNode;
+  firstSectionContent: React.ReactNode;
+  secondSectionContent: React.ReactNode;
   firstRatio?: number;
   secondRatio?: number;
   className?: string;
@@ -11,29 +11,29 @@ type TwoSectionsLayoutProps = {
   secondClassName?: string;
 };
 
-const TwoSectionsLayout = ({
-  firstContent,
-  secondContent,
+export const TwoSectionsLayout = ({
+  firstSectionContent,
+  secondSectionContent,
   className = '',
 }: TwoSectionsLayoutProps) => {
-  if (!firstContent || !secondContent) {
+  if (!firstSectionContent || !secondSectionContent) {
     throw new Error('Both firstContent and secondContent must be provided');
   }
 
   return (
-    <section
+    <div
       className={cn(
         'flex h-full w-full flex-col gap-4 px-8 py-4 md:flex-row md:px-12 md:py-8',
         className,
       )}
     >
-      {firstContent}
-      {secondContent}
-    </section>
+      {firstSectionContent}
+      {secondSectionContent}
+    </div>
   );
 };
 
-const LayoutSection = ({
+const SectionContent = ({
   children,
   ratio = 1,
   className = '',
@@ -47,13 +47,10 @@ const LayoutSection = ({
   }
 
   return (
-    <section style={{ flex: ratio }} className={cn(className)}>
+    <section style={{ flex: ratio }} className={cn('h-full w-full', className)}>
       {children}
     </section>
   );
 };
 
-TwoSectionsLayout.FirstSection = LayoutSection;
-TwoSectionsLayout.SecondSection = LayoutSection;
-
-export default TwoSectionsLayout;
+TwoSectionsLayout.SectionContent = SectionContent;

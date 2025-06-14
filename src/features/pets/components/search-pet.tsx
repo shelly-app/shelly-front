@@ -3,7 +3,7 @@ import { SearchIcon } from 'lucide-react';
 import { Pet } from '../types/pet';
 import type { Table } from '@tanstack/react-table';
 
-const SearchPet = ({ table }: { table: Table<Pet> }) => {
+export const SearchPet = ({ table }: { table: Table<Pet> }) => {
   return (
     <div className="flex items-center py-4">
       <Input
@@ -18,5 +18,3 @@ const SearchPet = ({ table }: { table: Table<Pet> }) => {
     </div>
   );
 };
-
-export default SearchPet;

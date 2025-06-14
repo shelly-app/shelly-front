@@ -1,7 +1,5 @@
-import Pets from '@/features/pets/pets';
+import { Pets } from '@/features/pets/pets';
 
-const PetsRoute = () => {
+export const PetsRoute = () => {
   return <Pets />;
 };
-
-export default PetsRoute;

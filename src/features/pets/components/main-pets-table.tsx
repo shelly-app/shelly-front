@@ -22,7 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { petStatusColorMap } from '../utils/pet-table-utils';
 import { useNavigate } from 'react-router';
 import { paths } from '@/config/paths';
-import SearchPet from './search-pet';
+import { SearchPet } from './search-pet';
 
 export const columns: ColumnDef<Pet>[] = [
   {

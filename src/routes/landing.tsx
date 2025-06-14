@@ -1,20 +1,19 @@
-import { Text } from '@/components/ui/text';
-import SignInLink from '@/features/auth/components/sign-in-link';
-import useSessionInvalidate from '@/features/auth/hooks/use-session-invalidate';
-const LandingRoute = () => {
+import { NavigationLayout } from '@/components/layouts/navigation-layout';
+import { useSessionInvalidate } from '@/features/auth/hooks/use-session-invalidate';
+import { About } from '@/features/landing/components/about';
+import { Adopt } from '@/features/landing/components/adopt';
+import { Donate } from '@/features/landing/components/donate';
+import { Hero } from '@/features/landing/components/hero';
+
+export const LandingRoute = () => {
   useSessionInvalidate();
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-4">
-      <Text element="h1" className="text-4xl font-bold">
-        Shelly
-      </Text>
-      <Text element="h2" className="text-lg">
-        Adopta a tu mejor amigo!
-      </Text>
-      <SignInLink />
-    </div>
+    <NavigationLayout>
+      <Hero />
+      <About />
+      <Adopt />
+      <Donate />
+    </NavigationLayout>
   );
 };
-
-export default LandingRoute;

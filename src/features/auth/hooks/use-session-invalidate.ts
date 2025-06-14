@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { useSearchParams } from 'react-router';
 
-const useSessionInvalidate = () => {
+export const useSessionInvalidate = () => {
   const { removeUser } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -16,5 +16,3 @@ const useSessionInvalidate = () => {
     }
   }, [searchParams, removeUser, setSearchParams]);
 };
-
-export default useSessionInvalidate;
