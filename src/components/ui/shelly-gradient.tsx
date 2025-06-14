@@ -1,4 +1,4 @@
-import { H2 } from '@/components/ui/text';
+import { Text, TextVariants } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 
 export const ShellyGradient = ({
@@ -6,6 +6,7 @@ export const ShellyGradient = ({
   className,
   size,
   weight,
+  variant = 'h2',
 }: {
   children: React.ReactNode;
   className?: string;
@@ -20,9 +21,11 @@ export const ShellyGradient = ({
     | 'bold'
     | 'extrabold'
     | 'black';
+  variant?: TextVariants;
 }) => {
   return (
-    <H2
+    <Text
+      variant={variant}
       className={cn(
         'pointer-events-none bg-gradient-to-t from-amber-500 to-amber-600 bg-clip-text text-transparent select-none',
         className,
@@ -31,6 +34,6 @@ export const ShellyGradient = ({
       weight={weight}
     >
       {children}
-    </H2>
+    </Text>
   );
 };

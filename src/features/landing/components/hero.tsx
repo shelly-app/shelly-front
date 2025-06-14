@@ -14,7 +14,7 @@ export const Hero = () => {
   return (
     <section
       id="#"
-      className="h-11/12 bg-gradient-to-b from-amber-200 to-amber-300/80"
+      className="h-[93%] bg-gradient-to-b from-amber-200 to-amber-300/70"
     >
       <TwoSectionsLayout
         className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"

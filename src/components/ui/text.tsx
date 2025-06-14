@@ -1,6 +1,8 @@
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+export type TextVariants = VariantProps<typeof textVariants>['variant'];
+
 const textVariants = cva('', {
   variants: {
     variant: {
@@ -98,7 +100,7 @@ type TextElement =
 type TextProps = {
   element?: TextElement;
   className?: string;
-  variant?: VariantProps<typeof textVariants>['variant'];
+  variant?: TextVariants;
   size?: VariantProps<typeof textVariants>['size'];
   weight?: VariantProps<typeof textVariants>['weight'];
   align?: VariantProps<typeof textVariants>['align'];
