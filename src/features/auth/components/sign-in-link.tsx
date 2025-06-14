@@ -28,7 +28,7 @@ export const SignInLink = () => {
           : 'backdrop-blur-sm hover:shadow-md active:scale-95',
       )}
     >
-      Iniciar sesión
+      {isAuthenticated ? 'Acceder' : 'Iniciar sesión'}
     </Button>
   );
 };

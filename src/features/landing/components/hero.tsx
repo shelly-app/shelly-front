@@ -50,7 +50,7 @@ export const Hero = () => {
               className="w-full md:w-auto"
               onClick={handleCtaClick}
             >
-              Comenzar ahora
+              {isAuthenticated ? 'Ir a mi refugio' : 'Comenzar ahora'}
             </Button>
             <div className="flex items-center gap-2 text-sm text-amber-900/80">
               <PawPrint className="h-4 w-4" />
