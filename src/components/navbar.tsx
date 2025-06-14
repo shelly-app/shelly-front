@@ -1,9 +1,11 @@
-import { Text } from '@/components/ui/text';
+import { Image } from '@/components/ui/image';
+import { Text, H1 } from '@/components/ui/text';
 import { SignInLink } from '@/features/auth/components/sign-in-link';
 import { useHashScroll } from '@/hooks/use-hash-scroll';
 import { useIsScrolled } from '@/hooks/use-is-scrolled';
 import { cn } from '@/lib/utils';
 import { NavLink } from 'react-router';
+import ShellyLogo from '@/assets/images/shelly-logo.webp';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Inicio' },
@@ -24,9 +26,17 @@ export const Navbar = () => {
           : 'backdrop-blur-md',
       )}
     >
-      <Text className="cursor-default text-xl font-bold text-amber-800">
-        Shelly
-      </Text>
+      <div className="flex items-center gap-2">
+        <Image src={ShellyLogo} alt="Shelly Logo" className="h-10 w-10" />
+        <H1
+          className={cn(
+            'cursor-default text-amber-800 transition-all duration-500',
+            isScrolled && 'lg:text-xl',
+          )}
+        >
+          Shelly
+        </H1>
+      </div>
 
       <div className="flex items-center gap-12">
         <menu className="flex items-center gap-10 text-amber-800">
@@ -55,7 +65,7 @@ const NavItem = ({
   return (
     <li className="transition-transform hover:scale-110">
       <NavLink to={href} onClick={() => scrollToSection(href)}>
-        <Text>{children}</Text>
+        <Text variant="primary">{children}</Text>
       </NavLink>
     </li>
   );

@@ -1,6 +1,6 @@
-import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
-import { Text } from '@/components/ui/text';
+import { H1, Lead } from '@/components/ui/text';
 import { PetShowcaseCard } from '@/features/landing/components/pet-showcase-card';
+import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
 
 export const Hero = () => {
   const getRoundedClass = (index: number) => {
@@ -15,24 +15,22 @@ export const Hero = () => {
     <section id="#" className="bg-radial-amber h-10/12">
       <TwoSectionsLayout
         className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
-        firstContent={
-          <TwoSectionsLayout.FirstSection
+        firstSectionContent={
+          <TwoSectionsLayout.SectionContent
             ratio={3}
             className="flex flex-col justify-center gap-6"
           >
-            <Text element="h1" variant="title">
-              Gestiona tu refugio de animales con facilidad
-            </Text>
+            <H1>Gestiona tu refugio de animales con facilidad</H1>
             <div className="space-y-3">
-              <Text element="h2" variant="primary">
+              <Lead>
                 Simplifica la administración de tu refugio y ayuda a más
                 animales a encontrar un hogar a su medida.
-              </Text>
+              </Lead>
             </div>
-          </TwoSectionsLayout.FirstSection>
+          </TwoSectionsLayout.SectionContent>
         }
-        secondContent={
-          <TwoSectionsLayout.SecondSection
+        secondSectionContent={
+          <TwoSectionsLayout.SectionContent
             ratio={4}
             className="flex h-fit flex-wrap items-center justify-start"
           >
@@ -44,7 +42,7 @@ export const Hero = () => {
                 className={getRoundedClass(i)}
               />
             ))}
-          </TwoSectionsLayout.SecondSection>
+          </TwoSectionsLayout.SectionContent>
         }
       />
     </section>

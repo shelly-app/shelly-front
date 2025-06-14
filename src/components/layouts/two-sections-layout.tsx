@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
 type TwoSectionsLayoutProps = {
-  firstContent: React.ReactNode;
-  secondContent: React.ReactNode;
+  firstSectionContent: React.ReactNode;
+  secondSectionContent: React.ReactNode;
   firstRatio?: number;
   secondRatio?: number;
   className?: string;
@@ -12,11 +12,11 @@ type TwoSectionsLayoutProps = {
 };
 
 export const TwoSectionsLayout = ({
-  firstContent,
-  secondContent,
+  firstSectionContent,
+  secondSectionContent,
   className = '',
 }: TwoSectionsLayoutProps) => {
-  if (!firstContent || !secondContent) {
+  if (!firstSectionContent || !secondSectionContent) {
     throw new Error('Both firstContent and secondContent must be provided');
   }
 
@@ -27,13 +27,13 @@ export const TwoSectionsLayout = ({
         className,
       )}
     >
-      {firstContent}
-      {secondContent}
+      {firstSectionContent}
+      {secondSectionContent}
     </div>
   );
 };
 
-const LayoutSection = ({
+const SectionContent = ({
   children,
   ratio = 1,
   className = '',
@@ -53,5 +53,4 @@ const LayoutSection = ({
   );
 };
 
-TwoSectionsLayout.FirstSection = LayoutSection;
-TwoSectionsLayout.SecondSection = LayoutSection;
+TwoSectionsLayout.SectionContent = SectionContent;
