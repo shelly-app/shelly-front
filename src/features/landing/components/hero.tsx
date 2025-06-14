@@ -14,10 +14,10 @@ export const Hero = () => {
   return (
     <section
       id="#"
-      className="h-[93%] bg-gradient-to-b from-amber-200 to-amber-300/70"
+      className="h-[93%] bg-gradient-to-b from-amber-200/80 to-amber-300/70"
     >
       <TwoSectionsLayout
-        className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
+        className="mx-auto flex w-full max-w-[90rem] items-center gap-8"
         firstSectionContent={
           <TwoSectionsLayout.SectionContent
             ratio={3}
