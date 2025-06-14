@@ -1,3 +1,4 @@
+import { Image } from '@/components/ui/image';
 import { cn } from '@/lib/utils';
 
 export const PetShowcaseCard = ({
@@ -7,11 +8,13 @@ export const PetShowcaseCard = ({
 }: {
   src: string;
   alt: string;
-  className: string;
+  className?: string;
 }) => {
   return (
-    <figure className={cn('relative h-48 w-60 overflow-hidden', className)}>
-      <img src={src} alt={alt} className="h-full w-full object-cover" />
-    </figure>
+    <Image
+      src={src}
+      alt={alt}
+      className={cn('relative h-full w-60 overflow-hidden', className)}
+    />
   );
 };

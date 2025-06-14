@@ -1,26 +1,34 @@
-import { H2 } from '@/components/ui/text';
+import { Button } from '@/components/ui/button';
 import { useIsScrolled } from '@/hooks/use-is-scrolled';
 import { cn } from '@/lib/utils';
 import { useAuth } from 'react-oidc-context';
-import { NavLink } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export const SignInLink = () => {
   const { isAuthenticated } = useAuth();
   const isScrolled = useIsScrolled(50);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (isAuthenticated) {
+      navigate('/app/pets');
+    } else {
+      navigate('/auth/sign-in');
+    }
+  };
 
   return (
-    <NavLink
-      to={isAuthenticated ? '/app/pets' : '/auth/sign-in'}
+    <Button
+      size="lg"
+      onClick={handleClick}
       className={cn(
-        'rounded-lg px-5 py-2.5 transition-all duration-300 ease-in-out',
+        'hover:bg-primary/90 rounded-lg px-5 py-2.5 transition-all duration-300 ease-in-out',
         isScrolled
-          ? 'bg-amber-400 text-amber-900 shadow-lg hover:bg-amber-500 hover:shadow-xl active:scale-95'
-          : 'bg-amber-300/80 text-amber-800 backdrop-blur-sm hover:bg-amber-400/90 hover:shadow-md active:scale-95',
+          ? 'shadow-lg hover:shadow-xl active:scale-95'
+          : 'backdrop-blur-sm hover:shadow-md active:scale-95',
       )}
     >
-      <H2 weight="semibold">
-        {isAuthenticated ? 'Acceder' : 'Iniciar sesión'}
-      </H2>
-    </NavLink>
+      Iniciar sesión
+    </Button>
   );
 };

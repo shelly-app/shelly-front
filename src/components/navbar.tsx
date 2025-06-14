@@ -4,15 +4,14 @@ import { SignInLink } from '@/features/auth/components/sign-in-link';
 import { useHashScroll } from '@/hooks/use-hash-scroll';
 import { useIsScrolled } from '@/hooks/use-is-scrolled';
 import { cn } from '@/lib/utils';
-import { NavLink } from 'react-router';
 import ShellyLogo from '@/assets/images/shelly-logo.webp';
 import { ShellyGradient } from '@/components/ui/shelly-gradient';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Inicio' },
-  { href: '/#about', label: 'Sobre Nosotros' },
-  { href: '/#adopt', label: 'Adoptar' },
-  { href: '/#donate', label: 'Donar' },
+  { id: '/', label: 'Inicio' },
+  { id: '#about', label: 'Sobre Nosotros' },
+  { id: '#adopt', label: 'Adoptar' },
+  { id: '#donate', label: 'Donar' },
 ];
 
 export const Navbar = () => {
@@ -49,7 +48,7 @@ export const Navbar = () => {
       <div className="flex items-center gap-12">
         <menu className="flex items-center gap-10 text-amber-800">
           {NAV_ITEMS.map((item) => (
-            <NavItem key={item.href} href={item.href}>
+            <NavItem key={item.id} id={item.id}>
               {item.label}
             </NavItem>
           ))}
@@ -62,19 +61,22 @@ export const Navbar = () => {
 };
 
 const NavItem = ({
-  href,
+  id,
   children,
 }: {
-  href: string;
+  id: string;
   children: React.ReactNode;
 }) => {
   const { scrollToSection } = useHashScroll();
 
   return (
-    <li className="transition-transform hover:scale-110">
-      <NavLink to={href} onClick={() => scrollToSection(href)}>
+    <li>
+      <button
+        className="cursor-pointer transition-transform hover:scale-110"
+        onClick={() => scrollToSection(id)}
+      >
         <Text variant="primary">{children}</Text>
-      </NavLink>
+      </button>
     </li>
   );
 };

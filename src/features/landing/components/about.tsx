@@ -22,7 +22,7 @@ const ABOUT_FEATURES = {
     },
     {
       icon: ClipboardListIcon,
-      title: 'En detalle',
+      title: 'Detalle',
       description:
         'Accede a los detalles de cada mascota con registro histórico de eventos.',
       color: 'orange',

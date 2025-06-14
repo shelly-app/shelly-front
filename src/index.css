@@ -5,10 +5,10 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 77px;
 }
 
 body {
-  width: 100dvw;
   height: 100dvh;
   background-color: oklch(98.7% 0.022 95.277);
 }
