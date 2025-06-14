@@ -12,7 +12,7 @@ export const Hero = () => {
   };
 
   return (
-    <section id="#" className="bg-radial-amber h-10/12">
+    <section id="#" className="bg-radial-amber h-11/12">
       <TwoSectionsLayout
         className="flex h-full w-full flex-col items-center justify-center gap-8 px-4 py-8"
         firstSectionContent={
