@@ -27,7 +27,14 @@ export const Navbar = () => {
       )}
     >
       <div className="flex items-center gap-2">
-        <Image src={ShellyLogo} alt="Shelly Logo" className="h-10 w-10" />
+        <Image
+          src={ShellyLogo}
+          alt="Shelly Logo"
+          className={cn(
+            'h-16 w-16 transition-all duration-500',
+            isScrolled && 'h-10 w-10',
+          )}
+        />
         <H1
           className={cn(
             'cursor-default text-amber-800 transition-all duration-500',
