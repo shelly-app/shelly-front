@@ -9,7 +9,7 @@ export const SignInPetsFigure = ({ className }: { className?: string }) => {
     >
       <Image
         src={DogPetGraphic}
-        alt="Dog Cat Graphic"
+        alt="Illustration of a dog and cat sitting together"
         className="flex max-w-[600px] items-center justify-center"
       />
     </article>

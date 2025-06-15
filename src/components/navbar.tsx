@@ -61,13 +61,17 @@ export const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="hidden items-center gap-12 md:flex">
-          <menu className="flex items-center gap-10 text-amber-800">
+          <ul
+            className="flex items-center gap-10 text-amber-800"
+            role="menu"
+            aria-label="Menu de navegación"
+          >
             {NAV_ITEMS.map((item) => (
               <NavItem key={item.id} id={item.id}>
                 {item.label}
               </NavItem>
             ))}
-          </menu>
+          </ul>
           <SignInLink />
         </div>
 

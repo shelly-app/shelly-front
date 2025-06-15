@@ -118,16 +118,12 @@ export const Text = ({
   leading,
   ...props
 }: TextProps) => {
-  // Automatically set the element based on variant if not explicitly provided
-  if (!Element && variant?.startsWith('h')) {
-    Element = variant as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  }
-
   return (
     <Element
       data-slot="text"
       className={cn(
-        textVariants({ variant, size, weight, align, leading, className }),
+        textVariants({ variant, size, weight, align, leading }),
+        className,
       )}
       {...props}
     >
