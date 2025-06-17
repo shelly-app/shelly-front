@@ -32,7 +32,10 @@ export const SignInRoute = () => {
       <TwoSectionsLayout
         className="flex-col-reverse gap-4 px-0 py-0 md:flex-row md:gap-8 md:px-0 md:py-0"
         firstSectionContent={
-          <TwoSectionsLayout.SectionContent ratio={3} className="bg-amber-200">
+          <TwoSectionsLayout.SectionContent
+            ratio={3}
+            className="hidden bg-amber-200 md:block"
+          >
             <NavLink to={paths.home.path}>
               <ArrowLeft className="absolute top-4 left-4 z-10 h-8 w-8 cursor-pointer rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-400/10 md:top-6 md:left-6 md:h-10 md:w-10" />
             </NavLink>
@@ -41,7 +44,7 @@ export const SignInRoute = () => {
         }
         secondSectionContent={
           <TwoSectionsLayout.SectionContent
-            className="flex flex-col justify-center gap-4 md:gap-6"
+            className="flex flex-col justify-center gap-4 md:gap-6 md:px-0"
             ratio={3}
           >
             <SocialSignIn />
