@@ -6,24 +6,14 @@ import LimonImage from '@/assets/images/limon.webp';
 import LilaImage from '@/assets/images/lila.webp';
 import LuciferImage from '@/assets/images/lucifer.webp';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useAuth } from 'react-oidc-context';
-import { useNavigate } from 'react-router';
+import { useHashScroll } from '@/hooks/use-hash-scroll';
 
 export const Hero = () => {
-  const { isAuthenticated } = useAuth();
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
-
-  const goToAbout = () => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const { scrollToSection } = useHashScroll();
 
   const handleCtaClick = () => {
-    if (isAuthenticated) {
-      navigate('/app/pets');
-    } else {
-      navigate('/auth/sign-in');
-    }
+    scrollToSection('#contact');
   };
 
   return (
@@ -50,7 +40,7 @@ export const Hero = () => {
               className="w-full md:w-auto"
               onClick={handleCtaClick}
             >
-              {isAuthenticated ? 'Ir a mi refugio' : 'Comenzar ahora'}
+              Comenzar ahora
             </Button>
             <div className="flex items-center gap-2 text-sm text-amber-900/80">
               <PawPrint className="h-4 w-4" />
@@ -89,7 +79,7 @@ export const Hero = () => {
 
       {!isMobile && (
         <div
-          onClick={goToAbout}
+          onClick={() => scrollToSection('#about')}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer rounded-full bg-amber-300/80 p-2 shadow-lg"
         >
           <ArrowDown className="h-6 w-6 text-amber-900/60" />

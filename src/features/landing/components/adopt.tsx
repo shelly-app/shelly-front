@@ -4,7 +4,6 @@ import { H2, H3, Lead, Paragraph } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { HeartPlus, House, PawPrint, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { useAuth } from 'react-oidc-context';
 import { ShellyGradient } from '@/components/ui/shelly-gradient';
 
 const ADOPT_FEATURES = [
@@ -60,15 +59,10 @@ const AdoptFeatureCard = ({ feature }: { feature: AdoptFeature }) => {
 
 export const Adopt = () => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
 
   // TODO: This should lead to a page with all the shelters contacts (whatsapp bot link)
   const handleCtaClick = () => {
-    if (isAuthenticated) {
-      navigate('/app/pets');
-    } else {
-      navigate('/auth/sign-in');
-    }
+    navigate('/shelters');
   };
 
   return (

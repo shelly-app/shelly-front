@@ -7,68 +7,19 @@ import { H2, H3, Lead, Paragraph } from '@/components/ui/text';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Building2, Heart, Send, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  organization: string;
-  message: string;
-  shelterName?: string;
-  shelterLocation?: string;
-  shelterType?: string;
-  contacthipType?: string;
-  budget?: string;
-}
+import { useContactForm } from '../hooks/use-contact-form';
+import { Progress } from '@/components/ui/progress';
 
 export const Contact = () => {
   const [activeTab, setActiveTab] = useState('shelter');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    organization: '',
-    message: '',
-    shelterName: '',
-    shelterLocation: '',
-    shelterType: '',
-    contacthipType: '',
-    budget: '',
-  });
-
-  const handleInputChange = (field: keyof ContactFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Replace with actual form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-
-    // Reset form after showing success message
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        organization: '',
-        message: '',
-        shelterName: '',
-        shelterLocation: '',
-        shelterType: '',
-        contacthipType: '',
-        budget: '',
-      });
-    }, 3000);
-  };
+  const {
+    formData,
+    isSubmitted,
+    progress,
+    isPending,
+    handleInputChange,
+    handleSubmit,
+  } = useContactForm();
 
   if (isSubmitted) {
     return (
@@ -87,6 +38,7 @@ export const Contact = () => {
             Gracias por contactarnos. Nos vamos a poner en contacto con vos
             pronto.
           </Lead>
+          <Progress value={progress} className="w-full" />
         </div>
       </section>
     );
@@ -112,11 +64,19 @@ export const Contact = () => {
       <div className="mx-auto w-full max-w-4xl px-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="shelter" className="flex items-center gap-2">
+            <TabsTrigger
+              value="shelter"
+              disabled={isPending}
+              className="flex items-center gap-2"
+            >
               <Building2 className="h-4 w-4" />
               Refugio
             </TabsTrigger>
-            <TabsTrigger value="sponsor" className="flex items-center gap-2">
+            <TabsTrigger
+              value="sponsor"
+              disabled={isPending}
+              className="flex items-center gap-2"
+            >
               <Heart className="h-4 w-4" />
               Patrocinador
             </TabsTrigger>
@@ -234,9 +194,9 @@ export const Contact = () => {
                   type="submit"
                   size="lg"
                   className="w-full"
-                  disabled={isSubmitting}
+                  disabled={isPending}
                 >
-                  {isSubmitting ? (
+                  {isPending ? (
                     <>
                       <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       Enviando...
@@ -367,9 +327,9 @@ export const Contact = () => {
                   type="submit"
                   size="lg"
                   className="w-full"
-                  disabled={isSubmitting}
+                  disabled={isPending}
                 >
-                  {isSubmitting ? (
+                  {isPending ? (
                     <>
                       <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       Enviando...
