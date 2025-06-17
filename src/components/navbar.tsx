@@ -20,6 +20,7 @@ const NAV_ITEMS = [
 export const Navbar = () => {
   const isScrolled = useIsScrolled(50);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { scrollToSection } = useHashScroll();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,7 +41,10 @@ export const Navbar = () => {
           isMenuOpen && 'bg-amber-300 shadow-none',
         )}
       >
-        <div className="flex items-center gap-2">
+        <div
+          className="flex cursor-pointer items-center gap-2"
+          onClick={() => scrollToSection('/')}
+        >
           <Image
             src={ShellyLogo}
             alt="Shelly Logo"
