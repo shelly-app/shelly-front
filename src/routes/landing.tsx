@@ -2,7 +2,7 @@ import { NavigationLayout } from '@/components/layouts/navigation-layout';
 import { useSessionInvalidate } from '@/features/auth/hooks/use-session-invalidate';
 import { About } from '@/features/landing/components/about';
 import { Adopt } from '@/features/landing/components/adopt';
-import { Donate } from '@/features/landing/components/donate';
+import { Contact } from '@/features/landing/components/contact';
 import { Hero } from '@/features/landing/components/hero';
 
 export const LandingRoute = () => {
@@ -13,7 +13,7 @@ export const LandingRoute = () => {
       <Hero />
       <About />
       <Adopt />
-      <Donate />
+      <Contact />
     </NavigationLayout>
   );
 };

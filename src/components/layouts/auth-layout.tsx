@@ -1,9 +1,8 @@
 import { type ReactNode } from 'react';
-import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { cn } from '@/lib/utils';
 
-export const NavigationLayout = ({
+export const AuthLayout = ({
   children,
   className = '',
 }: {
@@ -12,7 +11,6 @@ export const NavigationLayout = ({
 }) => {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
       <main className={cn('flex-1', className)}>{children}</main>
       <Footer />
     </div>
