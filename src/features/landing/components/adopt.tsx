@@ -11,13 +11,13 @@ const ADOPT_FEATURES = [
   {
     title: 'Amor incondicional',
     description:
-      'Las mascotas adoptadas te darán amor y compañía sin condiciones. Cada día será una nueva aventura llena de cariño y momentos especiales.',
+      'Las mascotas adoptadas te van a dar amor y compañía sin condiciones. Cada día va a ser una nueva aventura llena de cariño y momentos especiales.',
     icon: HeartPlus,
     iconColor: 'text-red-500',
     bgColor: 'from-red-100 to-red-50',
   },
   {
-    title: 'Salva una vida',
+    title: 'Salvá una vida',
     description:
       'Al adoptar, le das una segunda oportunidad a un animal que lo necesita. Tu decisión puede cambiar completamente el destino de una mascota.',
     icon: House,
@@ -27,7 +27,7 @@ const ADOPT_FEATURES = [
   {
     title: 'Compañía fiel',
     description:
-      'Encuentra un amigo que te acompañará en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio.',
+      'Encontrá un amigo que te va a acompañar en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio.',
     icon: PawPrint,
     iconColor: 'text-sky-600',
     bgColor: 'from-sky-100 to-sky-50',
@@ -78,15 +78,14 @@ export const Adopt = () => {
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">
-          Adopta una mascota con{' '}
+          Adoptá una mascota con{' '}
           <ShellyGradient variant="h2" size="5xl">
             Shelly
           </ShellyGradient>
         </H2>
         <Lead className="max-w-2xl text-lg md:text-xl">
-          ¡Dale un hogar a un amigo peludo! Encuentra tu compañero perfecto
-          entre nuestras mascotas disponibles para adopción. Cada animal tiene
-          una historia única esperando ser parte de la tuya.
+          ¡Dale un hogar a un amigo peludo! Visitá los refugios disponibles y
+          encontrá el compañero perfecto para vos.
         </Lead>
         <Button size="lg" className="mt-4" onClick={handleCtaClick}>
           Ver refugios disponibles

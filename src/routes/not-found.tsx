@@ -6,10 +6,10 @@ export const NotFoundRoute = () => {
   return (
     <NavigationLayout>
       <div className="flex h-full w-full flex-col items-center justify-center font-semibold">
-        <h1>404 - Not Found</h1>
-        <p>Sorry, the page you are looking for does not exist.</p>
+        <h1>404 - No encontrado</h1>
+        <p>Perdón, la página que estás buscando no existe.</p>
         <Link to={paths.home.getHref()} replace>
-          Go to Home
+          Ir al inicio
         </Link>
       </div>
     </NavigationLayout>

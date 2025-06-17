@@ -14,7 +14,7 @@ const NAV_ITEMS = [
   { id: '/', label: 'Inicio' },
   { id: '#about', label: 'Sobre Nosotros' },
   { id: '#adopt', label: 'Adoptar' },
-  { id: '#donate', label: 'Donar' },
+  { id: '#contact', label: 'Contacto' },
 ];
 
 export const Navbar = () => {
@@ -60,7 +60,7 @@ export const Navbar = () => {
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden items-center gap-12 md:flex">
+        <div className="hidden items-center gap-12 lg:flex">
           <menu className="flex items-center gap-10 text-amber-800">
             {NAV_ITEMS.map((item) => (
               <NavItem key={item.id} id={item.id}>
@@ -75,7 +75,7 @@ export const Navbar = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="relative z-50 md:hidden"
+          className="relative z-50 lg:hidden"
           onClick={toggleMenu}
           aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
         >

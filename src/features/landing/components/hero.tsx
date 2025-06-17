@@ -35,11 +35,11 @@ export const Hero = () => {
         <div className="flex flex-1 flex-col gap-6 text-center md:text-left">
           <div className="flex flex-col gap-4">
             <H1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
-              Gestiona tu refugio de mascotas con{' '}
+              Gestioná tu refugio de mascotas con{' '}
               <span className="text-amber-600">facilidad</span>
             </H1>
             <Lead className="text-lg md:text-xl">
-              Simplifica la administración de tu refugio y ayuda a más animales
+              Simplificá la administración de tu refugio y ayudá a más animales
               a encontrar un hogar a su medida.
             </Lead>
           </div>
