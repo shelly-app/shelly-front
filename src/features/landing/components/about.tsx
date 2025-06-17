@@ -21,27 +21,27 @@ const ABOUT_FEATURES = {
       color: 'green',
     },
     {
-      icon: ClipboardListIcon,
-      title: 'Detalle',
-      description:
-        'Accede a los detalles de cada mascota con registro histórico de eventos.',
-      color: 'orange',
-    },
-  ],
-  secondSection: [
-    {
       icon: UserPenIcon,
       title: 'Adopciones',
       description:
         'Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones.',
       color: 'sky',
     },
+  ],
+  secondSection: [
     {
       icon: BotMessageSquareIcon,
       title: 'Chat',
       description:
         'Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp.',
       color: 'purple',
+    },
+    {
+      icon: ClipboardListIcon,
+      title: 'Detalle',
+      description:
+        'Accedé a los detalles de cada mascota con registro histórico de eventos.',
+      color: 'orange',
     },
   ],
 };
@@ -60,7 +60,7 @@ export const About = () => {
       className="flex flex-col gap-24 bg-gradient-to-b from-amber-300/70 to-amber-200 px-4 py-8"
     >
       <TwoSectionsLayout
-        className="mx-auto flex w-full max-w-7xl items-center gap-8"
+        className="mx-auto flex w-full max-w-7xl items-center gap-8 px-0"
         firstSectionContent={
           <TwoSectionsLayout.SectionContent className="flex flex-col items-center gap-24">
             <div className="flex flex-col gap-4">
@@ -91,7 +91,7 @@ export const About = () => {
         }
       />
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-8 md:grid-cols-2 md:grid-rows-2">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-0 md:grid-cols-2 md:grid-rows-2 md:px-8">
         {ABOUT_FEATURES.firstSection.map((feature) => (
           <AboutFeature key={feature.title} {...feature} />
         ))}
