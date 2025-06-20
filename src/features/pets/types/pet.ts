@@ -4,6 +4,8 @@ import { Entity } from '@/types/api';
 // You can use a Zod schema here if you want.
 export type PetStatus = 'en transito' | 'en refugio' | 'adoptado';
 type PetSpecies = 'gato' | 'perro';
+export type PetSex = 'macho' | 'hembra';
+export type PetSize = 'pequeño' | 'mediano' | 'grande';
 
 export type Pet = Entity<{
   photoUrl: string;
@@ -11,4 +13,9 @@ export type Pet = Entity<{
   species: PetSpecies;
   breed: string;
   status: PetStatus;
+  age?: number;
+  sex?: PetSex;
+  size?: PetSize;
+  color?: string;
+  description?: string;
 }>;
