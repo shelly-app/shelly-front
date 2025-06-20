@@ -202,7 +202,7 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
                     <DropdownMenuItem
                       key={shelter.id}
                       onClick={() => setCurrentShelter(shelter)}
-                      className="cursor-pointer"
+                      className="cursor-pointer hover:bg-amber-100"
                     >
                       <Text variant="ellipsis">{shelter.name}</Text>
                     </DropdownMenuItem>
