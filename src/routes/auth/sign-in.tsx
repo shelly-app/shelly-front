@@ -35,9 +35,9 @@ export const SignInRoute = () => {
         firstSectionContent={
           <TwoSectionsLayout.SectionContent
             ratio={3}
-            className="hidden bg-amber-200 md:block"
+            className="relative hidden bg-amber-200 md:block"
           >
-            <SignInPetsFigure className="bg-radial-amber px-4 opacity-80 md:px-8" />
+            <SignInPetsFigure className="px-4 opacity-80 md:px-8" />
           </TwoSectionsLayout.SectionContent>
         }
         secondSectionContent={

@@ -10,12 +10,11 @@ html {
 
 body {
   height: 100dvh;
-  background-color: oklch(98.7% 0.022 95.277);
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.98 0 0);
+  --background: oklch(0.97 0.03 95);
   --foreground: oklch(0.2 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2 0 0);
@@ -38,14 +37,14 @@ body {
   --chart-3: oklch(0.55 0.12 220);
   --chart-4: oklch(0.7 0.18 85);
   --chart-5: oklch(0.75 0.18 70);
-  --sidebar: oklch(0.95 0.05 95);
-  --sidebar-foreground: oklch(0.2 0 0);
+  --sidebar: oklch(0.96 0.08 95);
+  --sidebar-foreground: oklch(0.25 0.1 40);
   --sidebar-primary: oklch(0.55 0.15 260);
   --sidebar-primary-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.96 0.02 95);
-  --sidebar-accent-foreground: oklch(0.55 0.15 260);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.7 0 0);
+  --sidebar-accent: oklch(0.92 0.12 95);
+  --sidebar-accent-foreground: oklch(0.35 0.12 42);
+  --sidebar-border: oklch(0.85 0.15 93);
+  --sidebar-ring: oklch(0.65 0.1 95);
 }
 
 .dark {
