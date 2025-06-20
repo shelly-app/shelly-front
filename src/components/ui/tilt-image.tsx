@@ -16,6 +16,10 @@ export const TiltImage = ({
   maxTilt = 18,
 }: TiltImageProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const lastTransform = useRef<{ rotateX: number; rotateY: number } | null>(
+    null,
+  );
+  const animationFrameId = useRef<number | null>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const el = ref.current;
