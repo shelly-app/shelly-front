@@ -29,8 +29,18 @@ export const TiltImage = ({
     const deltaY = (y - centerY) / centerY;
     const rotateX = deltaY * maxTilt;
     const rotateY = -deltaX * maxTilt;
-    el.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
-    el.style.transition = 'transform 0.1s cubic-bezier(.03,.98,.52,.99)';
+
+    lastTransform.current = { rotateX, rotateY };
+
+    if (animationFrameId.current === null) {
+      animationFrameId.current = requestAnimationFrame(() => {
+        if (lastTransform.current) {
+          el.style.transform = `perspective(700px) rotateX(${lastTransform.current.rotateX}deg) rotateY(${lastTransform.current.rotateY}deg) scale(1.04)`;
+          el.style.transition = 'transform 0.1s cubic-bezier(.03,.98,.52,.99)';
+        }
+        animationFrameId.current = null;
+      });
+    }
   };
 
   const handleMouseLeave = () => {
