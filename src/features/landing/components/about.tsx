@@ -1,5 +1,6 @@
 import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
 import { Image } from '@/components/ui/image';
+import { TiltImage } from '@/components/ui/tilt-image';
 import { H2, H3, Lead } from '@/components/ui/text';
 import ShellyAppDesktop from '@/assets/images/shelly-app-desktop.webp';
 import { ShellyGradient } from '@/components/ui/shelly-gradient';
@@ -82,11 +83,20 @@ export const About = () => {
         }
         secondSectionContent={
           <TwoSectionsLayout.SectionContent className="flex flex-col items-center">
-            <Image
-              src={ShellyAppDesktop}
-              alt="Shelly App Desktop"
-              className="drop-shadow-lg"
-            />
+            <div className="hidden md:block">
+              <TiltImage
+                src={ShellyAppDesktop}
+                alt="Shelly App Desktop"
+                className="drop-shadow-lg"
+              />
+            </div>
+            <div className="block md:hidden">
+              <Image
+                src={ShellyAppDesktop}
+                alt="Shelly App Desktop"
+                className="drop-shadow-lg"
+              />
+            </div>
           </TwoSectionsLayout.SectionContent>
         }
       />
