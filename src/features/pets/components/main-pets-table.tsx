@@ -36,7 +36,9 @@ export const columns: ColumnDef<Pet>[] = [
             <AvatarImage src={photoUrl} />
             <AvatarFallback>{species === 'gato' ? 'CT' : 'DG'}</AvatarFallback>
           </Avatar>
-          <div className="font-medium">{row.getValue('name')}</div>
+          <div className="font-medium text-amber-900">
+            {row.getValue('name')}
+          </div>
         </div>
       );
     },
@@ -121,7 +123,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="cursor-pointer hover:bg-gray-100"
+                  className="cursor-pointer transition-colors hover:bg-amber-100/60"
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() =>
                     navigate(paths.app.pet.getHref(row.original.id.toString()))
