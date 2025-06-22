@@ -33,55 +33,49 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
+import { useAddPet } from '@/features/pets/hooks';
+import {
+  createSpeciesSchema,
+  createStatusSchema,
+  createSexSchema,
+  createSizeSchema,
+  getSpeciesOptions,
+  getStatusOptions,
+  getSexOptions,
+  getSizeOptions,
+} from '@/features/pets/constants';
 
-// Schema for quick add (only essential fields)
-const quickAddPetSchema = z.object({
+// Single schema that handles both modes
+const petFormSchema = z.object({
   name: z.string().min(1, 'El nombre es requerido'),
-  species: z.enum(['gato', 'perro'] as const, {
-    required_error: 'La especie es requerida',
-  }),
-  status: z.enum(['en transito', 'en refugio', 'adoptado'] as const, {
-    required_error: 'El estado es requerido',
-  }),
-});
-
-// Schema for complete add (all fields)
-const completeAddPetSchema = z.object({
-  name: z.string().min(1, 'El nombre es requerido'),
-  species: z.enum(['gato', 'perro'] as const, {
-    required_error: 'La especie es requerida',
-  }),
-  status: z.enum(['en transito', 'en refugio', 'adoptado'] as const, {
-    required_error: 'El estado es requerido',
-  }),
+  species: createSpeciesSchema(),
+  status: createStatusSchema(),
   breed: z.string().optional(),
   age: z.number().min(0).max(30).optional(),
-  sex: z.enum(['macho', 'hembra'] as const).optional(),
-  size: z.enum(['pequeño', 'mediano', 'grande'] as const).optional(),
+  sex: createSexSchema(),
+  size: createSizeSchema(),
   color: z.string().optional(),
   description: z.string().optional(),
   photoUrl: z.string().optional(),
 });
 
-type QuickAddPetFormData = z.infer<typeof quickAddPetSchema>;
-type CompleteAddPetFormData = z.infer<typeof completeAddPetSchema>;
+type PetFormData = z.infer<typeof petFormSchema>;
 
 export const AddPet = () => {
   const [open, setOpen] = useState(false);
   const [isCompleteMode, setIsCompleteMode] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const quickForm = useForm<QuickAddPetFormData>({
-    resolver: zodResolver(quickAddPetSchema),
-    defaultValues: {
-      name: '',
-      species: undefined,
-      status: undefined,
-    },
-  });
+  const { addPetAsync, isLoading } = useAddPet();
 
-  const completeForm = useForm<CompleteAddPetFormData>({
-    resolver: zodResolver(completeAddPetSchema),
+  // Get options for form selects
+  const speciesOptions = getSpeciesOptions();
+  const statusOptions = getStatusOptions();
+  const sexOptions = getSexOptions();
+  const sizeOptions = getSizeOptions();
+
+  const form = useForm<PetFormData>({
+    resolver: zodResolver(petFormSchema),
     defaultValues: {
       name: '',
       species: undefined,
@@ -96,24 +90,32 @@ export const AddPet = () => {
     },
   });
 
-  const currentForm = isCompleteMode ? completeForm : quickForm;
-
-  const onSubmit = async (
-    data: QuickAddPetFormData | CompleteAddPetFormData,
-  ) => {
+  const onSubmit = async (data: PetFormData) => {
     try {
-      // TODO: Implement API call to create pet
-      console.log('Pet data:', data);
-      console.log('Selected file:', selectedFile);
+      // If in quick mode, only send essential fields
+      const submitData = isCompleteMode
+        ? data
+        : {
+            name: data.name,
+            species: data.species,
+            status: data.status,
+          };
 
-      // Close modal and reset forms
+      await addPetAsync(submitData);
+
+      // Show success message
+      console.log('Mascota agregada exitosamente');
+
+      // Close modal and reset form
       setOpen(false);
-      quickForm.reset();
-      completeForm.reset();
+      form.reset();
       setSelectedFile(null);
       setIsCompleteMode(false);
-    } catch (error) {
-      console.error('Error creating pet:', error);
+    } catch {
+      // Error is handled by the mutation, but we can show a message here too
+      console.error(
+        'Error al agregar la mascota. Por favor, intenta de nuevo.',
+      );
     }
   };
 
@@ -125,7 +127,7 @@ export const AddPet = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (isCompleteMode) {
-          completeForm.setValue('photoUrl', e.target?.result as string);
+          form.setValue('photoUrl', e.target?.result as string);
         }
       };
       reader.readAsDataURL(file);
@@ -135,7 +137,7 @@ export const AddPet = () => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     if (isCompleteMode) {
-      completeForm.setValue('photoUrl', '');
+      form.setValue('photoUrl', '');
     }
   };
 
@@ -150,20 +152,7 @@ export const AddPet = () => {
 
   const handleModeChange = (checked: boolean) => {
     setIsCompleteMode(checked);
-    // Sync form data between modes
-    if (checked) {
-      // Going from quick to complete - preserve essential fields
-      const quickData = quickForm.getValues();
-      completeForm.setValue('name', quickData.name);
-      completeForm.setValue('species', quickData.species);
-      completeForm.setValue('status', quickData.status);
-    } else {
-      // Going from complete to quick - preserve essential fields
-      const completeData = completeForm.getValues();
-      quickForm.setValue('name', completeData.name);
-      quickForm.setValue('species', completeData.species);
-      quickForm.setValue('status', completeData.status);
-    }
+    // No need to sync data since we're using a single form
   };
 
   return (
@@ -213,15 +202,15 @@ export const AddPet = () => {
           </div>
         </div>
 
-        <Form {...currentForm}>
+        <Form {...form}>
           <form
-            onSubmit={currentForm.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 sm:space-y-6"
           >
             {/* Essential fields - always shown */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField
-                control={currentForm.control}
+                control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
@@ -235,7 +224,7 @@ export const AddPet = () => {
               />
 
               <FormField
-                control={currentForm.control}
+                control={form.control}
                 name="species"
                 render={({ field }) => (
                   <FormItem>
@@ -250,8 +239,11 @@ export const AddPet = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="perro">Perro</SelectItem>
-                        <SelectItem value="gato">Gato</SelectItem>
+                        {speciesOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -260,7 +252,7 @@ export const AddPet = () => {
               />
 
               <FormField
-                control={currentForm.control}
+                control={form.control}
                 name="status"
                 render={({ field }) => (
                   <FormItem>
@@ -275,9 +267,11 @@ export const AddPet = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="en transito">En tránsito</SelectItem>
-                        <SelectItem value="en refugio">En refugio</SelectItem>
-                        <SelectItem value="adoptado">Adoptado</SelectItem>
+                        {statusOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -291,7 +285,7 @@ export const AddPet = () => {
               <>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
-                    control={completeForm.control}
+                    control={form.control}
                     name="breed"
                     render={({ field }) => (
                       <FormItem>
@@ -308,7 +302,7 @@ export const AddPet = () => {
                   />
 
                   <FormField
-                    control={completeForm.control}
+                    control={form.control}
                     name="age"
                     render={({ field }) => (
                       <FormItem>
@@ -335,7 +329,7 @@ export const AddPet = () => {
                   />
 
                   <FormField
-                    control={completeForm.control}
+                    control={form.control}
                     name="sex"
                     render={({ field }) => (
                       <FormItem>
@@ -350,8 +344,14 @@ export const AddPet = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="macho">Macho</SelectItem>
-                            <SelectItem value="hembra">Hembra</SelectItem>
+                            {sexOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -360,7 +360,7 @@ export const AddPet = () => {
                   />
 
                   <FormField
-                    control={completeForm.control}
+                    control={form.control}
                     name="size"
                     render={({ field }) => (
                       <FormItem>
@@ -375,9 +375,14 @@ export const AddPet = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="pequeño">Pequeño</SelectItem>
-                            <SelectItem value="mediano">Mediano</SelectItem>
-                            <SelectItem value="grande">Grande</SelectItem>
+                            {sizeOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -386,7 +391,7 @@ export const AddPet = () => {
                   />
 
                   <FormField
-                    control={completeForm.control}
+                    control={form.control}
                     name="color"
                     render={({ field }) => (
                       <FormItem>
@@ -401,7 +406,7 @@ export const AddPet = () => {
                 </div>
 
                 <FormField
-                  control={completeForm.control}
+                  control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
@@ -419,17 +424,17 @@ export const AddPet = () => {
                 />
 
                 <FormField
-                  control={completeForm.control}
+                  control={form.control}
                   name="photoUrl"
                   render={() => (
                     <FormItem>
                       <FormLabel>Imagen</FormLabel>
                       <FormControl>
-                        <div className="space-y-2">
+                        <div className="space-y-2 overflow-hidden">
                           <div
                             {...getRootProps()}
                             className={cn(
-                              'flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed',
+                              'flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-4',
                               isDragActive && 'border-primary',
                               selectedFile && 'border-primary bg-primary/5',
                             )}
@@ -438,7 +443,7 @@ export const AddPet = () => {
 
                             {selectedFile ? (
                               <>
-                                <div className="flex h-full flex-col items-center justify-center text-center">
+                                <div className="flex h-full w-full flex-col items-center justify-center overflow-hidden text-center">
                                   <div className="text-muted-foreground truncate text-sm">
                                     {selectedFile.name}
                                   </div>
@@ -458,21 +463,16 @@ export const AddPet = () => {
                             )}
                           </div>
                           {selectedFile && (
-                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                              <div className="text-muted-foreground truncate text-sm">
-                                Archivo seleccionado: {selectedFile.name}
-                              </div>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={handleRemoveFile}
-                                className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
-                              >
-                                <XIcon className="mr-1 h-3 w-3" />
-                                Eliminar imagen
-                              </Button>
-                            </div>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={handleRemoveFile}
+                              className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
+                            >
+                              <XIcon className="mr-1 h-3 w-3" />
+                              Eliminar imagen
+                            </Button>
                           )}
                         </div>
                       </FormControl>
@@ -488,11 +488,16 @@ export const AddPet = () => {
                 type="button"
                 variant="outline"
                 onClick={() => setOpen(false)}
+                disabled={isLoading}
               >
                 Cancelar
               </Button>
-              <Button type="submit">
-                {isCompleteMode ? 'Agregar mascota' : 'Agregar rápidamente'}
+              <Button type="submit" disabled={isLoading}>
+                {isLoading
+                  ? 'Agregando...'
+                  : isCompleteMode
+                    ? 'Agregar mascota'
+                    : 'Agregar rápidamente'}
               </Button>
             </DialogFooter>
           </form>

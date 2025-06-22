@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { SearchIcon } from 'lucide-react';
-import { Pet } from '../types/pet';
+import { Pet } from '@/features/pets/types/pet';
 import type { Table } from '@tanstack/react-table';
 
 export const SearchPet = ({ table }: { table: Table<Pet> }) => {
