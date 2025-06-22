@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router';
 import { paths } from '@/config/paths';
 import { SearchPet } from '@/features/pets/components/search-pet';
 import { AddPet } from '@/features/pets/components/add-pet';
-import { PET_SPECIES } from '@/features/pets/constants';
+import { PET_SPECIES, PetStatus } from '@/features/pets/constants';
 
 export const columns: ColumnDef<Pet>[] = [
   {
