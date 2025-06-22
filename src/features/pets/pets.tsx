@@ -5,8 +5,8 @@ export const Pets = () => {
   const { pets } = usePets();
 
   return (
-    <div className="container mx-auto py-10">
+    <section className="container mx-auto py-10">
       <MainPetsTable data={pets} />
-    </div>
+    </section>
   );
 };
