@@ -16,13 +16,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Pet, PetStatus } from '../types/pet';
+import { Pet } from '@/features/pets/types/pet';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { petStatusColorMap } from '../utils/pet-table-utils';
+import { petStatusColorMap } from '@/features/pets/utils/pet-table-utils';
 import { useNavigate } from 'react-router';
 import { paths } from '@/config/paths';
-import { SearchPet } from './search-pet';
+import { SearchPet } from '@/features/pets/components/search-pet';
+import { AddPet } from '@/features/pets/components/add-pet';
+import { PET_SPECIES } from '@/features/pets/constants';
 
 export const columns: ColumnDef<Pet>[] = [
   {
@@ -34,7 +36,9 @@ export const columns: ColumnDef<Pet>[] = [
         <div className="flex items-center gap-2">
           <Avatar>
             <AvatarImage src={photoUrl} />
-            <AvatarFallback>{species === 'gato' ? 'CT' : 'DG'}</AvatarFallback>
+            <AvatarFallback>
+              {species === PET_SPECIES.CAT ? 'CT' : 'DG'}
+            </AvatarFallback>
           </Avatar>
           <div className="font-medium text-amber-900">
             {row.getValue('name')}
@@ -97,7 +101,10 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
   });
   return (
     <div className="w-full">
-      <SearchPet table={table} />
+      <div className="flex flex-col items-center justify-between gap-4 pb-4 sm:flex-row">
+        <SearchPet table={table} />
+        <AddPet />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

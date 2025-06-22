@@ -7,6 +7,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import checkFilePlugin from 'eslint-plugin-check-file';
 import tseslint from 'typescript-eslint';
+import importPlugin from 'eslint-plugin-import';
 
 export default tseslint.config(
   { ignores: ['dist'] },
@@ -25,6 +26,7 @@ export default tseslint.config(
       prettier: prettierPlugin,
       'jsx-a11y': jsxA11yPlugin,
       'check-file': checkFilePlugin,
+      import: importPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -54,6 +56,7 @@ export default tseslint.config(
           unnamedComponents: 'arrow-function',
         },
       ],
+      'import/no-relative-parent-imports': 'error',
     },
   },
 );

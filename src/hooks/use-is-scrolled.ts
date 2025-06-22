@@ -12,7 +12,7 @@ export const useIsScrolled = (offset = 0) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [offset]);
 
   return isScrolled;
 };

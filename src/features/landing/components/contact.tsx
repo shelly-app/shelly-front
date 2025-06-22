@@ -7,7 +7,7 @@ import { H2, H3, Lead, Paragraph } from '@/components/ui/text';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Building2, Heart, Send, CheckCircle } from 'lucide-react';
 import { useState } from 'react';
-import { useContactForm } from '../hooks/use-contact-form';
+import { useContactForm } from '@/features/landing/hooks/use-contact-form';
 import { Progress } from '@/components/ui/progress';
 
 export const Contact = () => {
