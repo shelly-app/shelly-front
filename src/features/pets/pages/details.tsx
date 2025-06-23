@@ -49,18 +49,24 @@ export const PetDetailsPage = () => {
   }
 
   return (
-    <Card className="flex p-8">
+    <Card className="mx-auto flex max-w-7xl p-8">
       <CardHeader className="p-0">
-        <CardTitle className="flex flex-col items-center justify-start gap-2 md:flex-row md:items-baseline">
-          <H1 weight="semibold" className="text-2xl text-amber-900 lg:text-2xl">
-            {pet.name}
-          </H1>
-          <div className="flex gap-2">
-            <Muted className="hidden md:block">•</Muted>
-            <Muted>ID: {pet.id}</Muted>
-            <Muted>•</Muted>
-            <Muted>Agregado el {formatDate(pet.createdAt)}</Muted>
+        <CardTitle className="flex justify-between">
+          <div className="flex flex-col items-center justify-start gap-2 md:flex-row md:items-baseline">
+            <H1
+              weight="semibold"
+              className="text-2xl text-amber-900 lg:text-2xl"
+            >
+              {pet.name}
+            </H1>
+            <div className="flex gap-2">
+              <Muted className="hidden md:block">•</Muted>
+              <Muted>ID: {pet.id}</Muted>
+              <Muted>•</Muted>
+              <Muted>Agregado el {formatDate(pet.createdAt)}</Muted>
+            </div>
           </div>
+          <Button variant="outline">Editar</Button>
         </CardTitle>
       </CardHeader>
 
