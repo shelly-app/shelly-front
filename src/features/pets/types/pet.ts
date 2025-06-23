@@ -1,10 +1,11 @@
-import { Entity } from '@/types/api';
+import { Entity } from "@/types/api";
 import {
   PetSpecies,
   PetStatus,
   PetSex,
   PetSize,
-} from '@/features/pets/constants';
+  VACCINES,
+} from "@/features/pets/constants";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -19,4 +20,5 @@ export type Pet = Entity<{
   size?: PetSize;
   color?: string;
   description?: string;
+  vaccines?: Array<keyof typeof VACCINES.DOGS | keyof typeof VACCINES.CATS>;
 }>;

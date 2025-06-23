@@ -34,6 +34,7 @@ const fetchPetById = async (petId: string): Promise<Pet> => {
     description:
       "Lila es una perrita muy cariñosa y juguetona. Le encanta estar con niños y otros animales. Es muy tranquila y le gusta mucho estar con su familia.",
     createdAt: new Date().getTime(),
+    vaccines: ["sextuple1", "rabia"],
   };
 
   return mockPet;
