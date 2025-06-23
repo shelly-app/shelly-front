@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
-} from '@tanstack/react-table';
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -15,63 +15,57 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Pet } from '@/features/pets/types/pet';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { petStatusColorMap } from '@/features/pets/utils/pet-table-utils';
-import { useNavigate } from 'react-router';
-import { paths } from '@/config/paths';
-import { SearchPet } from '@/features/pets/components/search-pet';
-import { AddPet } from '@/features/pets/components/add-pet';
-import { PET_SPECIES, PetStatus } from '@/features/pets/constants';
+} from "@/components/ui/table";
+import { Pet } from "@/features/pets/types/pet";
+import { PetAvatar } from "@/components/ui/pet-avatar";
+import { Badge } from "@/components/ui/badge";
+import { petStatusColorMap } from "@/features/pets/utils/pet-table-utils";
+import { useNavigate } from "react-router";
+import { paths } from "@/config/paths";
+import { SearchPet, AddPet } from "@/features/pets/components";
+import { PetStatus } from "@/features/pets/constants";
 
 export const columns: ColumnDef<Pet>[] = [
   {
-    accessorKey: 'name',
-    header: 'Nombre',
+    accessorKey: "name",
+    header: "Nombre",
     cell: ({ row }) => {
-      const { photoUrl, species } = row.original;
+      const pet = row.original;
       return (
         <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage src={photoUrl} />
-            <AvatarFallback>
-              {species === PET_SPECIES.CAT ? 'CT' : 'DG'}
-            </AvatarFallback>
-          </Avatar>
+          <PetAvatar pet={pet} size="sm" />
           <div className="font-medium text-amber-900">
-            {row.getValue('name')}
+            {row.getValue("name")}
           </div>
         </div>
       );
     },
   },
   {
-    accessorKey: 'species',
-    header: 'Especie',
+    accessorKey: "species",
+    header: "Especie",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('species')}</div>
+      <div className="capitalize">{row.getValue("species")}</div>
     ),
   },
   {
-    accessorKey: 'breed',
-    header: () => 'Raza',
+    accessorKey: "breed",
+    header: () => "Raza",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue('breed')}</div>
+      <div className="capitalize">{row.getValue("breed")}</div>
     ),
   },
   {
-    accessorKey: 'status',
-    header: () => 'Estado',
+    accessorKey: "status",
+    header: () => "Estado",
     cell: ({ row }) => {
-      const status = row.getValue('status') as PetStatus;
+      const status = row.getValue("status") as PetStatus;
       return (
         <div className="">
           <Badge
             className={`text-muted-foreground px-1.5 ${petStatusColorMap[status]} capitalize`}
           >
-            {row.getValue('status')}
+            {row.getValue("status")}
           </Badge>
         </div>
       );
@@ -131,7 +125,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
                 <TableRow
                   key={row.id}
                   className="cursor-pointer transition-colors hover:bg-amber-100/60"
-                  data-state={row.getIsSelected() && 'selected'}
+                  data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
                     navigate(paths.app.pet.getHref(row.original.id.toString()))
                   }

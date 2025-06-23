@@ -1,12 +1,5 @@
-import { useParams } from 'react-router';
+import { PetDetailsPage } from "@/features/pets/pages";
 
 export const PetRoute = () => {
-  const params = useParams();
-  const petId = params.petId as string;
-  return (
-    <h1>
-      <strong>Pet Id:</strong>
-      {petId}
-    </h1>
-  );
+  return <PetDetailsPage />;
 };

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useDropzone } from 'react-dropzone';
-import { Button } from '@/components/ui/button';
-import { PlusIcon, XIcon } from 'lucide-react';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useDropzone } from "react-dropzone";
+import { Button } from "@/components/ui/button";
+import { PlusIcon, XIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -21,19 +21,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { cn } from '@/lib/utils';
-import { useAddPet } from '@/features/pets/hooks';
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
+import { useAddPet } from "@/features/pets/hooks";
 import {
   createSpeciesSchema,
   createStatusSchema,
@@ -43,11 +43,11 @@ import {
   getStatusOptions,
   getSexOptions,
   getSizeOptions,
-} from '@/features/pets/constants';
+} from "@/features/pets/constants";
 
 // Single schema that handles both modes
 const petFormSchema = z.object({
-  name: z.string().min(1, 'El nombre es requerido'),
+  name: z.string().min(1, "El nombre es requerido"),
   species: createSpeciesSchema(),
   status: createStatusSchema(),
   breed: z.string().optional(),
@@ -77,16 +77,16 @@ export const AddPet = () => {
   const form = useForm<PetFormData>({
     resolver: zodResolver(petFormSchema),
     defaultValues: {
-      name: '',
+      name: "",
       species: undefined,
       status: undefined,
-      breed: '',
+      breed: "",
       age: undefined,
       sex: undefined,
       size: undefined,
-      color: '',
-      description: '',
-      photoUrl: '',
+      color: "",
+      description: "",
+      photoUrl: "",
     },
   });
 
@@ -104,7 +104,7 @@ export const AddPet = () => {
       await addPetAsync(submitData);
 
       // Show success message
-      console.log('Mascota agregada exitosamente');
+      console.log("Mascota agregada exitosamente");
 
       // Close modal and reset form
       setOpen(false);
@@ -114,7 +114,7 @@ export const AddPet = () => {
     } catch {
       // Error is handled by the mutation, but we can show a message here too
       console.error(
-        'Error al agregar la mascota. Por favor, intenta de nuevo.',
+        "Error al agregar la mascota. Por favor, intenta de nuevo.",
       );
     }
   };
@@ -127,7 +127,7 @@ export const AddPet = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (isCompleteMode) {
-          form.setValue('photoUrl', e.target?.result as string);
+          form.setValue("photoUrl", e.target?.result as string);
         }
       };
       reader.readAsDataURL(file);
@@ -137,17 +137,18 @@ export const AddPet = () => {
   const handleRemoveFile = () => {
     setSelectedFile(null);
     if (isCompleteMode) {
-      form.setValue('photoUrl', '');
+      form.setValue("photoUrl", "");
     }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleFileChange,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp'],
+      "image/*": [".jpeg", ".jpg", ".png", ".webp"],
     },
     maxFiles: 1,
     multiple: false,
+    maxSize: 10 * 1024 * 1024, // 10MB
   });
 
   const handleModeChange = (checked: boolean) => {
@@ -172,8 +173,8 @@ export const AddPet = () => {
           <DialogTitle>Agregar nueva mascota</DialogTitle>
           <DialogDescription>
             {isCompleteMode
-              ? 'Completa toda la información de la mascota. Los campos marcados con * son requeridos.'
-              : 'Información básica para agregar rápidamente una mascota. Puedes completar más detalles después.'}
+              ? "Completa toda la información de la mascota. Los campos marcados con * son requeridos."
+              : "Información básica para agregar rápidamente una mascota. Puedes completar más detalles después."}
           </DialogDescription>
         </DialogHeader>
 
@@ -181,8 +182,8 @@ export const AddPet = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             <span
               className={cn(
-                'text-muted-foreground text-xs sm:text-sm',
-                !isCompleteMode && 'text-primary',
+                "text-muted-foreground text-xs sm:text-sm",
+                !isCompleteMode && "text-primary",
               )}
             >
               Modo rápido
@@ -193,8 +194,8 @@ export const AddPet = () => {
             />
             <span
               className={cn(
-                'text-muted-foreground text-xs sm:text-sm',
-                isCompleteMode && 'text-primary',
+                "text-muted-foreground text-xs sm:text-sm",
+                isCompleteMode && "text-primary",
               )}
             >
               Modo completo
@@ -434,9 +435,9 @@ export const AddPet = () => {
                           <div
                             {...getRootProps()}
                             className={cn(
-                              'flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-4',
-                              isDragActive && 'border-primary',
-                              selectedFile && 'border-primary bg-primary/5',
+                              "flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-4",
+                              isDragActive && "border-primary",
+                              selectedFile && "border-primary bg-primary/5",
                             )}
                           >
                             <input {...getInputProps()} />
@@ -456,8 +457,8 @@ export const AddPet = () => {
                               <div className="flex h-full flex-col items-center justify-center text-center">
                                 <p className="text-muted-foreground text-sm">
                                   {isDragActive
-                                    ? 'Suelta la imagen aquí'
-                                    : 'Sube una imagen de la mascota (JPG, PNG, WebP)'}
+                                    ? "Suelta la imagen aquí (máx. 10MB)"
+                                    : "Sube una imagen de la mascota (JPG, PNG, WebP) (máx. 10MB)"}
                                 </p>
                               </div>
                             )}
@@ -494,10 +495,10 @@ export const AddPet = () => {
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading
-                  ? 'Agregando...'
+                  ? "Agregando..."
                   : isCompleteMode
-                    ? 'Agregar mascota'
-                    : 'Agregar rápidamente'}
+                    ? "Agregar mascota"
+                    : "Agregar rápidamente"}
               </Button>
             </DialogFooter>
           </form>
