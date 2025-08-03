@@ -18,11 +18,11 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         shelter:
-          "border-transparent bg-amber-200 text-amber-800 border border-amber-300",
+          "border-transparent bg-red-200 text-red-800 border border-red-300",
         transit:
-          "border-transparent bg-sky-200 text-sky-800 border border-sky-300",
-        adopted:
           "border-transparent bg-emerald-200 text-emerald-800 border border-emerald-300",
+        adopted:
+          "border-transparent bg-amber-200 text-amber-800 border border-amber-300",
         vet: "border-transparent bg-accent text-accent-foreground",
       },
     },

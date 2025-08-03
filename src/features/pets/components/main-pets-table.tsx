@@ -18,16 +18,10 @@ import {
 } from "@/components/ui/table";
 import { Pet } from "@/features/pets/types/pet";
 import { PetAvatar } from "@/components/ui/pet-avatar";
-import { Badge } from "@/components/ui/badge";
-import { petStatusColorMap } from "@/features/pets/utils/pet-table-utils";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
-import { SearchPet, AddPet } from "@/features/pets/components";
-import {
-  PET_SPECIES_LABELS,
-  PET_STATUS_LABELS,
-  PetStatus,
-} from "@/features/pets/constants";
+import { SearchPet, AddPet, PetStatusBadge } from "@/features/pets/components";
+import { PET_SPECIES_LABELS, PetStatus } from "@/features/pets/constants";
 
 export const columns: ColumnDef<Pet>[] = [
   {
@@ -72,11 +66,7 @@ export const columns: ColumnDef<Pet>[] = [
       const status = row.getValue("status") as PetStatus;
       return (
         <div className="">
-          <Badge
-            className={`text-muted-foreground px-1.5 ${petStatusColorMap[status]} capitalize`}
-          >
-            {PET_STATUS_LABELS[status]}
-          </Badge>
+          <PetStatusBadge status={status} />
         </div>
       );
     },

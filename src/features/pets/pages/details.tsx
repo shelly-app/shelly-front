@@ -19,8 +19,11 @@ import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
+  VACCINES,
 } from "@/features/pets/constants";
 import { addDays, intlFormat, subDays } from "date-fns";
+import { BulletList } from "@/components/ui/bullet-list";
+import { Image } from "@/components/ui/image";
 
 // interface PetEvent {
 //   id: string;
@@ -51,7 +54,7 @@ const mockPetData: Pet = {
   colors: ["Marrón", "Crema", "Negro"],
   description:
     "Buddy is a friendly and energetic Golden Retriever who loves playing fetch and swimming. He's great with kids and other dogs. Buddy is looking for an active family who can provide him with plenty of exercise and love.",
-  vaccines: ["Rabia", "Triple 1er", "Triple 2da", "Triple 3ra"],
+  vaccines: ["rabia", "sextuple1"],
   photoUrl: petHero,
   createdAt: new Date().getTime(),
   updatedAt: new Date().getTime(),
@@ -61,19 +64,19 @@ const mockPetData: Pet = {
 const MOCK_EVENTS = [
   {
     id: "2",
-    title: "Vacuna 2",
+    title: "Vacunación",
     date: intlFormat(new Date().getTime(), {
       locale: "es-AR",
     }),
-    description: "Triple",
+    description: "Lila recibió sus primeras vacunas",
   },
   {
     id: "1",
-    title: "Vacuna 1",
+    title: "Ingreso al refugio",
     date: intlFormat(subDays(new Date(), 15).getTime(), {
       locale: "es-AR",
     }),
-    description: "Rabia",
+    description: "Lila fue recibida en el refugio",
   },
 ];
 
@@ -137,12 +140,13 @@ export const PetDetailsPage = () => {
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Pet Image */}
           <div className="lg:w-1/3">
-            <Card className="overflow-hidden py-0 shadow-lg">
-              <CardContent className="p-0">
-                <img
-                  src={pet.photoUrl}
+            <Card className="h-full overflow-hidden py-0 shadow-lg">
+              <CardContent className="h-full p-0">
+                <Image
                   alt={pet.name}
-                  className="h-80 w-full object-cover lg:h-96"
+                  src={pet.photoUrl}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
                 />
               </CardContent>
             </Card>
@@ -262,12 +266,17 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {pet.vaccines?.map((vaccine) => (
-                  <div key={vaccine} className="flex items-center gap-2">
-                    <div className="bg-success h-2 w-2 rounded-full"></div>
-                    <span className="text-sm">{vaccine}</span>
-                  </div>
-                ))}
+                <BulletList
+                  variant="success"
+                  options={
+                    pet.vaccines?.map(
+                      (vaccine) =>
+                        VACCINES[pet.species][
+                          vaccine as keyof (typeof VACCINES)[typeof pet.species]
+                        ],
+                    ) || []
+                  }
+                />
               </div>
             </CardContent>
           </Card>
