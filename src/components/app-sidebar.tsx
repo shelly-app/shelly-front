@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 
-import { LucidePawPrint, ChevronDown, ChevronUp } from 'lucide-react';
+import { LucidePawPrint, ChevronDown, ChevronUp } from "lucide-react";
 
 import {
   Sidebar,
@@ -12,30 +12,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useShelters } from '@/components/providers/shelters-provider';
-import { Text } from '@/components/ui/text';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn, getFullName, getNameInitials } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { paths } from '@/config/paths';
-import { useSignOutAction } from '@/features/auth/hooks/use-sign-out-action';
-import { useNavigate } from 'react-router';
-import { useAuth } from 'react-oidc-context';
-import { ShellyGradient } from '@/components/ui/shelly-gradient';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useShelters } from "@/components/providers/shelters-provider";
+import { Text } from "@/components/ui/text";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn, getFullName, getNameInitials } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { paths } from "@/config/paths";
+import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "react-oidc-context";
+import { ShellyGradient } from "@/components/ui/shelly-gradient";
+import { Separator } from "@/components/ui/separator";
 
 // Menu items.
 const items = [
   {
-    title: 'Mascotas',
+    title: "Mascotas",
     path: paths.app.pets.path,
     icon: LucidePawPrint,
   },
@@ -47,12 +47,12 @@ const AppSidebar = () => {
   const userMenuItems = useMemo(
     () => [
       {
-        title: 'Cuenta',
-        url: '#',
+        title: "Cuenta",
+        url: "#",
       },
       {
-        title: 'Cerrar sesión',
-        url: '#',
+        title: "Cerrar sesión",
+        url: "#",
         action: signOutAction,
       },
     ],
@@ -62,7 +62,7 @@ const AppSidebar = () => {
   const { state: sidebarState } = useSidebar();
   const isMobile = useIsMobile();
   const isCollapsed = useMemo(
-    () => sidebarState === 'collapsed',
+    () => sidebarState === "collapsed",
     [sidebarState],
   );
   // Should access this from a state that pulls count periodically.
@@ -119,15 +119,15 @@ const AppSidebar = () => {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   className={cn(
-                    'cursor-pointer text-nowrap',
+                    "cursor-pointer text-nowrap",
                     isCollapsed &&
                       !isMobile &&
-                      'relative rounded-full transition-transform hover:scale-110',
+                      "relative rounded-full transition-transform hover:scale-110",
                   )}
                 >
                   <Avatar
                     className={cn(
-                      isCollapsed && !isMobile && 'absolute top-0 left-0',
+                      isCollapsed && !isMobile && "absolute top-0 left-0",
                     )}
                   >
                     <AvatarImage
@@ -137,7 +137,7 @@ const AppSidebar = () => {
                     <AvatarFallback>
                       {getNameInitials(userProfile?.fullName)}
                     </AvatarFallback>
-                  </Avatar>{' '}
+                  </Avatar>{" "}
                   {(!isCollapsed || isMobile) && (
                     <>
                       <Text variant="primary">{userProfile?.fullName}</Text>
@@ -175,7 +175,7 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
   return (
     <>
       <ShellyGradient className="text-4xl">
-        {isCollapsed && !isMobile ? 'S' : 'Shelly'}
+        {isCollapsed && !isMobile ? "S" : "Shelly"}
       </ShellyGradient>
       <Separator orientation="horizontal" className="w-full" />
       {isLoading ? (

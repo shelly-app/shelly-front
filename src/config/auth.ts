@@ -1,4 +1,4 @@
-import { WebStorageStateStore } from 'oidc-client-ts';
+import { WebStorageStateStore } from "oidc-client-ts";
 
 const cognitoAuthConfig = {
   authority: import.meta.env.VITE_APP_COGNITO_AUTHORITY,

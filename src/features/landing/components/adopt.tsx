@@ -1,35 +1,35 @@
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { H2, H3, Lead, Paragraph } from '@/components/ui/text';
-import { cn } from '@/lib/utils';
-import { HeartPlus, House, PawPrint, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router';
-import { ShellyGradient } from '@/components/ui/shelly-gradient';
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { H2, H3, Lead, Paragraph } from "@/components/ui/text";
+import { cn } from "@/lib/utils";
+import { HeartPlus, House, PawPrint, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ShellyGradient } from "@/components/ui/shelly-gradient";
 
 const ADOPT_FEATURES = [
   {
-    title: 'Amor incondicional',
+    title: "Amor incondicional",
     description:
-      'Las mascotas adoptadas te van a dar amor y compañía sin condiciones. Cada día va a ser una nueva aventura llena de cariño y momentos especiales.',
+      "Las mascotas adoptadas te van a dar amor y compañía sin condiciones. Cada día va a ser una nueva aventura llena de cariño y momentos especiales.",
     icon: HeartPlus,
-    iconColor: 'text-red-500',
-    bgColor: 'from-red-100 to-red-50',
+    iconColor: "text-red-500",
+    bgColor: "from-red-100 to-red-50",
   },
   {
-    title: 'Salvá una vida',
+    title: "Salvá una vida",
     description:
-      'Al adoptar, le das una segunda oportunidad a un animal que lo necesita. Tu decisión puede cambiar completamente el destino de una mascota.',
+      "Al adoptar, le das una segunda oportunidad a un animal que lo necesita. Tu decisión puede cambiar completamente el destino de una mascota.",
     icon: House,
-    iconColor: 'text-green-600',
-    bgColor: 'from-green-100 to-green-50',
+    iconColor: "text-green-600",
+    bgColor: "from-green-100 to-green-50",
   },
   {
-    title: 'Compañía fiel',
+    title: "Compañía fiel",
     description:
-      'Encontrá un amigo que te va a acompañar en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio.',
+      "Encontrá un amigo que te va a acompañar en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio.",
     icon: PawPrint,
-    iconColor: 'text-sky-600',
-    bgColor: 'from-sky-100 to-sky-50',
+    iconColor: "text-sky-600",
+    bgColor: "from-sky-100 to-sky-50",
   },
 ] as const;
 
@@ -41,14 +41,14 @@ const AdoptFeatureCard = ({ feature }: { feature: AdoptFeature }) => {
   return (
     <div
       className={cn(
-        'group relative flex flex-col items-center gap-6 rounded-2xl bg-gradient-to-br p-8 text-center shadow-lg backdrop-blur-sm transition-all duration-300',
-        'hover:-translate-y-1 hover:shadow-xl',
+        "group relative flex flex-col items-center gap-6 rounded-2xl bg-gradient-to-br p-8 text-center shadow-lg backdrop-blur-sm transition-all duration-300",
+        "hover:-translate-y-1 hover:shadow-xl",
         feature.bgColor,
       )}
     >
       <div className="absolute inset-0 -z-10 rounded-2xl bg-white/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="rounded-xl bg-white/90 p-4 shadow-md transition-transform duration-300 group-hover:scale-110">
-        <Icon className={cn('h-8 w-8', feature.iconColor)} />
+        <Icon className={cn("h-8 w-8", feature.iconColor)} />
       </div>
       <H3 className="text-xl font-semibold">{feature.title}</H3>
       <Separator orientation="horizontal" className="w-full" />
@@ -62,7 +62,7 @@ export const Adopt = () => {
 
   // TODO: This should lead to a page with all the shelters contacts (whatsapp bot link)
   const handleCtaClick = () => {
-    navigate('/shelters');
+    navigate("/shelters");
   };
 
   return (
@@ -72,7 +72,7 @@ export const Adopt = () => {
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">
-          Adoptá una mascota con{' '}
+          Adoptá una mascota con{" "}
           <ShellyGradient variant="h2" size="5xl">
             Shelly
           </ShellyGradient>

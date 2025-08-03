@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
-import { paths } from '@/config/paths';
-import { NavigationLayout } from '@/components/layouts/navigation-layout';
+import { Link } from "react-router-dom";
+import { paths } from "@/config/paths";
+import { NavigationLayout } from "@/components/layouts/navigation-layout";
 
 export const NotFoundRoute = () => {
   return (

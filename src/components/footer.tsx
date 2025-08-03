@@ -1,26 +1,26 @@
-import { Separator } from '@/components/ui/separator';
-import { Text } from '@/components/ui/text';
-import { ShellyGradient } from '@/components/ui/shelly-gradient';
-import { Image } from '@/components/ui/image';
-import { Button } from '@/components/ui/button';
-import { Heart, Mail, ArrowUp } from 'lucide-react';
-import ShellyLogo from '@/assets/images/shelly-logo.webp';
-import { cn } from '@/lib/utils';
-import { useHashScroll } from '@/hooks/use-hash-scroll';
+import { Separator } from "@/components/ui/separator";
+import { Text } from "@/components/ui/text";
+import { ShellyGradient } from "@/components/ui/shelly-gradient";
+import { Image } from "@/components/ui/image";
+import { Button } from "@/components/ui/button";
+import { Heart, Mail, ArrowUp } from "lucide-react";
+import ShellyLogo from "@/assets/images/shelly-logo.webp";
+import { cn } from "@/lib/utils";
+import { useHashScroll } from "@/hooks/use-hash-scroll";
 
 const FOOTER_LINKS = [
-  { label: 'Sobre Nosotros', href: '#about' },
-  { label: 'Adoptar', href: '#adopt' },
-  { label: 'Contacto', href: '#contact' },
-  { label: 'Términos', href: '#' },
-  { label: 'Privacidad', href: '#' },
+  { label: "Sobre Nosotros", href: "#about" },
+  { label: "Adoptar", href: "#adopt" },
+  { label: "Contacto", href: "#contact" },
+  { label: "Términos", href: "#" },
+  { label: "Privacidad", href: "#" },
 ] as const;
 
 export const Footer = ({ className }: { className?: string }) => {
   const { scrollToSection } = useHashScroll();
 
   return (
-    <footer className={cn('bg-amber-100 text-amber-900', className)}>
+    <footer className={cn("bg-amber-100 text-amber-900", className)}>
       {/* Main Footer Content */}
       <div className="mx-auto max-w-4xl px-4 py-8 md:px-8">
         {/* Brand Section */}
@@ -74,7 +74,7 @@ export const Footer = ({ className }: { className?: string }) => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => scrollToSection('/')}
+            onClick={() => scrollToSection("/")}
             className="text-amber-700 transition-all duration-200 hover:bg-amber-200 hover:text-amber-900"
           >
             <ArrowUp className="mr-2 h-3 w-3" />

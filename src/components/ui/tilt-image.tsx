@@ -1,6 +1,6 @@
-import { useRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Image } from '@/components/ui/image';
+import { useRef } from "react";
+import { cn } from "@/lib/utils";
+import { Image } from "@/components/ui/image";
 
 interface TiltImageProps {
   src: string;
@@ -40,7 +40,7 @@ export const TiltImage = ({
       animationFrameId.current = requestAnimationFrame(() => {
         if (lastTransform.current) {
           el.style.transform = `perspective(700px) rotateX(${lastTransform.current.rotateX}deg) rotateY(${lastTransform.current.rotateY}deg) scale(1.04)`;
-          el.style.transition = 'transform 0.1s cubic-bezier(.03,.98,.52,.99)';
+          el.style.transition = "transform 0.1s cubic-bezier(.03,.98,.52,.99)";
         }
         animationFrameId.current = null;
       });
@@ -51,20 +51,20 @@ export const TiltImage = ({
     const el = ref.current;
     if (!el) return;
     el.style.transform =
-      'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)';
-    el.style.transition = 'transform 0.5s cubic-bezier(.03,.98,.52,.99)';
+      "perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)";
+    el.style.transition = "transform 0.5s cubic-bezier(.03,.98,.52,.99)";
   };
 
   return (
     <div
       ref={ref}
       className={cn(
-        'transition-transform duration-300 will-change-transform',
+        "transition-transform duration-300 will-change-transform",
         className,
       )}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ display: 'inline-block' }}
+      style={{ display: "inline-block" }}
     >
       <Image
         src={src}

@@ -47,4 +47,4 @@ jobs:
           delete-removed: true
           no-cache: false
           private: true
-          files-to-include: '{.*/**,**}'
+          files-to-include: "{.*/**,**}"

@@ -5,6 +5,7 @@ import {
   PetSex,
   PetSize,
   VACCINES,
+  PET_SPECIES,
 } from "@/features/pets/constants";
 
 // This type is used to define the shape of our data.
@@ -18,7 +19,10 @@ export type Pet = Entity<{
   age?: number;
   sex?: PetSex;
   size?: PetSize;
-  color?: string;
+  colors?: string[];
   description?: string;
-  vaccines?: Array<keyof typeof VACCINES.DOGS | keyof typeof VACCINES.CATS>;
+  vaccines?: Array<
+    | keyof (typeof VACCINES)[typeof PET_SPECIES.DOG]
+    | keyof (typeof VACCINES)[typeof PET_SPECIES.CAT]
+  >;
 }>;

@@ -1,15 +1,18 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { useMemo } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router';
-import { RouterProvider } from 'react-router/dom';
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
-import { paths } from '@/config/paths';
+import { paths } from "@/config/paths";
 
 import {
   AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
-} from '@/routes/app/root';
-import { ProtectedRoute } from '@/components/protected-route.tsx';
+} from "@/routes/app/root";
+import { ProtectedRoute } from "@/components/protected-route.tsx";
 
 // TODO: do we need this?
 const convert = (queryClient: QueryClient) => (m: any) => {
@@ -18,7 +21,7 @@ const convert = (queryClient: QueryClient) => (m: any) => {
   const ActualComponent =
     Component ||
     Object.values(rest).find(
-      (value) => typeof value === 'function' && value.name,
+      (value) => typeof value === "function" && value.name,
     );
 
   return {
@@ -33,12 +36,12 @@ const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
     {
       path: paths.home.path,
-      lazy: () => import('./routes/landing.tsx').then(convert(queryClient)),
+      lazy: () => import("./routes/landing.tsx").then(convert(queryClient)),
     },
     {
       path: paths.auth.signIn.path,
       lazy: () =>
-        import('./routes/auth/sign-in.tsx').then(convert(queryClient)),
+        import("./routes/auth/sign-in.tsx").then(convert(queryClient)),
     },
     {
       path: paths.app.root.path,
@@ -56,18 +59,18 @@ const createAppRouter = (queryClient: QueryClient) =>
         {
           path: paths.app.pets.path,
           lazy: () =>
-            import('./routes/app/pets/pets.tsx').then(convert(queryClient)),
+            import("./routes/app/pets/pets.tsx").then(convert(queryClient)),
         },
         {
           path: paths.app.pet.path,
           lazy: () =>
-            import('./routes/app/pets/pet.tsx').then(convert(queryClient)),
+            import("./routes/app/pets/pet.tsx").then(convert(queryClient)),
         },
       ],
     },
     {
-      path: '*',
-      lazy: () => import('./routes/not-found.tsx').then(convert(queryClient)),
+      path: "*",
+      lazy: () => import("./routes/not-found.tsx").then(convert(queryClient)),
     },
   ]);
 

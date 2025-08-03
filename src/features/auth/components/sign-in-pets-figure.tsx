@@ -1,12 +1,12 @@
-import DogPetGraphic from '@/assets/images/dog-pet-graphic.webp';
-import { Image } from '@/components/ui/image';
-import { cn } from '@/lib/utils';
+import DogPetGraphic from "@/assets/images/dog-pet-graphic.webp";
+import { Image } from "@/components/ui/image";
+import { cn } from "@/lib/utils";
 
 export const SignInPetsFigure = ({ className }: { className?: string }) => {
   return (
     <article
       className={cn(
-        'relative flex h-full items-center justify-center',
+        "relative flex h-full items-center justify-center",
         className,
       )}
     >

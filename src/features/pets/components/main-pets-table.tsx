@@ -20,10 +20,14 @@ import { Pet } from "@/features/pets/types/pet";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { Badge } from "@/components/ui/badge";
 import { petStatusColorMap } from "@/features/pets/utils/pet-table-utils";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { SearchPet, AddPet } from "@/features/pets/components";
-import { PetStatus } from "@/features/pets/constants";
+import {
+  PET_SPECIES_LABELS,
+  PET_STATUS_LABELS,
+  PetStatus,
+} from "@/features/pets/constants";
 
 export const columns: ColumnDef<Pet>[] = [
   {
@@ -45,7 +49,13 @@ export const columns: ColumnDef<Pet>[] = [
     accessorKey: "species",
     header: "Especie",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("species")}</div>
+      <div className="capitalize">
+        {
+          PET_SPECIES_LABELS[
+            row.getValue("species") as keyof typeof PET_SPECIES_LABELS
+          ]
+        }
+      </div>
     ),
   },
   {
@@ -65,7 +75,7 @@ export const columns: ColumnDef<Pet>[] = [
           <Badge
             className={`text-muted-foreground px-1.5 ${petStatusColorMap[status]} capitalize`}
           >
-            {row.getValue("status")}
+            {PET_STATUS_LABELS[status]}
           </Badge>
         </div>
       );

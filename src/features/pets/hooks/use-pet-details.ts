@@ -3,9 +3,9 @@ import { queryConfig } from "@/lib/react-query";
 import type { Pet } from "@/features/pets/types/pet";
 import {
   PET_SPECIES,
-  PET_STATUSES,
   PET_SEXES,
   PET_SIZES,
+  PET_STATUS,
 } from "@/features/pets/constants";
 import Lila from "@/assets/images/lila.webp";
 
@@ -26,14 +26,16 @@ const fetchPetById = async (petId: string): Promise<Pet> => {
     name: `Lila`,
     species: PET_SPECIES.DOG,
     breed: "Mestiza",
-    status: PET_STATUSES.ADOPTED,
+    status: PET_STATUS.ADOPTED,
     age: 6,
     sex: PET_SEXES.FEMALE,
     size: PET_SIZES.MEDIUM,
-    color: "Marrón",
+    colors: ["Marrón"],
     description:
       "Lila es una perrita muy cariñosa y juguetona. Le encanta estar con niños y otros animales. Es muy tranquila y le gusta mucho estar con su familia.",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
     vaccines: ["sextuple1", "rabia"],
   };
 

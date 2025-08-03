@@ -1,20 +1,20 @@
-import { cn } from '@/lib/utils';
-import { cva } from 'class-variance-authority';
-import GoogleIcon from '@/assets/svg/google-icon.svg';
-import { useAuth } from 'react-oidc-context';
-import { type AuthProvider } from '@/features/auth/types';
-import { useSearchParams } from 'react-router';
+import { cn } from "@/lib/utils";
+import { cva } from "class-variance-authority";
+import GoogleIcon from "@/assets/svg/google-icon.svg";
+import { useAuth } from "react-oidc-context";
+import { type AuthProvider } from "@/features/auth/types";
+import { useSearchParams } from "react-router-dom";
 
 const SVG_ICONS = {
   Google: GoogleIcon,
 };
 
 const signInButtonVariants = cva(
-  'flex cursor-pointer items-center gap-3 px-4 py-2 border rounded-lg font-medium shadow-sm hover:shadow-md transition duration-200',
+  "flex cursor-pointer items-center gap-3 px-4 py-2 border rounded-lg font-medium shadow-sm hover:shadow-md transition duration-200",
   {
     variants: {
       variant: {
-        Google: 'bg-white text-gray-700 border-gray-300',
+        Google: "bg-white text-gray-700 border-gray-300",
       },
     },
   },
@@ -36,7 +36,7 @@ export const ProviderSignInButton = ({
         identity_provider: provider,
       },
       state: btoa(
-        JSON.stringify({ redirectTo: searchParams.get('redirectTo') }),
+        JSON.stringify({ redirectTo: searchParams.get("redirectTo") }),
       ),
     });
   };

@@ -1,19 +1,19 @@
-import { Button } from '@/components/ui/button';
-import { H1, Lead } from '@/components/ui/text';
-import { PetShowcaseCard } from '@/features/landing/components/pet-showcase-card';
-import { ArrowDown, PawPrint } from 'lucide-react';
-import LimonImage from '@/assets/images/limon.webp';
-import LilaImage from '@/assets/images/lila.webp';
-import LuciferImage from '@/assets/images/lucifer.webp';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useHashScroll } from '@/hooks/use-hash-scroll';
+import { Button } from "@/components/ui/button";
+import { H1, Lead } from "@/components/ui/text";
+import { PetShowcaseCard } from "@/features/landing/components/pet-showcase-card";
+import { ArrowDown, PawPrint } from "lucide-react";
+import LimonImage from "@/assets/images/limon.webp";
+import LilaImage from "@/assets/images/lila.webp";
+import LuciferImage from "@/assets/images/lucifer.webp";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useHashScroll } from "@/hooks/use-hash-scroll";
 
 export const Hero = () => {
   const isMobile = useIsMobile();
   const { scrollToSection } = useHashScroll();
 
   const handleCtaClick = () => {
-    scrollToSection('#contact');
+    scrollToSection("#contact");
   };
 
   return (
@@ -25,7 +25,7 @@ export const Hero = () => {
         <div className="flex flex-1 flex-col gap-6 text-center md:text-left">
           <div className="flex flex-col gap-4">
             <H1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
-              Gestioná tu refugio de mascotas con{' '}
+              Gestioná tu refugio de mascotas con{" "}
               <span className="text-amber-600">facilidad</span>
             </H1>
             <Lead className="text-lg md:text-xl">
@@ -79,7 +79,7 @@ export const Hero = () => {
 
       {!isMobile && (
         <div
-          onClick={() => scrollToSection('#about')}
+          onClick={() => scrollToSection("#about")}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce cursor-pointer rounded-full bg-amber-300/80 p-2 shadow-lg"
         >
           <ArrowDown className="h-6 w-6 text-amber-900/60" />

@@ -2,8 +2,8 @@ import { z } from "zod";
 
 // Pet species options
 export const PET_SPECIES = {
-  DOG: "perro",
-  CAT: "gato",
+  DOG: "DOG",
+  CAT: "CAT",
 } as const;
 
 export const PET_SPECIES_LABELS = {
@@ -13,25 +13,26 @@ export const PET_SPECIES_LABELS = {
 
 export type PetSpecies = (typeof PET_SPECIES)[keyof typeof PET_SPECIES];
 
-// Pet status options
-export const PET_STATUSES = {
-  IN_TRANSIT: "en transito",
-  IN_SHELTER: "en refugio",
-  ADOPTED: "adoptado",
+export const PET_STATUS = {
+  IN_TRANSIT: "IN_TRANSIT",
+  IN_SHELTER: "IN_SHELTER",
+  ADOPTED: "ADOPTED",
+  IN_VET: "IN_VET",
 } as const;
 
 export const PET_STATUS_LABELS = {
-  [PET_STATUSES.IN_TRANSIT]: "En tránsito",
-  [PET_STATUSES.IN_SHELTER]: "En refugio",
-  [PET_STATUSES.ADOPTED]: "Adoptado",
+  IN_TRANSIT: "En tránsito",
+  IN_SHELTER: "En refugio",
+  ADOPTED: "Adoptado",
+  IN_VET: "En veterinaria",
 } as const;
 
-export type PetStatus = (typeof PET_STATUSES)[keyof typeof PET_STATUSES];
+export type PetStatus = (typeof PET_STATUS)[keyof typeof PET_STATUS];
 
 // Pet sex options
 export const PET_SEXES = {
-  MALE: "macho",
-  FEMALE: "hembra",
+  MALE: "MALE",
+  FEMALE: "FEMALE",
 } as const;
 
 export const PET_SEX_LABELS = {
@@ -43,9 +44,9 @@ export type PetSex = (typeof PET_SEXES)[keyof typeof PET_SEXES];
 
 // Pet size options
 export const PET_SIZES = {
-  SMALL: "pequeño",
-  MEDIUM: "mediano",
-  LARGE: "grande",
+  SMALL: "SMALL",
+  MEDIUM: "MEDIUM",
+  LARGE: "LARGE",
 } as const;
 
 export const PET_SIZE_LABELS = {
@@ -53,6 +54,10 @@ export const PET_SIZE_LABELS = {
   [PET_SIZES.MEDIUM]: "Mediano",
   [PET_SIZES.LARGE]: "Grande",
 } as const;
+
+export type Vaccine =
+  | keyof (typeof VACCINES)[typeof PET_SPECIES.DOG]
+  | keyof (typeof VACCINES)[typeof PET_SPECIES.CAT];
 
 export const VACCINES = {
   [PET_SPECIES.DOG]: {
@@ -80,20 +85,11 @@ export const getSpeciesOptions = () => [
   { value: PET_SPECIES.CAT, label: PET_SPECIES_LABELS[PET_SPECIES.CAT] },
 ];
 
-export const getStatusOptions = () => [
-  {
-    value: PET_STATUSES.IN_TRANSIT,
-    label: PET_STATUS_LABELS[PET_STATUSES.IN_TRANSIT],
-  },
-  {
-    value: PET_STATUSES.IN_SHELTER,
-    label: PET_STATUS_LABELS[PET_STATUSES.IN_SHELTER],
-  },
-  {
-    value: PET_STATUSES.ADOPTED,
-    label: PET_STATUS_LABELS[PET_STATUSES.ADOPTED],
-  },
-];
+export const getStatusOptions = () =>
+  Object.entries(PET_STATUS).map(([key, value]) => ({
+    value: key,
+    label: value,
+  }));
 
 export const getSexOptions = () => [
   { value: PET_SEXES.MALE, label: PET_SEX_LABELS[PET_SEXES.MALE] },
@@ -114,11 +110,7 @@ export const createSpeciesSchema = () =>
 
 export const createStatusSchema = () =>
   z.enum(
-    [
-      PET_STATUSES.IN_TRANSIT,
-      PET_STATUSES.IN_SHELTER,
-      PET_STATUSES.ADOPTED,
-    ] as const,
+    [PET_STATUS.IN_TRANSIT, PET_STATUS.IN_SHELTER, PET_STATUS.ADOPTED] as const,
     {
       required_error: "El estado es requerido",
     },

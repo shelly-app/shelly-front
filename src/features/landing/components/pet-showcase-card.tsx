@@ -1,5 +1,5 @@
-import { Image } from '@/components/ui/image';
-import { cn } from '@/lib/utils';
+import { Image } from "@/components/ui/image";
+import { cn } from "@/lib/utils";
 
 export const PetShowcaseCard = ({
   src,
@@ -14,7 +14,7 @@ export const PetShowcaseCard = ({
     <Image
       src={src}
       alt={alt}
-      className={cn('relative h-full w-60 overflow-hidden', className)}
+      className={cn("relative h-full w-60 overflow-hidden", className)}
     />
   );
 };
