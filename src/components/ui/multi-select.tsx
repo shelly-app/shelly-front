@@ -282,6 +282,12 @@ interface MultiSelectProps
    * Optional, defaults to false.
    */
   closeOnSelect?: boolean;
+
+  /**
+   * If true, hides the icon in the badge.
+   * Optional, defaults to false.
+   */
+  hideBadgeIcon?: boolean;
 }
 
 /**
@@ -336,6 +342,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
       deduplicateOptions = false,
       resetOnDefaultValueChange = true,
       closeOnSelect = false,
+      hideBadgeIcon = false,
       ...props
     },
     ref,
@@ -894,19 +901,21 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                               animationDelay: `${animationConfig?.delay || 0}s`,
                             }}
                           >
-                            {IconComponent && !responsiveSettings.hideIcons && (
-                              <IconComponent
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  responsiveSettings.compactMode &&
-                                    "mr-1 h-3 w-3",
-                                  customStyle?.iconColor && "text-current",
-                                )}
-                                {...(customStyle?.iconColor && {
-                                  style: { color: customStyle.iconColor },
-                                })}
-                              />
-                            )}
+                            {IconComponent &&
+                              !responsiveSettings.hideIcons &&
+                              !hideBadgeIcon && (
+                                <IconComponent
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    responsiveSettings.compactMode &&
+                                      "mr-1 h-3 w-3",
+                                    customStyle?.iconColor && "text-current",
+                                  )}
+                                  {...(customStyle?.iconColor && {
+                                    style: { color: customStyle.iconColor },
+                                  })}
+                                />
+                              )}
                             <span
                               className={cn(
                                 screenSize === "mobile" && "truncate",
@@ -932,7 +941,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="-m-0.5 ml-2 h-4 w-4 cursor-pointer rounded-sm p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-none"
+                              className="h-fit w-fit cursor-pointer rounded-sm p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-none"
                             >
                               <XCircle
                                 className={cn(
