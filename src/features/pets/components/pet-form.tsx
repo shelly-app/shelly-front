@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -166,6 +166,18 @@ export const PetForm = ({
   };
 
   const species = form.watch("species");
+
+  // Reset form and internal state when the dialog is closed
+  useEffect(() => {
+    if (!open) {
+      form.reset();
+      setSelectedFile(null);
+      // In add mode, return to quick mode by default when reopening
+      if (mode === "add") {
+        setIsCompleteMode(false);
+      }
+    }
+  }, [open, mode, form, setSelectedFile, setIsCompleteMode]);
 
   // Get vaccine options based on the selected species
   const vaccineOptions = useMemo(() => {
