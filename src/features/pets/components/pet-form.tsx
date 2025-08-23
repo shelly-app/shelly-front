@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -100,6 +100,23 @@ export const PetForm = ({
 
   const { addPetAsync, isLoading } = useAddPet();
 
+  const form = useForm<PetFormData>({
+    resolver: zodResolver(petFormSchema),
+    defaultValues: {
+      name: pet?.name || "",
+      species: pet?.species || PET_SPECIES.DOG,
+      status: pet?.status || PET_STATUS.IN_SHELTER,
+      breed: pet?.breed || "",
+      age: pet?.age,
+      sex: pet?.sex,
+      size: pet?.size,
+      colors: pet?.colors || [],
+      vaccines: pet?.vaccines || [],
+      description: pet?.description || "",
+      photoUrl: pet?.photoUrl || "",
+    },
+  });
+
   // Function to determine if a color is light or dark for text contrast
   const isLightColor = (hexColor: string): boolean => {
     // Remove # if present
@@ -148,15 +165,16 @@ export const PetForm = ({
     });
   };
 
+  const species = form.watch("species");
+
   // Get vaccine options based on the selected species
-  const getVaccineOptions = () => {
-    const formValues = form.getValues();
-    const speciesVaccines = VACCINES[formValues.species];
+  const vaccineOptions = useMemo(() => {
+    const speciesVaccines = VACCINES[species];
     return Object.entries(speciesVaccines).map(([value, label]) => ({
       value,
       label,
     }));
-  };
+  }, [species]);
 
   // Get options for form selects
   const speciesOptions = Object.entries(PET_SPECIES_LABELS).map(
@@ -179,23 +197,6 @@ export const PetForm = ({
     value,
     label,
   }));
-
-  const form = useForm<PetFormData>({
-    resolver: zodResolver(petFormSchema),
-    defaultValues: {
-      name: pet?.name || "",
-      species: pet?.species || PET_SPECIES.DOG,
-      status: pet?.status || PET_STATUS.IN_SHELTER,
-      breed: pet?.breed || "",
-      age: pet?.age,
-      sex: pet?.sex,
-      size: pet?.size,
-      colors: pet?.colors || [],
-      vaccines: pet?.vaccines || [],
-      description: pet?.description || "",
-      photoUrl: pet?.photoUrl || "",
-    },
-  });
 
   const onSubmit = async (data: PetFormData) => {
     try {
@@ -347,7 +348,10 @@ export const PetForm = ({
                   <FormItem className="min-w-0 space-y-1">
                     <FormLabel className="text-sm">Especie *</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        form.setValue("vaccines", []);
+                      }}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -547,8 +551,9 @@ export const PetForm = ({
                       <FormLabel className="w-fit">Vacunas</FormLabel>
                       <FormControl>
                         <MultiSelect
-                          options={getVaccineOptions()}
-                          value={field.value || []}
+                          disabled={!form.getValues("species") || isLoading}
+                          options={vaccineOptions || []}
+                          defaultValue={field.value || []}
                           onValueChange={field.onChange}
                           placeholder="Seleccionar vacunas"
                           maxCount={4}
@@ -683,4 +688,4 @@ export const AddPet = () => {
   );
 };
 
-// TODO: Remove defauls specie, fix Vacunas, fix Colores menu scroll, fix styles when error in form
+// TODO: fix Vacunas, fix styles when error in form
