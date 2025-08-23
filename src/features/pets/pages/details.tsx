@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PetColorBadge } from "@/features/pets/components/pet-color-badge";
 import { Button } from "@/components/ui/button";
@@ -24,8 +24,10 @@ import {
 import { addDays, intlFormat, subDays } from "date-fns";
 import { BulletList } from "@/components/ui/bullet-list";
 import { Image } from "@/components/ui/image";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
-// Mock data for demonstration
+// Mock data for demonstration (simulates API response)
 const mockPetData: Pet = {
   id: 1,
   name: "Lila",
@@ -75,10 +77,33 @@ const MOCK_FUTURE_EVENTS = [
   },
 ];
 
+// Skeleton component shown while fetching data
+const PetDetailsSkeleton = () => (
+  <div className="min-h-screen p-6">
+    <div className="mx-auto max-w-6xl space-y-6">
+      {/* Header Section Skeleton */}
+      <div className="flex flex-col gap-6 lg:flex-row">
+        <Skeleton className="h-72 w-full lg:w-1/3" />
+        <div className="w-full space-y-4 lg:w-2/3">
+          <Skeleton className="h-32 w-full" />
+          <Skeleton className="h-40 w-full" />
+        </div>
+      </div>
+      {/* Bottom Grid Skeleton */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
+      </div>
+    </div>
+  </div>
+);
+
 export const PetDetailsPage = () => {
-  const [pet, setPet] = useState<Pet>(mockPetData);
+  const [pet, setPet] = useState<Pet | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isArchived, setIsArchived] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   // const { toast } = useToast();
 
   const handleEditPet = (updatedPet: Pet) => {
@@ -98,7 +123,21 @@ export const PetDetailsPage = () => {
     // });
   };
 
-  if (isArchived) {
+  // Simulate data fetching
+  useEffect(() => {
+    // Replace with real API call
+    const timer = setTimeout(() => {
+      setPet(mockPetData);
+      setIsLoading(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <PetDetailsSkeleton />;
+  }
+
+  if (isArchived || !pet) {
     return (
       <div className="bg-background flex min-h-screen items-center justify-center p-6">
         <Card className="max-w-md text-center shadow-lg">
@@ -106,7 +145,7 @@ export const PetDetailsPage = () => {
             <Archive className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
             <h2 className="mb-2 text-xl font-semibold">Pet Archived</h2>
             <p className="text-muted-foreground mb-4">
-              {pet.name} has been archived and is no longer active in the
+              {pet?.name} has been archived and is no longer active in the
               system.
             </p>
             <Button onClick={() => setIsArchived(false)} variant="outline">
@@ -255,8 +294,13 @@ export const PetDetailsPage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-foreground leading-relaxed">
-                  {pet.description}
+                <p
+                  className={cn(
+                    "text-muted-foreground leading-relaxed",
+                    !pet.description && "italic",
+                  )}
+                >
+                  {pet.description || `${pet.name} no tiene descripción aún.`}
                 </p>
               </CardContent>
             </Card>
