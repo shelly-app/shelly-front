@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { PetColorBadge } from "@/features/pets/components/pet-color-badge";
 import { Button } from "@/components/ui/button";
 import { PetStatusBadge, EditPetDialog } from "@/features/pets/components";
 import {
@@ -46,12 +46,12 @@ const mockPetData: Pet = {
   id: 1,
   name: "Lila",
   species: "DOG",
-  breed: "Golden Retriever",
+  breed: "Mestizo",
   status: "IN_SHELTER",
   age: 3,
-  sex: "MALE",
+  sex: "FEMALE",
   size: "LARGE",
-  colors: ["Marrón", "Crema", "Negro"],
+  colors: ["Canela", "Cervato", "Negro"],
   description:
     "Buddy is a friendly and energetic Golden Retriever who loves playing fetch and swimming. He's great with kids and other dogs. Buddy is looking for an active family who can provide him with plenty of exercise and love.",
   vaccines: ["rabia", "sextuple1"],
@@ -189,16 +189,16 @@ export const PetDetailsPage = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  <div className="flex items-center gap-2">
-                    <Clock className="text-muted-foreground h-4 w-4" />
+                <div className="grid grid-cols-2 items-start gap-4 md:grid-cols-4">
+                  <div className="flex gap-2">
+                    <Clock className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Edad</p>
                       <p className="font-medium">{pet.age}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <User className="text-muted-foreground h-4 w-4" />
+                  <div className="flex gap-2">
+                    <User className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Sexo</p>
                       <p className="font-medium">
@@ -206,8 +206,8 @@ export const PetDetailsPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Ruler className="text-muted-foreground h-4 w-4" />
+                  <div className="flex gap-2">
+                    <Ruler className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Tamaño</p>
                       <p className="font-medium">
@@ -219,19 +219,17 @@ export const PetDetailsPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Palette className="text-muted-foreground h-4 w-4" />
-                    <div>
+                  <div className="flex gap-2">
+                    <Palette className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
+                    <div className="flex flex-col gap-1">
                       <p className="text-muted-foreground text-sm">Colores</p>
                       <div className="flex flex-wrap gap-1">
                         {pet.colors?.map((color) => (
-                          <Badge
+                          <PetColorBadge
                             key={color}
-                            variant="secondary"
+                            color={color}
                             className="text-xs"
-                          >
-                            {color}
-                          </Badge>
+                          />
                         ))}
                       </div>
                     </div>

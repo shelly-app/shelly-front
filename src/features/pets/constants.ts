@@ -86,9 +86,9 @@ export const getSpeciesOptions = () => [
 ];
 
 export const getStatusOptions = () =>
-  Object.entries(PET_STATUS).map(([key, value]) => ({
+  Object.entries(PET_STATUS_LABELS).map(([key, label]) => ({
     value: key,
-    label: value,
+    label,
   }));
 
 export const getSexOptions = () => [
@@ -123,3 +123,23 @@ export const createSizeSchema = () =>
   z
     .enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE] as const)
     .optional();
+
+export const PET_COLORS = {
+  Negro: "#000000",
+  Blanco: "#FFFFFF",
+  Marrón: "#8B4513",
+  Gris: "#808080",
+  Beige: "#F5F5DC",
+  Dorado: "#FFD700",
+  Rojo: "#DC143C",
+  Café: "#A0522D",
+  Crema: "#FFFDD0",
+  Caramelo: "#D2691E",
+  Arena: "#F4A460",
+  Chocolate: "#8B4513",
+  Naranja: "#FF8C00",
+  Canela: "#D2691E",
+  Cervato: "#E5B80B",
+} as const;
+
+export type PetColor = keyof typeof PET_COLORS;

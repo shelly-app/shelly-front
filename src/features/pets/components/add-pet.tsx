@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+import { PetColorMultiSelect } from "@/features/pets/components/pet-color-multi-select";
 import { useAddPet } from "@/features/pets/hooks";
 import {
   createSpeciesSchema,
@@ -54,7 +55,7 @@ const petFormSchema = z.object({
   age: z.number().min(0).max(30).optional(),
   sex: createSexSchema(),
   size: createSizeSchema(),
-  color: z.string().optional(),
+  colors: z.array(z.string()).optional(),
   description: z.string().optional(),
   photoUrl: z.string().optional(),
 });
@@ -84,7 +85,7 @@ export const AddPet = () => {
       age: undefined,
       sex: undefined,
       size: undefined,
-      color: "",
+      colors: [],
       description: "",
       photoUrl: "",
     },
@@ -393,12 +394,16 @@ export const AddPet = () => {
 
                   <FormField
                     control={form.control}
-                    name="color"
+                    name="colors"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Color</FormLabel>
+                        <FormLabel>Colores</FormLabel>
                         <FormControl>
-                          <Input placeholder="Ej: Marrón y blanco" {...field} />
+                          <PetColorMultiSelect
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            placeholder="Seleccionar colores"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -19,6 +19,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { PetColorMultiSelect } from "@/features/pets/components/pet-color-multi-select";
+import {
+  PET_SEX_LABELS,
+  PET_SEXES,
+  PET_SIZE_LABELS,
+  PET_SIZES,
+  PET_STATUS,
+  PET_STATUS_LABELS,
+  PetStatus,
+} from "@/features/pets/constants";
 import { X } from "lucide-react";
 import { Pet } from "@/features/pets/types/pet";
 import {
@@ -42,29 +52,11 @@ export const EditPetDialog = ({
   onSave,
 }: EditPetDialogProps) => {
   const [editedPet, setEditedPet] = useState<Pet>(pet);
-  const [newColor, setNewColor] = useState("");
   const [newVaccine, setNewVaccine] = useState("");
 
   const handleSave = () => {
     onSave(editedPet);
     onOpenChange(false);
-  };
-
-  const addColor = () => {
-    if (newColor.trim() && !editedPet.colors?.includes(newColor.trim())) {
-      setEditedPet((prev) => ({
-        ...prev,
-        colors: [...(prev.colors || []), newColor.trim()],
-      }));
-      setNewColor("");
-    }
-  };
-
-  const removeColor = (colorToRemove: string) => {
-    setEditedPet((prev) => ({
-      ...prev,
-      colors: prev.colors?.filter((color) => color !== colorToRemove),
-    }));
   };
 
   const addVaccine = () => {
@@ -156,18 +148,26 @@ export const EditPetDialog = ({
               <Label htmlFor="status">Status</Label>
               <Select
                 value={editedPet.status}
-                onValueChange={(
-                  value: "in shelter" | "in transit" | "adopted" | "in vet",
-                ) => setEditedPet((prev) => ({ ...prev, status: value }))}
+                onValueChange={(value: PetStatus) =>
+                  setEditedPet((prev) => ({ ...prev, status: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="in shelter">In Shelter</SelectItem>
-                  <SelectItem value="in transit">In Transit</SelectItem>
-                  <SelectItem value="adopted">Adopted</SelectItem>
-                  <SelectItem value="in vet">In Vet</SelectItem>
+                  <SelectItem value={PET_STATUS.IN_SHELTER}>
+                    {PET_STATUS_LABELS[PET_STATUS.IN_SHELTER]}
+                  </SelectItem>
+                  <SelectItem value={PET_STATUS.IN_TRANSIT}>
+                    {PET_STATUS_LABELS[PET_STATUS.IN_TRANSIT]}
+                  </SelectItem>
+                  <SelectItem value={PET_STATUS.ADOPTED}>
+                    {PET_STATUS_LABELS[PET_STATUS.ADOPTED]}
+                  </SelectItem>
+                  <SelectItem value={PET_STATUS.IN_VET}>
+                    {PET_STATUS_LABELS[PET_STATUS.IN_VET]}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -183,8 +183,12 @@ export const EditPetDialog = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
+                  <SelectItem value={PET_SEXES.MALE}>
+                    {PET_SEX_LABELS[PET_SEXES.MALE]}
+                  </SelectItem>
+                  <SelectItem value={PET_SEXES.FEMALE}>
+                    {PET_SEX_LABELS[PET_SEXES.FEMALE]}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -200,9 +204,15 @@ export const EditPetDialog = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Small">Small</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="Large">Large</SelectItem>
+                  <SelectItem value={PET_SIZES.SMALL}>
+                    {PET_SIZE_LABELS[PET_SIZES.SMALL]}
+                  </SelectItem>
+                  <SelectItem value={PET_SIZES.MEDIUM}>
+                    {PET_SIZE_LABELS[PET_SIZES.MEDIUM]}
+                  </SelectItem>
+                  <SelectItem value={PET_SIZES.LARGE}>
+                    {PET_SIZE_LABELS[PET_SIZES.LARGE]}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -210,28 +220,13 @@ export const EditPetDialog = ({
 
           <div className="space-y-2">
             <Label>Colors</Label>
-            <div className="mb-2 flex flex-wrap gap-2">
-              {editedPet.colors?.map((color) => (
-                <Badge key={color} variant="secondary" className="gap-1">
-                  {color}
-                  <X
-                    className="h-3 w-3 cursor-pointer"
-                    onClick={() => removeColor(color)}
-                  />
-                </Badge>
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Add new color"
-                value={newColor}
-                onChange={(e) => setNewColor(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && addColor()}
-              />
-              <Button onClick={addColor} variant="outline" size="sm">
-                Add
-              </Button>
-            </div>
+            <PetColorMultiSelect
+              value={editedPet.colors}
+              onValueChange={(colors) =>
+                setEditedPet((prev) => ({ ...prev, colors }))
+              }
+              placeholder="Seleccionar colores"
+            />
           </div>
 
           <div className="space-y-2">
