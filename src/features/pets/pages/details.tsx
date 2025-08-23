@@ -82,6 +82,7 @@ export const PetDetailsPage = () => {
   // const { toast } = useToast();
 
   const handleEditPet = (updatedPet: Pet) => {
+    console.log("updatedPet", updatedPet);
     setPet(updatedPet);
     // toast({
     //   title: "Pet Updated",
@@ -146,7 +147,8 @@ export const PetDetailsPage = () => {
                       {pet.name}
                     </CardTitle>
                     <p className="text-muted-foreground text-lg">
-                      {pet.breed} • {PET_SPECIES_LABELS[pet.species]}
+                      {pet.breed && pet.breed !== "" ? `${pet.breed} • ` : ""}
+                      {PET_SPECIES_LABELS[pet.species]}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -178,29 +180,47 @@ export const PetDetailsPage = () => {
                     <Clock className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Edad</p>
-                      <p className="font-medium">{pet.age}</p>
+                      {pet.age ? (
+                        <p className="font-medium">
+                          {pet.age} {pet.age === 1 ? "año" : "años"}
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">--</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <User className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Sexo</p>
-                      <p className="font-medium">
-                        {PET_SEX_LABELS[pet.sex as keyof typeof PET_SEX_LABELS]}
-                      </p>
+                      {pet.sex ? (
+                        <p className="font-medium">
+                          {
+                            PET_SEX_LABELS[
+                              pet.sex as keyof typeof PET_SEX_LABELS
+                            ]
+                          }
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">--</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <Ruler className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
                       <p className="text-muted-foreground text-sm">Tamaño</p>
-                      <p className="font-medium">
-                        {
-                          PET_SIZE_LABELS[
-                            pet.size as keyof typeof PET_SIZE_LABELS
-                          ]
-                        }
-                      </p>
+                      {pet.size ? (
+                        <p className="font-medium">
+                          {
+                            PET_SIZE_LABELS[
+                              pet.size as keyof typeof PET_SIZE_LABELS
+                            ]
+                          }
+                        </p>
+                      ) : (
+                        <p className="text-muted-foreground text-sm">--</p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -208,13 +228,17 @@ export const PetDetailsPage = () => {
                     <div className="flex flex-col gap-1">
                       <p className="text-muted-foreground text-sm">Colores</p>
                       <div className="flex flex-wrap gap-1">
-                        {pet.colors?.map((color) => (
-                          <PetColorBadge
-                            key={color}
-                            color={color}
-                            className="text-xs"
-                          />
-                        ))}
+                        {pet.colors && pet.colors.length > 0 ? (
+                          pet.colors?.map((color) => (
+                            <PetColorBadge
+                              key={color}
+                              color={color}
+                              className="text-xs"
+                            />
+                          ))
+                        ) : (
+                          <p className="text-muted-foreground text-sm">--</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -248,17 +272,23 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <BulletList
-                  variant="success"
-                  options={
-                    pet.vaccines?.map(
-                      (vaccine) =>
-                        VACCINES[pet.species][
-                          vaccine as keyof (typeof VACCINES)[typeof pet.species]
-                        ],
-                    ) || []
-                  }
-                />
+                {pet.vaccines && pet.vaccines.length > 0 ? (
+                  <BulletList
+                    variant="success"
+                    options={
+                      pet.vaccines?.map(
+                        (vaccine) =>
+                          VACCINES[pet.species][
+                            vaccine as keyof (typeof VACCINES)[typeof pet.species]
+                          ],
+                      ) || []
+                    }
+                  />
+                ) : (
+                  <p className="text-muted-foreground text-sm">
+                    No hay vacunas registradas
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -270,24 +300,30 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {MOCK_EVENTS.map((event) => (
-                  <div
-                    key={event.id}
-                    className="border-primary border-l-2 pl-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium">{event.title}</p>
-                      <span className="text-muted-foreground text-xs">
-                        {event.date}
-                      </span>
+                {MOCK_EVENTS.length > 0 ? (
+                  MOCK_EVENTS.map((event) => (
+                    <div
+                      key={event.id}
+                      className="border-primary border-l-2 pl-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium">{event.title}</p>
+                        <span className="text-muted-foreground text-xs">
+                          {event.date}
+                        </span>
+                      </div>
+                      {event.description && (
+                        <p className="text-muted-foreground mt-1 text-xs">
+                          {event.description}
+                        </p>
+                      )}
                     </div>
-                    {event.description && (
-                      <p className="text-muted-foreground mt-1 text-xs">
-                        {event.description}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-muted-foreground text-sm">
+                    No hay eventos recientes
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -299,24 +335,30 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {MOCK_FUTURE_EVENTS.map((event) => (
-                  <div
-                    key={event.id}
-                    className="border-warning border-l-2 pl-3"
-                  >
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium">{event.title}</p>
-                      <span className="text-muted-foreground text-xs">
-                        {event.date}
-                      </span>
+                {MOCK_FUTURE_EVENTS.length > 0 ? (
+                  MOCK_FUTURE_EVENTS.map((event) => (
+                    <div
+                      key={event.id}
+                      className="border-warning border-l-2 pl-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-medium">{event.title}</p>
+                        <span className="text-muted-foreground text-xs">
+                          {event.date}
+                        </span>
+                      </div>
+                      {event.description && (
+                        <p className="text-muted-foreground mt-1 text-xs">
+                          {event.description}
+                        </p>
+                      )}
                     </div>
-                    {event.description && (
-                      <p className="text-muted-foreground mt-1 text-xs">
-                        {event.description}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-muted-foreground text-sm">
+                    No hay eventos próximos
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
