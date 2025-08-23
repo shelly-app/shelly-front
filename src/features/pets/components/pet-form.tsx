@@ -516,7 +516,7 @@ export const PetForm = ({
                   name="colors"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel>Colores</FormLabel>
+                      <FormLabel className="w-fit">Colores</FormLabel>
                       <FormControl>
                         <MultiSelect
                           searchable
@@ -537,7 +537,7 @@ export const PetForm = ({
                   name="vaccines"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel>Vacunas</FormLabel>
+                      <FormLabel className="w-fit">Vacunas</FormLabel>
                       <FormControl>
                         <MultiSelect
                           options={getVaccineOptions()}
@@ -558,7 +558,7 @@ export const PetForm = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel>Descripción</FormLabel>
+                      <FormLabel className="w-fit">Descripción</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe la personalidad, características especiales, necesidades médicas, etc."
@@ -576,7 +576,7 @@ export const PetForm = ({
                   name="photoUrl"
                   render={() => (
                     <FormItem className="min-w-0">
-                      <FormLabel>Imagen</FormLabel>
+                      <FormLabel className="w-fit">Imagen</FormLabel>
                       <FormControl>
                         <div className="space-y-2 overflow-hidden">
                           <div

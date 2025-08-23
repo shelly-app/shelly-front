@@ -966,7 +966,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       >
                         {`+ ${
                           selectedValues.length - responsiveSettings.maxCount
-                        } more`}
+                        } más...`}
                         <XCircle
                           className={cn(
                             "ml-2 h-4 w-4 cursor-pointer",
@@ -1046,17 +1046,18 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             <Command>
               {searchable && (
                 <CommandInput
-                  placeholder="Search options..."
+                  placeholder="Buscar opciones..."
                   onKeyDown={handleInputKeyDown}
                   value={searchValue}
                   onValueChange={setSearchValue}
-                  aria-label="Search through available options"
+                  aria-label="Buscar opciones"
                   aria-describedby={`${multiSelectId}-search-help`}
                 />
               )}
               {searchable && (
                 <div id={`${multiSelectId}-search-help`} className="sr-only">
-                  Type to filter options. Use arrow keys to navigate results.
+                  Escribe para filtrar opciones. Usa las flechas para navegar
+                  por los resultados.
                 </div>
               )}
               <CommandList
@@ -1067,7 +1068,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                 )}
               >
                 <CommandEmpty>
-                  {emptyIndicator || "No results found."}
+                  {emptyIndicator || "No se encontraron resultados."}
                 </CommandEmpty>{" "}
                 {!hideSelectAll && !searchValue && (
                   <CommandGroup>
@@ -1079,14 +1080,14 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         selectedValues.length ===
                         getAllOptions().filter((opt) => !opt.disabled).length
                       }
-                      aria-label={`Select all ${
+                      aria-label={`Seleccionar todos ${
                         getAllOptions().length
                       } options`}
                       className="cursor-pointer"
                     >
                       <div
                         className={cn(
-                          "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-600",
                           selectedValues.length ===
                             getAllOptions().filter((opt) => !opt.disabled)
                               .length
@@ -1098,7 +1099,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         <CheckIcon className="h-4 w-4" />
                       </div>
                       <span>
-                        (Select All
+                        (Seleccionar todos
                         {getAllOptions().length > 20
                           ? ` - ${getAllOptions().length} options`
                           : ""}
@@ -1133,7 +1134,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           >
                             <div
                               className={cn(
-                                "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                                "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-600",
                                 isSelected
                                   ? "bg-primary text-primary-foreground"
                                   : "opacity-50 [&_svg]:invisible",
@@ -1176,7 +1177,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                         >
                           <div
                             className={cn(
-                              "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
+                              "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-gray-600",
                               isSelected
                                 ? "bg-primary text-primary-foreground"
                                 : "opacity-50 [&_svg]:invisible",
@@ -1206,7 +1207,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                           onSelect={handleClear}
                           className="flex-1 cursor-pointer justify-center"
                         >
-                          Clear
+                          Limpiar
                         </CommandItem>
                         <Separator
                           orientation="vertical"
@@ -1218,7 +1219,7 @@ export const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
                       onSelect={() => setIsPopoverOpen(false)}
                       className="max-w-full flex-1 cursor-pointer justify-center"
                     >
-                      Close
+                      Cerrar
                     </CommandItem>
                   </div>
                 </CommandGroup>
