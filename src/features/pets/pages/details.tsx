@@ -143,13 +143,13 @@ export const PetDetailsPage = () => {
         <Card className="max-w-md text-center shadow-lg">
           <CardContent className="p-6">
             <Archive className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-            <h2 className="mb-2 text-xl font-semibold">Pet Archived</h2>
+            <h2 className="mb-2 text-xl font-semibold">Mascota archivada</h2>
             <p className="text-muted-foreground mb-4">
-              {pet?.name} has been archived and is no longer active in the
-              system.
+              {pet?.name} ha sido archivada y ya no está disponible en el
+              sistema.
             </p>
             <Button onClick={() => setIsArchived(false)} variant="outline">
-              Restore Pet
+              Restaurar mascota
             </Button>
           </CardContent>
         </Card>
