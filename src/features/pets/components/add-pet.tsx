@@ -33,89 +33,203 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { PetColorMultiSelect } from "@/features/pets/components/pet-color-multi-select";
-import { useAddPet } from "@/features/pets/hooks";
+import { MultiSelect } from "@/components/ui/multi-select";
 import {
-  createSpeciesSchema,
-  createStatusSchema,
-  createSexSchema,
-  createSizeSchema,
-  getSpeciesOptions,
-  getStatusOptions,
-  getSexOptions,
-  getSizeOptions,
+  PET_SEX_LABELS,
+  PET_SIZE_LABELS,
+  PET_SPECIES_LABELS,
+  PET_STATUS_LABELS,
+  PET_COLORS,
+  PET_SPECIES,
+  PET_STATUS,
+  PET_SEXES,
+  PET_SIZES,
+  VACCINES,
 } from "@/features/pets/constants";
+import { useAddPet } from "@/features/pets/hooks";
+import { Pet } from "@/features/pets/types/pet";
 
 // Single schema that handles both modes
 const petFormSchema = z.object({
   name: z.string().min(1, "El nombre es requerido"),
-  species: createSpeciesSchema(),
-  status: createStatusSchema(),
+  species: z.enum([PET_SPECIES.DOG, PET_SPECIES.CAT], {
+    required_error: "La especie es requerida",
+  }),
+  status: z.enum(
+    [
+      PET_STATUS.IN_TRANSIT,
+      PET_STATUS.IN_SHELTER,
+      PET_STATUS.ADOPTED,
+      PET_STATUS.IN_VET,
+    ],
+    {
+      required_error: "El estado es requerido",
+    },
+  ),
   breed: z.string().optional(),
   age: z.number().min(0).max(30).optional(),
-  sex: createSexSchema(),
-  size: createSizeSchema(),
+  sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE]).optional(),
+  size: z.enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE]).optional(),
   colors: z.array(z.string()).optional(),
+  vaccines: z.array(z.string()).optional(),
   description: z.string().optional(),
   photoUrl: z.string().optional(),
 });
 
 type PetFormData = z.infer<typeof petFormSchema>;
 
-export const AddPet = () => {
-  const [open, setOpen] = useState(false);
-  const [isCompleteMode, setIsCompleteMode] = useState(false);
+interface PetFormProps {
+  mode: "add" | "edit";
+  pet?: Pet;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave?: (updatedPet: Pet) => void;
+}
+
+export const PetForm = ({
+  mode,
+  pet,
+  open,
+  onOpenChange,
+  onSave,
+}: PetFormProps) => {
+  const [isCompleteMode, setIsCompleteMode] = useState(
+    mode === "edit" ? true : false,
+  );
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const { addPetAsync, isLoading } = useAddPet();
 
+  // Function to determine if a color is light or dark for text contrast
+  const isLightColor = (hexColor: string): boolean => {
+    // Remove # if present
+    const hex = hexColor.replace("#", "");
+
+    // Convert hex to RGB
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+
+    // Calculate luminance using relative luminance formula
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // Return true if light (luminance > 0.5)
+    return luminance > 0.5;
+  };
+
+  // Get color options with proper styling
+  const getColorOptions = () => {
+    return Object.entries(PET_COLORS).map(([color, hex]) => {
+      const isLight = isLightColor(hex);
+      const textColor = isLight ? "#000000" : "#FFFFFF";
+
+      return {
+        value: color,
+        label: color,
+        style: {
+          // Use solid color with proper text contrast
+          badgeColor: hex,
+          // Force the text color based on background
+          color: textColor,
+          // Add border for better definition
+          border: isLight
+            ? "1px solid rgba(0, 0, 0, 0.1)"
+            : "1px solid rgba(255, 255, 255, 0.2)",
+          // Add subtle shadow for depth
+          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+        },
+      };
+    });
+  };
+
+  // Get vaccine options based on the selected species
+  const getVaccineOptions = () => {
+    const formValues = form.getValues();
+    const speciesVaccines = VACCINES[formValues.species];
+    return Object.entries(speciesVaccines).map(([value, label]) => ({
+      value,
+      label,
+    }));
+  };
+
   // Get options for form selects
-  const speciesOptions = getSpeciesOptions();
-  const statusOptions = getStatusOptions();
-  const sexOptions = getSexOptions();
-  const sizeOptions = getSizeOptions();
+  const speciesOptions = Object.entries(PET_SPECIES_LABELS).map(
+    ([value, label]) => ({
+      value,
+      label,
+    }),
+  );
+  const statusOptions = Object.entries(PET_STATUS_LABELS).map(
+    ([value, label]) => ({
+      value,
+      label,
+    }),
+  );
+  const sexOptions = Object.entries(PET_SEX_LABELS).map(([value, label]) => ({
+    value,
+    label,
+  }));
+  const sizeOptions = Object.entries(PET_SIZE_LABELS).map(([value, label]) => ({
+    value,
+    label,
+  }));
 
   const form = useForm<PetFormData>({
     resolver: zodResolver(petFormSchema),
     defaultValues: {
-      name: "",
-      species: undefined,
-      status: undefined,
-      breed: "",
-      age: undefined,
-      sex: undefined,
-      size: undefined,
-      colors: [],
-      description: "",
-      photoUrl: "",
+      name: pet?.name || "",
+      species: pet?.species || PET_SPECIES.DOG,
+      status: pet?.status || PET_STATUS.IN_SHELTER,
+      breed: pet?.breed || "",
+      age: pet?.age,
+      sex: pet?.sex,
+      size: pet?.size,
+      colors: pet?.colors || [],
+      vaccines: pet?.vaccines || [],
+      description: pet?.description || "",
+      photoUrl: pet?.photoUrl || "",
     },
   });
 
   const onSubmit = async (data: PetFormData) => {
     try {
-      // If in quick mode, only send essential fields
-      const submitData = isCompleteMode
-        ? data
-        : {
-            name: data.name,
-            species: data.species,
-            status: data.status,
-          };
+      if (mode === "edit" && onSave) {
+        // Edit mode - call onSave with updated data
+        const updatedPet: Pet = {
+          ...pet!,
+          ...data,
+          vaccines: data.vaccines as Array<
+            keyof (typeof VACCINES)[keyof typeof PET_SPECIES]
+          >,
+        };
+        onSave(updatedPet);
+        onOpenChange(false);
+      } else {
+        // Add mode - use existing addPetAsync logic
+        // If in quick mode, only send essential fields
+        const submitData = isCompleteMode
+          ? data
+          : {
+              name: data.name,
+              species: data.species,
+              status: data.status,
+            };
 
-      await addPetAsync(submitData);
+        await addPetAsync(submitData);
 
-      // Show success message
-      console.log("Mascota agregada exitosamente");
+        // Show success message
+        console.log("Mascota agregada exitosamente");
 
-      // Close modal and reset form
-      setOpen(false);
-      form.reset();
-      setSelectedFile(null);
-      setIsCompleteMode(false);
+        // Close modal and reset form
+        onOpenChange(false);
+        form.reset();
+        setSelectedFile(null);
+        setIsCompleteMode(false);
+      }
     } catch {
       // Error is handled by the mutation, but we can show a message here too
       console.error(
-        "Error al agregar la mascota. Por favor, intenta de nuevo.",
+        "Error al procesar la mascota. Por favor, intenta de nuevo.",
       );
     }
   };
@@ -154,167 +268,167 @@ export const AddPet = () => {
 
   const handleModeChange = (checked: boolean) => {
     setIsCompleteMode(checked);
-    // No need to sync data since we're using a single form
+    if (!checked) {
+      // Reset non-essential fields when switching to quick mode
+      form.setValue("breed", "");
+      form.setValue("age", undefined);
+      form.setValue("sex", undefined);
+      form.setValue("size", undefined);
+      form.setValue("colors", []);
+      form.setValue("vaccines", []);
+      form.setValue("description", "");
+      form.setValue("photoUrl", "");
+      setSelectedFile(null);
+    }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full bg-amber-200 hover:bg-amber-300 sm:w-auto"
-          size="lg"
-        >
-          <PlusIcon className="size-4" />
-          <span>Agregar mascota</span>
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="flex max-h-[90vh] w-[95vw] flex-col overflow-y-auto p-4 sm:p-6">
-        <DialogHeader>
-          <DialogTitle>Agregar nueva mascota</DialogTitle>
-          <DialogDescription>
-            {isCompleteMode
-              ? "Completa toda la información de la mascota. Los campos marcados con * son requeridos."
-              : "Información básica para agregar rápidamente una mascota. Puedes completar más detalles después."}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-full max-w-2xl overflow-y-auto p-4 sm:max-h-[90dvh] sm:p-6">
+        <DialogHeader className="space-y-2">
+          <DialogTitle className="text-lg">
+            {mode === "edit"
+              ? "Editar información de la mascota"
+              : "Agregar nueva mascota"}
+          </DialogTitle>
+          <DialogDescription className="text-sm">
+            {mode === "edit"
+              ? "Actualiza los detalles de la mascota a continuación. Todos los cambios se guardarán cuando hagas clic en 'Guardar cambios'."
+              : "Completa la información de la nueva mascota. Puedes usar el modo rápido para información básica o el modo completo para todos los detalles."}
           </DialogDescription>
         </DialogHeader>
-
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span
-              className={cn(
-                "text-muted-foreground text-xs sm:text-sm",
-                !isCompleteMode && "text-primary",
-              )}
-            >
-              Modo rápido
-            </span>
-            <Switch
-              checked={isCompleteMode}
-              onCheckedChange={handleModeChange}
-            />
-            <span
-              className={cn(
-                "text-muted-foreground text-xs sm:text-sm",
-                isCompleteMode && "text-primary",
-              )}
-            >
-              Modo completo
-            </span>
-          </div>
-        </div>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 sm:space-y-6"
           >
-            {/* Essential fields - always shown */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre *</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Ej: Luna" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            {/* Mode toggle - only show in add mode */}
+            {mode === "add" && (
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="mode"
+                  checked={isCompleteMode}
+                  onCheckedChange={handleModeChange}
+                />
+                <label
+                  htmlFor="mode"
+                  className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Modo Completo
+                </label>
+              </div>
+            )}
+
+            {/* Basic fields - always visible */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+              <FormItem className="min-w-0 space-y-1">
+                <FormLabel className="text-sm">Nombre *</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Nombre de la mascota"
+                    className="h-9"
+                    {...form.register("name")}
+                  />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
 
               <FormField
                 control={form.control}
                 name="species"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Especie *</FormLabel>
+                  <FormItem className="min-w-0 space-y-1">
+                    <FormLabel className="text-sm">Especie *</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Selecciona una especie" />
+                        <SelectTrigger className="h-9 w-full cursor-pointer">
+                          <SelectValue placeholder="Selecciona la especie" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {speciesOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="cursor-pointer"
+                          >
                             {option.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Estado *</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Selecciona un estado" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {statusOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
             </div>
 
-            {/* Additional fields - only shown in complete mode */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className="min-w-0 space-y-1">
+                    <FormLabel className="text-sm">Estado *</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-9 w-full cursor-pointer">
+                          <SelectValue placeholder="Selecciona el estado" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {statusOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="cursor-pointer"
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+
+              <FormItem className="min-w-0 space-y-1">
+                <FormLabel className="text-sm">Raza</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Raza de la mascota"
+                    className="h-9"
+                    {...form.register("breed")}
+                  />
+                </FormControl>
+                <FormMessage className="text-xs" />
+              </FormItem>
+            </div>
+
+            {/* Complete mode fields */}
             {isCompleteMode && (
               <>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="breed"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Raza</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Ej: Golden Retriever"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
+                <div className="space-y-3">
                   <FormField
                     control={form.control}
                     name="age"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Edad (años)</FormLabel>
+                      <FormItem className="space-y-1">
+                        <FormLabel className="text-sm">Edad (años)</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="Ej: 3"
-                            min="0"
-                            max="30"
+                            placeholder="Edad en años"
+                            className="h-9 w-full sm:max-w-[49%]"
+                            max={40}
                             {...field}
                             onChange={(e) =>
                               field.onChange(
@@ -325,97 +439,125 @@ export const AddPet = () => {
                             }
                           />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage className="text-xs" />
                       </FormItem>
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="sex"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sexo</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Selecciona el sexo" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {sexOptions.map((option) => (
-                              <SelectItem
-                                key={option.value}
-                                value={option.value}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="size"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tamaño</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Selecciona el tamaño" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {sizeOptions.map((option) => (
-                              <SelectItem
-                                key={option.value}
-                                value={option.value}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="colors"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Colores</FormLabel>
-                        <FormControl>
-                          <PetColorMultiSelect
-                            value={field.value}
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="sex"
+                      render={({ field }) => (
+                        <FormItem className="min-w-0 space-y-1">
+                          <FormLabel className="text-sm">Sexo</FormLabel>
+                          <Select
                             onValueChange={field.onChange}
-                            placeholder="Seleccionar colores"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-9 w-full cursor-pointer">
+                                <SelectValue placeholder="Selecciona el sexo" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {sexOptions.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                  className="cursor-pointer"
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="size"
+                      render={({ field }) => (
+                        <FormItem className="min-w-0 space-y-1">
+                          <FormLabel className="text-sm">Tamaño</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className="h-9 w-full cursor-pointer">
+                                <SelectValue placeholder="Selecciona el tamaño" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {sizeOptions.map((option) => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                  className="cursor-pointer"
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage className="text-xs" />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
+
+                <FormField
+                  control={form.control}
+                  name="colors"
+                  render={({ field }) => (
+                    <FormItem className="min-w-0">
+                      <FormLabel>Colores</FormLabel>
+                      <FormControl>
+                        <MultiSelect
+                          searchable
+                          options={getColorOptions()}
+                          value={field.value || []}
+                          onValueChange={field.onChange}
+                          placeholder="Seleccionar colores"
+                          maxCount={5}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="vaccines"
+                  render={({ field }) => (
+                    <FormItem className="min-w-0">
+                      <FormLabel>Vacunas</FormLabel>
+                      <FormControl>
+                        <MultiSelect
+                          options={getVaccineOptions()}
+                          value={field.value || []}
+                          onValueChange={field.onChange}
+                          placeholder="Seleccionar vacunas"
+                          maxCount={4}
+                          searchable
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="min-w-0">
                       <FormLabel>Descripción</FormLabel>
                       <FormControl>
                         <Textarea
@@ -433,7 +575,7 @@ export const AddPet = () => {
                   control={form.control}
                   name="photoUrl"
                   render={() => (
-                    <FormItem>
+                    <FormItem className="min-w-0">
                       <FormLabel>Imagen</FormLabel>
                       <FormControl>
                         <div className="space-y-2 overflow-hidden">
@@ -493,22 +635,43 @@ export const AddPet = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setOpen(false)}
+                onClick={() => onOpenChange(false)}
                 disabled={isLoading}
               >
                 Cancelar
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading
-                  ? "Agregando..."
-                  : isCompleteMode
-                    ? "Agregar mascota"
-                    : "Agregar rápidamente"}
+                  ? mode === "edit"
+                    ? "Guardando..."
+                    : "Agregando..."
+                  : mode === "edit"
+                    ? "Guardar cambios"
+                    : isCompleteMode
+                      ? "Agregar mascota"
+                      : "Agregar rápidamente"}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
+    </Dialog>
+  );
+};
+
+// Keep the old AddPet component for backward compatibility
+export const AddPet = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="w-full sm:w-auto">
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Agregar mascota
+        </Button>
+      </DialogTrigger>
+      <PetForm mode="add" open={open} onOpenChange={setOpen} />
     </Dialog>
   );
 };

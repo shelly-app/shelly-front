@@ -132,7 +132,6 @@ export const PET_COLORS = {
   Rojo: "#DC143C",
   Café: "#A0522D",
   Crema: "#FFFDD0",
-  Caramelo: "#D2691E",
   Arena: "#F4A460",
   Chocolate: "#8B4513",
   Naranja: "#FF8C00",

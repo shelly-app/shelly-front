@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PetColorBadge } from "@/features/pets/components/pet-color-badge";
 import { Button } from "@/components/ui/button";
-import { PetStatusBadge, EditPetDialog } from "@/features/pets/components";
+import { PetStatusBadge, PetForm } from "@/features/pets/components";
 import {
   Clock,
   Heart,
@@ -24,22 +24,6 @@ import {
 import { addDays, intlFormat, subDays } from "date-fns";
 import { BulletList } from "@/components/ui/bullet-list";
 import { Image } from "@/components/ui/image";
-
-// interface PetEvent {
-//   id: string;
-//   type: "vaccine" | "vet_visit" | "adoption" | "arrival";
-//   title: string;
-//   date: string;
-//   description?: string;
-// }
-
-// interface FutureEvent {
-//   id: string;
-//   type: "vaccine" | "vet_appointment" | "checkup";
-//   title: string;
-//   date: string;
-//   description?: string;
-// }
 
 // Mock data for demonstration
 const mockPetData: Pet = {
@@ -339,7 +323,8 @@ export const PetDetailsPage = () => {
         </div>
 
         {/* Edit Dialog */}
-        <EditPetDialog
+        <PetForm
+          mode="edit"
           pet={pet}
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
