@@ -13,6 +13,8 @@ let mockPetsData: Pet[] = [
     breed: "Persa",
     status: PET_STATUS.IN_SHELTER,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
   {
     id: 2,
@@ -22,6 +24,8 @@ let mockPetsData: Pet[] = [
     breed: "labrador Retriever",
     status: PET_STATUS.IN_TRANSIT,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
   {
     id: 3,
@@ -31,6 +35,8 @@ let mockPetsData: Pet[] = [
     breed: "Siamés",
     status: PET_STATUS.ADOPTED,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
   {
     id: 4,
@@ -40,6 +46,8 @@ let mockPetsData: Pet[] = [
     breed: "Pastor Alemán",
     status: PET_STATUS.IN_SHELTER,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
   {
     id: 5,
@@ -49,6 +57,8 @@ let mockPetsData: Pet[] = [
     breed: "Mestizo",
     status: PET_STATUS.IN_TRANSIT,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
 ];
 

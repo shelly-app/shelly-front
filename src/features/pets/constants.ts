@@ -55,9 +55,7 @@ export const PET_SIZE_LABELS = {
   [PET_SIZES.LARGE]: "Grande",
 } as const;
 
-export type Vaccine =
-  | keyof (typeof VACCINES)[typeof PET_SPECIES.DOG]
-  | keyof (typeof VACCINES)[typeof PET_SPECIES.CAT];
+export type Vaccine = keyof (typeof VACCINES)[keyof typeof PET_SPECIES];
 
 export const VACCINES = {
   [PET_SPECIES.DOG]: {

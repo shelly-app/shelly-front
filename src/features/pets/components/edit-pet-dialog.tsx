@@ -22,12 +22,11 @@ import { Badge } from "@/components/ui/badge";
 import { PetColorMultiSelect } from "@/features/pets/components/pet-color-multi-select";
 import {
   PET_SEX_LABELS,
-  PET_SEXES,
   PET_SIZE_LABELS,
-  PET_SIZES,
-  PET_STATUS,
+  PET_SPECIES_LABELS,
   PET_STATUS_LABELS,
   PetStatus,
+  VACCINES,
 } from "@/features/pets/constants";
 import { X } from "lucide-react";
 import { Pet } from "@/features/pets/types/pet";
@@ -83,19 +82,20 @@ export const EditPetDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Pet Information</DialogTitle>
+          <DialogTitle>Editar información de la mascota</DialogTitle>
           <DialogDescription>
-            Update the pet's details below. All changes will be saved when you
-            click "Save Changes".
+            Actualiza los detalles de la mascota a continuación. Todos los
+            cambios se guardarán cuando hagas clic en "Guardar cambios".
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Nombre</Label>
               <Input
                 id="name"
+                type="text"
                 value={editedPet.name}
                 onChange={(e) =>
                   setEditedPet((prev) => ({ ...prev, name: e.target.value }))
@@ -103,25 +103,37 @@ export const EditPetDialog = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="species">Species</Label>
-              <Input
-                id="species"
+              <Label htmlFor="species">Especie</Label>
+              <Select
                 value={editedPet.species}
-                onChange={(e) =>
-                  setEditedPet((prev) => ({
-                    ...prev,
-                    species: e.target.value as PetSpecies,
-                  }))
+                onValueChange={(value: PetSpecies) =>
+                  setEditedPet((prev) => ({ ...prev, species: value }))
                 }
-              />
+              >
+                <SelectTrigger className="w-full cursor-pointer">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(PET_SPECIES_LABELS).map(([value, label]) => (
+                    <SelectItem
+                      key={value}
+                      value={value}
+                      className="cursor-pointer"
+                    >
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="breed">Breed</Label>
+              <Label htmlFor="breed">Raza</Label>
               <Input
                 id="breed"
+                type="text"
                 value={editedPet.breed}
                 onChange={(e) =>
                   setEditedPet((prev) => ({ ...prev, breed: e.target.value }))
@@ -129,9 +141,10 @@ export const EditPetDialog = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="age">Age</Label>
+              <Label htmlFor="age">Edad</Label>
               <Input
                 id="age"
+                type="number"
                 value={editedPet.age}
                 onChange={(e) =>
                   setEditedPet((prev) => ({
@@ -145,7 +158,7 @@ export const EditPetDialog = ({
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">Estado</Label>
               <Select
                 value={editedPet.status}
                 onValueChange={(value: PetStatus) =>
@@ -156,23 +169,16 @@ export const EditPetDialog = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={PET_STATUS.IN_SHELTER}>
-                    {PET_STATUS_LABELS[PET_STATUS.IN_SHELTER]}
-                  </SelectItem>
-                  <SelectItem value={PET_STATUS.IN_TRANSIT}>
-                    {PET_STATUS_LABELS[PET_STATUS.IN_TRANSIT]}
-                  </SelectItem>
-                  <SelectItem value={PET_STATUS.ADOPTED}>
-                    {PET_STATUS_LABELS[PET_STATUS.ADOPTED]}
-                  </SelectItem>
-                  <SelectItem value={PET_STATUS.IN_VET}>
-                    {PET_STATUS_LABELS[PET_STATUS.IN_VET]}
-                  </SelectItem>
+                  {Object.entries(PET_STATUS_LABELS).map(([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sex">Sex</Label>
+              <Label htmlFor="sex">Sexo</Label>
               <Select
                 value={editedPet.sex}
                 onValueChange={(value: PetSex) =>
@@ -183,17 +189,16 @@ export const EditPetDialog = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={PET_SEXES.MALE}>
-                    {PET_SEX_LABELS[PET_SEXES.MALE]}
-                  </SelectItem>
-                  <SelectItem value={PET_SEXES.FEMALE}>
-                    {PET_SEX_LABELS[PET_SEXES.FEMALE]}
-                  </SelectItem>
+                  {Object.entries(PET_SEX_LABELS).map(([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="size">Size</Label>
+              <Label htmlFor="size">Tamaño</Label>
               <Select
                 value={editedPet.size}
                 onValueChange={(value: PetSize) =>
@@ -204,22 +209,18 @@ export const EditPetDialog = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={PET_SIZES.SMALL}>
-                    {PET_SIZE_LABELS[PET_SIZES.SMALL]}
-                  </SelectItem>
-                  <SelectItem value={PET_SIZES.MEDIUM}>
-                    {PET_SIZE_LABELS[PET_SIZES.MEDIUM]}
-                  </SelectItem>
-                  <SelectItem value={PET_SIZES.LARGE}>
-                    {PET_SIZE_LABELS[PET_SIZES.LARGE]}
-                  </SelectItem>
+                  {Object.entries(PET_SIZE_LABELS).map(([value, label]) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label>Colors</Label>
+            <Label>Colores</Label>
             <PetColorMultiSelect
               value={editedPet.colors}
               onValueChange={(colors) =>
@@ -230,11 +231,11 @@ export const EditPetDialog = ({
           </div>
 
           <div className="space-y-2">
-            <Label>Vaccines</Label>
+            <Label>Vacunas</Label>
             <div className="mb-2 flex flex-wrap gap-2">
               {editedPet.vaccines?.map((vaccine) => (
                 <Badge key={vaccine} variant="secondary" className="gap-1">
-                  {vaccine}
+                  {VACCINES[editedPet.species][vaccine as Vaccine]}
                   <X
                     className="h-3 w-3 cursor-pointer"
                     onClick={() => removeVaccine(vaccine)}
@@ -244,19 +245,19 @@ export const EditPetDialog = ({
             </div>
             <div className="flex gap-2">
               <Input
-                placeholder="Add new vaccine"
+                placeholder="Agregar nueva vacuna"
                 value={newVaccine}
                 onChange={(e) => setNewVaccine(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addVaccine()}
               />
               <Button onClick={addVaccine} variant="outline" size="sm">
-                Add
+                Agregar
               </Button>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Descripción</Label>
             <Textarea
               id="description"
               rows={4}
@@ -273,9 +274,9 @@ export const EditPetDialog = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            Cancelar
           </Button>
-          <Button onClick={handleSave}>Save Changes</Button>
+          <Button onClick={handleSave}>Guardar cambios</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
