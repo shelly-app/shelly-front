@@ -167,17 +167,33 @@ export const PetForm = ({
 
   const species = form.watch("species");
 
-  // Reset form and internal state when the dialog is closed
+  // Sync form values when dialog is (re)opened in EDIT mode
   useEffect(() => {
-    if (!open) {
+    if (open && mode === "edit" && pet) {
+      form.reset({
+        name: pet.name ?? "",
+        species: pet.species,
+        status: pet.status,
+        breed: pet.breed ?? "",
+        age: pet.age,
+        sex: pet.sex,
+        size: pet.size,
+        colors: pet.colors ?? [],
+        vaccines: pet.vaccines ?? [],
+        description: pet.description ?? "",
+        photoUrl: pet.photoUrl ?? "",
+      });
+    }
+  }, [open, mode, pet, form]);
+
+  // Clear state when dialog closes in ADD mode only
+  useEffect(() => {
+    if (!open && mode === "add") {
       form.reset();
       setSelectedFile(null);
-      // In add mode, return to quick mode by default when reopening
-      if (mode === "add") {
-        setIsCompleteMode(false);
-      }
+      setIsCompleteMode(false);
     }
-  }, [open, mode, form, setSelectedFile, setIsCompleteMode]);
+  }, [open, mode, form]);
 
   // Get vaccine options based on the selected species
   const vaccineOptions = useMemo(() => {
@@ -544,7 +560,7 @@ export const PetForm = ({
                           searchable
                           hideBadgeIcon
                           options={getColorOptions()}
-                          value={field.value || []}
+                          defaultValue={field.value || []}
                           onValueChange={field.onChange}
                           placeholder="Seleccionar colores"
                           maxCount={5}
