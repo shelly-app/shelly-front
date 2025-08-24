@@ -127,7 +127,9 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
                   className="cursor-pointer transition-colors hover:bg-amber-100/60"
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    navigate(paths.app.pet.getHref(row.original.id.toString()))
+                    navigate(
+                      paths.app.pets.pet.getHref(row.original.id.toString()),
+                    )
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
