@@ -5,6 +5,7 @@ import {
   ChevronDown,
   ChevronUp,
   LucideFile,
+  LucideUsers,
 } from "lucide-react";
 
 import {
@@ -48,6 +49,11 @@ const MENU_ITEMS = [
     title: "Solicitudes",
     path: paths.app.requests.path,
     icon: LucideFile,
+  },
+  {
+    title: "Miembros",
+    path: paths.app.members.path,
+    icon: LucideUsers,
   },
 ];
 

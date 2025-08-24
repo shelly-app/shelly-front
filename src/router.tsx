@@ -73,6 +73,13 @@ const createAppRouter = (queryClient: QueryClient) =>
               convert(queryClient),
             ),
         },
+        {
+          path: paths.app.members.path,
+          lazy: () =>
+            import("./routes/app/members/members.tsx").then(
+              convert(queryClient),
+            ),
+        },
       ],
     },
     {

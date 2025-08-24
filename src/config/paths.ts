@@ -29,5 +29,9 @@ export const paths = {
       path: "/app/requests",
       getHref: () => "/app/requests",
     },
+    members: {
+      path: "/app/members",
+      getHref: () => "/app/members",
+    },
   },
 } as const;
