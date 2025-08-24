@@ -30,7 +30,8 @@ export const MembersListPage = () => {
   }
 
   return (
-    <section className="container mx-auto py-10">
+    <section className="container mx-auto space-y-6 py-10">
+      <h1 className="text-3xl font-bold">Miembros del refugio</h1>
       <div className="flex flex-wrap justify-center gap-6 md:justify-start">
         {members.map((member: Member) => (
           <Card

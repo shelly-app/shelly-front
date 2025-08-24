@@ -4,8 +4,8 @@ import {
   LucidePawPrint,
   ChevronDown,
   ChevronUp,
-  LucideFile,
   LucideUsers,
+  LucideFiles,
 } from "lucide-react";
 
 import {
@@ -48,7 +48,7 @@ const MENU_ITEMS = [
   {
     title: "Solicitudes",
     path: paths.app.requests.path,
-    icon: LucideFile,
+    icon: LucideFiles,
   },
   {
     title: "Miembros",

@@ -67,7 +67,8 @@ export const RequestsListPage = () => {
   }
 
   return (
-    <section className="container mx-auto py-10">
+    <section className="container mx-auto space-y-6 py-10">
+      <h1 className="text-3xl font-bold">Solicitudes de adopción</h1>
       <Tabs value={tabParam} onValueChange={handleTabChange} className="w-full">
         <TabsList className="w-full justify-center md:w-fit md:justify-start">
           <TabsTrigger value="pending">
