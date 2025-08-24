@@ -2,9 +2,8 @@ import { useMemo, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, XIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +31,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { cn } from "@/lib/utils";
 import { MultiSelect } from "@/components/ui/multi-select";
 import {
   PET_SEX_LABELS,
@@ -48,6 +46,7 @@ import {
 } from "@/features/pets/constants";
 import { useAddPet } from "@/features/pets/hooks";
 import { Pet } from "@/features/pets/types/pet";
+import { FileUploader } from "@/components/file-uploader";
 
 // Single schema that handles both modes
 const petFormSchema = z.object({
@@ -96,8 +95,6 @@ export const PetForm = ({
   const [isCompleteMode, setIsCompleteMode] = useState(
     mode === "edit" ? true : false,
   );
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const { addPetAsync, isLoading } = useAddPet();
 
   const form = useForm<PetFormData>({
@@ -190,7 +187,6 @@ export const PetForm = ({
   useEffect(() => {
     if (!open && mode === "add") {
       form.reset();
-      setSelectedFile(null);
       setIsCompleteMode(false);
     }
   }, [open, mode, form]);
@@ -258,7 +254,6 @@ export const PetForm = ({
         // Close modal and reset form
         onOpenChange(false);
         form.reset();
-        setSelectedFile(null);
         setIsCompleteMode(false);
       }
     } catch {
@@ -269,10 +264,8 @@ export const PetForm = ({
     }
   };
 
-  const handleFileChange = (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
+  const handleFileChange = (file: File) => {
     if (file) {
-      setSelectedFile(file);
       // Create a preview URL for the image
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -285,21 +278,10 @@ export const PetForm = ({
   };
 
   const handleRemoveFile = () => {
-    setSelectedFile(null);
     if (isCompleteMode) {
       form.setValue("photoUrl", "");
     }
   };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: handleFileChange,
-    accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".webp"],
-    },
-    maxFiles: 1,
-    multiple: false,
-    maxSize: 10 * 1024 * 1024, // 10MB
-  });
 
   const handleModeChange = (checked: boolean) => {
     setIsCompleteMode(checked);
@@ -313,7 +295,6 @@ export const PetForm = ({
       form.setValue("vaccines", []);
       form.setValue("description", "");
       form.setValue("photoUrl", "");
-      setSelectedFile(null);
     }
   };
 
@@ -618,51 +599,11 @@ export const PetForm = ({
                     <FormItem className="min-w-0">
                       <FormLabel className="w-fit">Imagen</FormLabel>
                       <FormControl>
-                        <div className="space-y-2 overflow-hidden">
-                          <div
-                            {...getRootProps()}
-                            className={cn(
-                              "flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border-2 border-dashed px-4",
-                              isDragActive && "border-primary",
-                              selectedFile && "border-primary bg-primary/5",
-                            )}
-                          >
-                            <input {...getInputProps()} />
-
-                            {selectedFile ? (
-                              <>
-                                <div className="flex h-full w-full flex-col items-center justify-center overflow-hidden text-center">
-                                  <div className="text-muted-foreground truncate text-sm">
-                                    {selectedFile.name}
-                                  </div>
-                                  <div className="text-muted-foreground mt-1 text-xs">
-                                    Haz clic o arrastra para cambiar
-                                  </div>
-                                </div>
-                              </>
-                            ) : (
-                              <div className="flex h-full flex-col items-center justify-center text-center">
-                                <p className="text-muted-foreground text-sm">
-                                  {isDragActive
-                                    ? "Suelta la imagen aquí (máx. 10MB)"
-                                    : "Sube una imagen de la mascota (JPG, PNG, WebP) (máx. 10MB)"}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                          {selectedFile && (
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={handleRemoveFile}
-                              className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
-                            >
-                              <XIcon className="mr-1 h-3 w-3" />
-                              Eliminar imagen
-                            </Button>
-                          )}
-                        </div>
+                        <FileUploader
+                          onFileChange={handleFileChange}
+                          onRemoveFile={handleRemoveFile}
+                          types={["image"]}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -715,5 +656,3 @@ export const AddPet = () => {
     </Dialog>
   );
 };
-
-// TODO: fix Vacunas, fix styles when error in form
