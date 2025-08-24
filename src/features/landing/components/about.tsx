@@ -1,57 +1,57 @@
-import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
-import { Image } from '@/components/ui/image';
-import { TiltImage } from '@/components/ui/tilt-image';
-import { H2, H3, Lead } from '@/components/ui/text';
-import ShellyAppDesktop from '@/assets/images/shelly-app-desktop.webp';
-import { ShellyGradient } from '@/components/ui/shelly-gradient';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
+import { TwoSectionsLayout } from "@/components/layouts/two-sections-layout";
+import { Image } from "@/components/ui/image";
+import { TiltImage } from "@/components/ui/tilt-image";
+import { H2, H3, Lead } from "@/components/ui/text";
+import ShellyAppDesktop from "@/assets/images/shelly-app-desktop.webp";
+import { ShellyGradient } from "@/components/ui/shelly-gradient";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import {
   BotMessageSquareIcon,
   ClipboardListIcon,
   DogIcon,
   UserPenIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
 const ABOUT_FEATURES = {
   firstSection: [
     {
       icon: DogIcon,
-      title: 'Visualización',
-      description: 'Obtené un vistazo general de tu refugio en un solo lugar.',
-      color: 'green',
+      title: "Visualización",
+      description: "Obtené un vistazo general de tu refugio en un solo lugar.",
+      color: "green",
     },
     {
       icon: UserPenIcon,
-      title: 'Adopciones',
+      title: "Adopciones",
       description:
-        'Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones.',
-      color: 'sky',
+        "Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones.",
+      color: "sky",
     },
   ],
   secondSection: [
     {
       icon: BotMessageSquareIcon,
-      title: 'Chat',
+      title: "Chat",
       description:
-        'Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp.',
-      color: 'purple',
+        "Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp.",
+      color: "purple",
     },
     {
       icon: ClipboardListIcon,
-      title: 'Detalle',
+      title: "Detalle",
       description:
-        'Accedé a los detalles de cada mascota con registro histórico de eventos.',
-      color: 'orange',
+        "Accedé a los detalles de cada mascota con registro histórico de eventos.",
+      color: "orange",
     },
   ],
 };
 
 const COLOR_CLASSES = {
-  green: 'bg-gradient-to-br from-green-200 to-green-300 text-green-500',
-  orange: 'bg-gradient-to-br from-orange-200 to-orange-300 text-orange-500',
-  sky: 'bg-gradient-to-br from-sky-200 to-sky-300 text-sky-500',
-  purple: 'bg-gradient-to-br from-purple-200 to-purple-300 text-purple-500',
+  green: "bg-gradient-to-br from-green-200 to-green-300 text-green-500",
+  orange: "bg-gradient-to-br from-orange-200 to-orange-300 text-orange-500",
+  sky: "bg-gradient-to-br from-sky-200 to-sky-300 text-sky-500",
+  purple: "bg-gradient-to-br from-purple-200 to-purple-300 text-purple-500",
 } as const;
 
 export const About = () => {
@@ -71,10 +71,10 @@ export const About = () => {
               <Lead size="lg">
                 Lo sabemos, gestionar un refugio de mascotas no es fácil.
                 Mantener un registro de tus mascotas, adopciones y eventos es
-                una tarea que requiere mucho tiempo y esfuerzo.{' '}
+                una tarea que requiere mucho tiempo y esfuerzo.{" "}
                 <ShellyGradient variant="lead" size="lg">
                   Shelly
-                </ShellyGradient>{' '}
+                </ShellyGradient>{" "}
                 vino a cambiar eso.
               </Lead>
             </div>
@@ -128,13 +128,13 @@ const AboutFeature = ({
     <div className="flex gap-4">
       <div
         className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-xl p-2 shadow-lg transition-transform hover:scale-110',
+          "flex h-10 w-10 items-center justify-center rounded-xl p-2 shadow-lg transition-transform hover:scale-110",
           COLOR_CLASSES[color as keyof typeof COLOR_CLASSES],
         )}
       >
         <Icon
           className={cn(
-            COLOR_CLASSES[color as keyof typeof COLOR_CLASSES].split(' ')[2],
+            COLOR_CLASSES[color as keyof typeof COLOR_CLASSES].split(" ")[2],
           )}
         />
       </div>

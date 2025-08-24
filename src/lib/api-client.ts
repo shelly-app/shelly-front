@@ -1,11 +1,11 @@
-import Axios, { InternalAxiosRequestConfig } from 'axios';
+import Axios, { InternalAxiosRequestConfig } from "axios";
 
 // import { useNotifications } from '@/components/ui/notifications';
-import { paths } from '@/config/paths';
+import { paths } from "@/config/paths";
 
 const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
   if (config.headers) {
-    config.headers.Accept = 'application/json';
+    config.headers.Accept = "application/json";
   }
 
   config.withCredentials = true;
@@ -32,7 +32,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       const searchParams = new URLSearchParams();
       const redirectTo =
-        searchParams.get('redirectTo') || window.location.pathname;
+        searchParams.get("redirectTo") || window.location.pathname;
       window.location.href = paths.auth.signIn.getHref(redirectTo);
     }
 

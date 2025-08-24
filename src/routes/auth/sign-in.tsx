@@ -1,15 +1,15 @@
-import { useAuth } from 'react-oidc-context';
-import { useEffect } from 'react';
-import { NavLink, useNavigate, useSearchParams } from 'react-router';
+import { useAuth } from "react-oidc-context";
+import { useEffect } from "react";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 
-import { TwoSectionsLayout } from '@/components/layouts/two-sections-layout';
-import { AuthLayout } from '@/components/layouts/auth-layout';
-import { SignInLoadingDialog } from '@/features/auth/components/sign-in-loading-dialog';
-import { SocialSignIn } from '@/features/auth/components/social-sign-in';
-import { SignInPetsFigure } from '@/features/auth/components/sign-in-pets-figure';
+import { TwoSectionsLayout } from "@/components/layouts/two-sections-layout";
+import { AuthLayout } from "@/components/layouts/auth-layout";
+import { SignInLoadingDialog } from "@/features/auth/components/sign-in-loading-dialog";
+import { SocialSignIn } from "@/features/auth/components/social-sign-in";
+import { SignInPetsFigure } from "@/features/auth/components/sign-in-pets-figure";
 
-import { paths } from '@/config/paths';
-import { ArrowLeft } from 'lucide-react';
+import { paths } from "@/config/paths";
+import { ArrowLeft } from "lucide-react";
 
 export const SignInRoute = () => {
   const navigate = useNavigate();

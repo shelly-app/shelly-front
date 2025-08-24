@@ -1,5 +1,5 @@
-import { cn } from '@/lib/utils';
-import { ReactNode } from 'react';
+import { cn } from "@/lib/utils";
+import { ReactNode } from "react";
 
 type TwoSectionsLayoutProps = {
   firstSectionContent: React.ReactNode;
@@ -14,16 +14,16 @@ type TwoSectionsLayoutProps = {
 export const TwoSectionsLayout = ({
   firstSectionContent,
   secondSectionContent,
-  className = '',
+  className = "",
 }: TwoSectionsLayoutProps) => {
   if (!firstSectionContent || !secondSectionContent) {
-    throw new Error('Both firstContent and secondContent must be provided');
+    throw new Error("Both firstContent and secondContent must be provided");
   }
 
   return (
     <div
       className={cn(
-        'flex h-full w-full flex-col gap-4 px-8 py-4 md:flex-row md:px-12 md:py-8',
+        "flex h-full w-full flex-col gap-4 px-8 py-4 md:flex-row md:px-12 md:py-8",
         className,
       )}
     >
@@ -36,18 +36,18 @@ export const TwoSectionsLayout = ({
 const SectionContent = ({
   children,
   ratio = 1,
-  className = '',
+  className = "",
 }: {
   children: ReactNode;
   ratio?: number;
   className?: string;
 }) => {
   if (ratio <= 0) {
-    throw new Error('Ratio must be greater than 0');
+    throw new Error("Ratio must be greater than 0");
   }
 
   return (
-    <section style={{ flex: ratio }} className={cn('h-full w-full', className)}>
+    <section style={{ flex: ratio }} className={cn("h-full w-full", className)}>
       {children}
     </section>
   );

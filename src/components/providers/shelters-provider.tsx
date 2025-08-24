@@ -4,9 +4,9 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from 'react';
-import type { Shelter } from '@/types/api';
-import { useQuery } from '@tanstack/react-query';
+} from "react";
+import type { Shelter } from "@/types/api";
+import { useQuery } from "@tanstack/react-query";
 
 type SheltersContextProps = {
   shelters: Shelter[];
@@ -19,20 +19,20 @@ type SheltersContextProps = {
 const MOCK_SHELTERS: Shelter[] = [
   {
     id: 1,
-    name: 'Adopta un Camperito',
-    address: 'Calle Falsa 123',
-    phone: '1243312421',
-    email: 'example@example.com',
-    website: 'example.com',
+    name: "Adopta un Camperito",
+    address: "Calle Falsa 123",
+    phone: "1243312421",
+    email: "example@example.com",
+    website: "example.com",
     createdAt: new Date().getTime(),
   },
   {
     id: 2,
-    name: 'Zaguastes',
-    address: 'Calle Falsa 321',
-    phone: '998876667',
-    email: 'example1@example.com',
-    website: 'example1.com',
+    name: "Zaguastes",
+    address: "Calle Falsa 321",
+    phone: "998876667",
+    email: "example1@example.com",
+    website: "example1.com",
     createdAt: new Date().getTime(),
   },
 ];
@@ -48,7 +48,7 @@ const SheltersProvider = ({ children }: { children: ReactNode }) => {
     // TODO: Handle errors properly
     // isError,
   } = useQuery({
-    queryKey: ['shelters'],
+    queryKey: ["shelters"],
     queryFn: async () => {
       // const response = await fetch('/api/shelters');
       // // TODO: Handle errors properly
@@ -87,7 +87,7 @@ const SheltersProvider = ({ children }: { children: ReactNode }) => {
 const useShelters = () => {
   const context = useContext(SheltersContext);
   if (!context) {
-    throw new Error('useShelters must be used within a SheltersProvider.');
+    throw new Error("useShelters must be used within a SheltersProvider.");
   }
 
   return context;

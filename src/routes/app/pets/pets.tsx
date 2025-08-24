@@ -1,5 +1,5 @@
-import { Pets } from '@/features/pets/pets';
+import { PetsListPage } from "@/features/pets/pages";
 
 export const PetsRoute = () => {
-  return <Pets />;
+  return <PetsListPage />;
 };

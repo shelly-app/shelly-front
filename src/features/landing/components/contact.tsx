@@ -1,17 +1,17 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { H2, H3, Lead, Paragraph } from '@/components/ui/text';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Building2, Heart, Send, CheckCircle } from 'lucide-react';
-import { useState } from 'react';
-import { useContactForm } from '@/features/landing/hooks/use-contact-form';
-import { Progress } from '@/components/ui/progress';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { H2, H3, Lead, Paragraph } from "@/components/ui/text";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Building2, Heart, Send, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { useContactForm } from "@/features/landing/hooks/use-contact-form";
+import { Progress } from "@/components/ui/progress";
 
 export const Contact = () => {
-  const [activeTab, setActiveTab] = useState('shelter');
+  const [activeTab, setActiveTab] = useState("shelter");
   const {
     formData,
     isSubmitted,
@@ -102,7 +102,7 @@ export const Contact = () => {
                       id="shelter-name"
                       value={formData.shelterName}
                       onChange={(e) =>
-                        handleInputChange('shelterName', e.target.value)
+                        handleInputChange("shelterName", e.target.value)
                       }
                       placeholder="Ej: Refugio Amor Animal"
                       required
@@ -114,7 +114,7 @@ export const Contact = () => {
                       id="shelter-type"
                       value={formData.shelterType}
                       onChange={(e) =>
-                        handleInputChange('shelterType', e.target.value)
+                        handleInputChange("shelterType", e.target.value)
                       }
                       placeholder="Ej: Perros y gatos, Solo perros, etc."
                       required
@@ -130,7 +130,7 @@ export const Contact = () => {
                     id="shelter-location"
                     value={formData.shelterLocation}
                     onChange={(e) =>
-                      handleInputChange('shelterLocation', e.target.value)
+                      handleInputChange("shelterLocation", e.target.value)
                     }
                     placeholder="Ciudad, Provincia, País"
                     required
@@ -144,7 +144,7 @@ export const Contact = () => {
                       id="contact-name"
                       value={formData.name}
                       onChange={(e) =>
-                        handleInputChange('name', e.target.value)
+                        handleInputChange("name", e.target.value)
                       }
                       placeholder="Tu nombre completo"
                       required
@@ -157,7 +157,7 @@ export const Contact = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) =>
-                        handleInputChange('email', e.target.value)
+                        handleInputChange("email", e.target.value)
                       }
                       placeholder="tu@email.com"
                       required
@@ -171,7 +171,7 @@ export const Contact = () => {
                     id="contact-phone"
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    onChange={(e) => handleInputChange("phone", e.target.value)}
                     placeholder="+54 9 11 1234-5678"
                   />
                 </div>
@@ -182,7 +182,7 @@ export const Contact = () => {
                     id="shelter-message"
                     value={formData.message}
                     onChange={(e) =>
-                      handleInputChange('message', e.target.value)
+                      handleInputChange("message", e.target.value)
                     }
                     placeholder="Contanos sobre tu refugio, cuántas mascotas tenés actualmente, y cualquier información adicional que consideres relevante..."
                     rows={4}
@@ -232,7 +232,7 @@ export const Contact = () => {
                       id="sponsor-name"
                       value={formData.name}
                       onChange={(e) =>
-                        handleInputChange('name', e.target.value)
+                        handleInputChange("name", e.target.value)
                       }
                       placeholder="Tu nombre completo"
                       required
@@ -245,7 +245,7 @@ export const Contact = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) =>
-                        handleInputChange('email', e.target.value)
+                        handleInputChange("email", e.target.value)
                       }
                       placeholder="tu@email.com"
                       required
@@ -260,7 +260,7 @@ export const Contact = () => {
                       id="sponsor-organization"
                       value={formData.organization}
                       onChange={(e) =>
-                        handleInputChange('organization', e.target.value)
+                        handleInputChange("organization", e.target.value)
                       }
                       placeholder="Nombre de tu empresa u organización"
                     />
@@ -272,7 +272,7 @@ export const Contact = () => {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) =>
-                        handleInputChange('phone', e.target.value)
+                        handleInputChange("phone", e.target.value)
                       }
                       placeholder="+54 9 11 1234-5678"
                     />
@@ -288,7 +288,7 @@ export const Contact = () => {
                       id="contacthip-type"
                       value={formData.contacthipType}
                       onChange={(e) =>
-                        handleInputChange('contacthipType', e.target.value)
+                        handleInputChange("contacthipType", e.target.value)
                       }
                       placeholder="Ej: Donación única, Patrocinio mensual, etc."
                       required
@@ -302,7 +302,7 @@ export const Contact = () => {
                       id="sponsor-budget"
                       value={formData.budget}
                       onChange={(e) =>
-                        handleInputChange('budget', e.target.value)
+                        handleInputChange("budget", e.target.value)
                       }
                       placeholder="Ej: $10,000 - $50,000"
                     />
@@ -315,7 +315,7 @@ export const Contact = () => {
                     id="sponsor-message"
                     value={formData.message}
                     onChange={(e) =>
-                      handleInputChange('message', e.target.value)
+                      handleInputChange("message", e.target.value)
                     }
                     placeholder="Contanos sobre tu interés en patrocinar Shelly, cómo te gustaría colaborar, y cualquier pregunta que tengas..."
                     rows={4}

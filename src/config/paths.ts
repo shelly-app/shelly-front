@@ -1,28 +1,28 @@
 export const paths = {
   home: {
-    path: '/',
-    getHref: () => '/',
+    path: "/",
+    getHref: () => "/",
   },
 
   auth: {
     signIn: {
-      path: '/auth/sign-in',
+      path: "/auth/sign-in",
       getHref: (redirectTo?: string | null | undefined) =>
-        `/auth/sign-in${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ''}`,
+        `/auth/sign-in${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
   },
 
   app: {
     root: {
-      path: '/app',
-      getHref: () => '/app',
+      path: "/app",
+      getHref: () => "/app",
     },
     pets: {
-      path: '/app/pets',
-      getHref: () => '/app/pets',
+      path: "/app/pets",
+      getHref: () => "/app/pets",
     },
     pet: {
-      path: '/app/pets/:petId',
+      path: "/app/pets/:petId",
       getHref: (id: string) => `/app/pets/${id}`,
     },
   },

@@ -2,12 +2,12 @@ export const Image = ({
   src,
   alt,
   className,
-  loading = 'eager',
+  loading = "eager",
 }: {
   src: string;
   alt: string;
   className?: string;
-  loading?: 'eager' | 'lazy';
+  loading?: "eager" | "lazy";
 }) => {
   return (
     <figure className={className}>

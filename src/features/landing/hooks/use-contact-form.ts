@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 
 export interface ContactFormData {
   name: string;
@@ -25,13 +25,13 @@ const submitContactForm = async (
   const isSuccess = Math.random() > 0.1; // 90% success rate
 
   if (isSuccess) {
-    console.log('Form data submitted:', data);
+    console.log("Form data submitted:", data);
     return {
       success: true,
-      message: 'Mensaje enviado con éxito',
+      message: "Mensaje enviado con éxito",
     };
   } else {
-    throw new Error('Error al enviar el mensaje. Por favor, intentá de nuevo.');
+    throw new Error("Error al enviar el mensaje. Por favor, intentá de nuevo.");
   }
 };
 
@@ -40,16 +40,16 @@ export const useContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [formData, setFormData] = useState<ContactFormData>({
-    name: '',
-    email: '',
-    phone: '',
-    organization: '',
-    message: '',
-    shelterName: '',
-    shelterLocation: '',
-    shelterType: '',
-    contacthipType: '',
-    budget: '',
+    name: "",
+    email: "",
+    phone: "",
+    organization: "",
+    message: "",
+    shelterName: "",
+    shelterLocation: "",
+    shelterType: "",
+    contacthipType: "",
+    budget: "",
   });
 
   const contactMutation = useMutation({
@@ -77,21 +77,21 @@ export const useContactForm = () => {
         setIsSubmitted(false);
         setProgress(0);
         setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          organization: '',
-          message: '',
-          shelterName: '',
-          shelterLocation: '',
-          shelterType: '',
-          contacthipType: '',
-          budget: '',
+          name: "",
+          email: "",
+          phone: "",
+          organization: "",
+          message: "",
+          shelterName: "",
+          shelterLocation: "",
+          shelterType: "",
+          contacthipType: "",
+          budget: "",
         });
       }, duration);
     },
     onError: (error: Error) => {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
     },
   });
 

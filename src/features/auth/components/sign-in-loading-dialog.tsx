@@ -1,5 +1,5 @@
-import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
-import { Spinner } from '@/components/ui/spinner';
+import { Dialog, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
 
 export const SignInLoadingDialog = ({ isLoading }: { isLoading: boolean }) => (
   <Dialog open={isLoading}>

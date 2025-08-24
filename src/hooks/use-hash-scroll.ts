@@ -1,5 +1,5 @@
-import { useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router';
+import { useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
 export const useHashScroll = () => {
   const location = useLocation();
@@ -14,7 +14,7 @@ export const useHashScroll = () => {
 
     window.scrollTo({
       top: offsetPosition,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   }, []);
 
@@ -25,25 +25,25 @@ export const useHashScroll = () => {
         setTimeout(() => {
           scrollToElement(id);
         }, 100);
-      } else if (location.pathname === '/') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (location.pathname === "/") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     };
 
     handleHashChange();
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, [location.hash, location.pathname, scrollToElement]);
 
   const scrollToSection = useCallback(
     (sectionId: string) => {
-      const cleanId = sectionId.replace('#', '');
-      const isHome = cleanId === '/' || cleanId === '';
+      const cleanId = sectionId.replace("#", "");
+      const isHome = cleanId === "/" || cleanId === "";
 
-      if (location.pathname === '/') {
-        scrollToElement(isHome ? 'hero' : cleanId);
-        window.history.pushState(null, '', isHome ? '/' : `#${cleanId}`);
+      if (location.pathname === "/") {
+        scrollToElement(isHome ? "hero" : cleanId);
+        window.history.pushState(null, "", isHome ? "/" : `#${cleanId}`);
       }
     },
     [location.pathname, scrollToElement],

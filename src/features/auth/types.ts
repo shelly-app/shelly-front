@@ -1,1 +1,1 @@
-export type AuthProvider = 'Google';
+export type AuthProvider = "Google";
