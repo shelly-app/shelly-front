@@ -32,7 +32,7 @@ const ABOUT_FEATURES = {
   secondSection: [
     {
       icon: BotMessageSquareIcon,
-      title: "Chat",
+      title: "Chatbot",
       description:
         "Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp.",
       color: "purple",
