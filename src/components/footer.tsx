@@ -7,17 +7,19 @@ import { Heart, Mail, ArrowUp } from "lucide-react";
 import ShellyLogo from "@/assets/images/shelly-logo.webp";
 import { cn } from "@/lib/utils";
 import { useHashScroll } from "@/hooks/use-hash-scroll";
+import { TermsConditionsDialog } from "./terms-conditions-dialog";
+import { useState } from "react";
 
 const FOOTER_LINKS = [
   { label: "Sobre Nosotros", href: "#about" },
   { label: "Adoptar", href: "#adopt" },
   { label: "Contacto", href: "#contact" },
-  { label: "Términos", href: "#" },
-  { label: "Privacidad", href: "#" },
+  { label: "Términos y condiciones", href: "#" },
 ] as const;
 
 export const Footer = ({ className }: { className?: string }) => {
   const { scrollToSection } = useHashScroll();
+  const [termsDialogOpen, setTermsDialogOpen] = useState(false);
 
   return (
     <footer className={cn("bg-amber-100 text-amber-900", className)}>
@@ -45,13 +47,19 @@ export const Footer = ({ className }: { className?: string }) => {
         {/* Links */}
         <div className="mb-6 flex flex-wrap justify-center gap-6">
           {FOOTER_LINKS.map((link) => (
-            <a
+            <button
               key={link.label}
-              href={link.href}
-              className="text-sm text-amber-700 transition-colors hover:text-amber-900 hover:underline"
+              onClick={() => {
+                if (link.label === "Términos y condiciones") {
+                  setTermsDialogOpen(true);
+                } else {
+                  scrollToSection(link.href);
+                }
+              }}
+              className="cursor-pointer text-sm text-amber-700 transition-colors hover:text-amber-900 hover:underline"
             >
               {link.label}
-            </a>
+            </button>
           ))}
         </div>
 
@@ -82,6 +90,11 @@ export const Footer = ({ className }: { className?: string }) => {
           </Button>
         </div>
       </div>
+
+      <TermsConditionsDialog
+        open={termsDialogOpen}
+        onOpenChange={setTermsDialogOpen}
+      />
     </footer>
   );
 };
