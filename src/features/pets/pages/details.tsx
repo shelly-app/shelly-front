@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PetColorBadge } from "@/features/pets/components/pet-color-badge";
+import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
 import { PetStatusBadge, PetForm } from "@/features/pets/components";
 import {
@@ -129,7 +129,7 @@ export const PetDetailsPage = () => {
     const timer = setTimeout(() => {
       setPet(mockPetData);
       setIsLoading(false);
-    }, 5000);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -269,7 +269,7 @@ export const PetDetailsPage = () => {
                       <div className="flex flex-wrap gap-1">
                         {pet.colors && pet.colors.length > 0 ? (
                           pet.colors?.map((color) => (
-                            <PetColorBadge
+                            <ColorBadge
                               key={color}
                               color={color}
                               className="text-xs"
