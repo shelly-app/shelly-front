@@ -30,7 +30,9 @@ export const getFullName = (firstName?: string, lastName?: string) => {
   return fullName;
 };
 
-export const formatDate = (date: number) => {
+export const formatDate = (date: number | null) => {
+  if (!date) return "";
+
   return new Date(date).toLocaleDateString("es-AR", {
     day: "2-digit",
     month: "2-digit",

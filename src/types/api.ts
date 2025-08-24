@@ -6,7 +6,6 @@ export type BaseEntity = {
   id: number;
   createdAt: number | null;
   updatedAt: number | null;
-  archivedAt: number | null;
 };
 
 // This type appends the BaseEntity type to all properties of T

@@ -1,4 +1,6 @@
-export interface AdoptionRequest {
+import { BaseEntity } from "@/types/api";
+
+export interface AdoptionRequest extends BaseEntity {
   id: number;
   petId: number;
   petName: string;
@@ -8,7 +10,8 @@ export interface AdoptionRequest {
   requesterPhone?: string;
   status: "pending" | "approved" | "rejected";
   message?: string;
-  createdAt: number;
+  rejectedAt: number | null;
+  approvedAt: number | null;
 
   questionnaire: {
     location: string;

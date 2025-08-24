@@ -15,6 +15,9 @@ const mockRequestsData: AdoptionRequest[] = [
     status: REQUEST_STATUS.PENDING,
     message: "Me encantaría adoptar a Luna y ofrecerle un hogar amoroso.",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    approvedAt: null,
+    rejectedAt: null,
     questionnaire: {
       location: "CABA, Buenos Aires, Argentina",
       familyComposition: "Soltero",
@@ -32,6 +35,9 @@ const mockRequestsData: AdoptionRequest[] = [
     status: REQUEST_STATUS.APPROVED,
     message: "Tengo experiencia con perros y un gran jardín para Rocky.",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    approvedAt: new Date().getTime(),
+    rejectedAt: null,
     questionnaire: {
       location: "San Antonio de Areco, Buenos Aires, Argentina",
       familyComposition: "Casado, 2 hijos",
@@ -49,6 +55,9 @@ const mockRequestsData: AdoptionRequest[] = [
     status: REQUEST_STATUS.REJECTED,
     message: "Busco un compañero para mi hija y Misha parece perfecta.",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    approvedAt: null,
+    rejectedAt: new Date().getTime(),
     questionnaire: {
       location: "Campana, Buenos Aires, Argentina",
       familyComposition: "Soltero, 1 hija",
@@ -65,6 +74,9 @@ const mockRequestsData: AdoptionRequest[] = [
     requesterPhone: "+5491112345678",
     status: REQUEST_STATUS.PENDING,
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    approvedAt: null,
+    rejectedAt: null,
     questionnaire: {
       location: "Campana, Buenos Aires, Argentina",
       familyComposition: "Soltero, 1 hija",

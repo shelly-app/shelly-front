@@ -22,7 +22,10 @@ import {
 } from "@/features/requests/components/request-action-dialog";
 import { cn, formatDate } from "@/lib/utils";
 import { ChevronDown, Ellipsis } from "lucide-react";
-import { QUESTIONNAIRE_LABELS } from "@/features/requests/constants";
+import {
+  QUESTIONNAIRE_LABELS,
+  REQUEST_STATUS,
+} from "@/features/requests/constants";
 
 interface RequestCardProps {
   request: AdoptionRequest;
@@ -116,6 +119,16 @@ export const RequestCard = ({ request }: RequestCardProps) => {
         </CardHeader>
         {isOpen && (
           <CardContent className="grid gap-3 pb-4 text-sm">
+            {request.status === REQUEST_STATUS.APPROVED && (
+              <span className="text-muted-foreground text-xs">
+                Aprobado el: {formatDate(request.approvedAt)}
+              </span>
+            )}
+            {request.status === REQUEST_STATUS.REJECTED && (
+              <span className="text-muted-foreground text-xs">
+                Rechazado el: {formatDate(request.rejectedAt)}
+              </span>
+            )}
             <p>
               <strong>Correo:&nbsp;</strong>
               {request.requesterEmail}
