@@ -1,0 +1,1 @@
+export { RequestsListPage } from "./list";

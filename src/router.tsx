@@ -62,9 +62,16 @@ const createAppRouter = (queryClient: QueryClient) =>
             import("./routes/app/pets/pets.tsx").then(convert(queryClient)),
         },
         {
-          path: paths.app.pet.path,
+          path: paths.app.pets.pet.path,
           lazy: () =>
             import("./routes/app/pets/pet.tsx").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.requests.path,
+          lazy: () =>
+            import("./routes/app/requests/requests.tsx").then(
+              convert(queryClient),
+            ),
         },
       ],
     },

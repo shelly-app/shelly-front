@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react";
 
-import { LucidePawPrint, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  LucidePawPrint,
+  ChevronDown,
+  ChevronUp,
+  LucideFile,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -33,11 +38,16 @@ import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Separator } from "@/components/ui/separator";
 
 // Menu items.
-const items = [
+const MENU_ITEMS = [
   {
     title: "Mascotas",
     path: paths.app.pets.path,
     icon: LucidePawPrint,
+  },
+  {
+    title: "Solicitudes",
+    path: paths.app.requests.path,
+    icon: LucideFile,
   },
 ];
 
@@ -93,7 +103,7 @@ const AppSidebar = () => {
       <SidebarContent className="px-2">
         <nav>
           <SidebarMenu>
-            {items.map((item) => (
+            {MENU_ITEMS.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
                   <div
@@ -187,7 +197,7 @@ const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="cursor-pointer justify-center">
-                    <Text variant="ellipsis">
+                    <Text variant="ellipsis" weight="medium">
                       {isCollapsed && !isMobile
                         ? currentShelter?.name[0].toUpperCase()
                         : currentShelter?.name}

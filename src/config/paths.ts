@@ -20,10 +20,14 @@ export const paths = {
     pets: {
       path: "/app/pets",
       getHref: () => "/app/pets",
+      pet: {
+        path: "/app/pets/:petId",
+        getHref: (id: string) => `/app/pets/${id}`,
+      },
     },
-    pet: {
-      path: "/app/pets/:petId",
-      getHref: (id: string) => `/app/pets/${id}`,
+    requests: {
+      path: "/app/requests",
+      getHref: () => "/app/requests",
     },
   },
 } as const;
