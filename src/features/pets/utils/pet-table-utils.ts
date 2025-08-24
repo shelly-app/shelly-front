@@ -6,4 +6,5 @@ export const petStatusColorMap: Record<PetStatus, string> = {
     "bg-amber-200 text-amber-800 border border-amber-300",
   [PET_STATUS.ADOPTED]:
     "bg-emerald-200 text-emerald-800 border border-emerald-300",
+  [PET_STATUS.IN_VET]: "bg-indigo-200 text-indigo-800 border border-indigo-300",
 };

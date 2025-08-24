@@ -49,8 +49,13 @@ const createPet = async (data: AddPetData): Promise<Pet> => {
     age: (data as CompleteAddPetData).age,
     sex: (data as CompleteAddPetData).sex,
     size: (data as CompleteAddPetData).size,
-    color: (data as CompleteAddPetData).color,
+    colors:
+      (data as CompleteAddPetData).color !== undefined
+        ? [(data as CompleteAddPetData).color!]
+        : undefined,
     description: (data as CompleteAddPetData).description,
+    updatedAt: null,
+    archivedAt: null,
     createdAt: new Date().getTime(),
   };
 

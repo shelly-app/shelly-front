@@ -25,6 +25,8 @@ const MOCK_SHELTERS: Shelter[] = [
     email: "example@example.com",
     website: "example.com",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
   {
     id: 2,
@@ -34,6 +36,8 @@ const MOCK_SHELTERS: Shelter[] = [
     email: "example1@example.com",
     website: "example1.com",
     createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
   },
 ];
 
