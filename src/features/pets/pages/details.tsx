@@ -188,7 +188,7 @@ export const PetDetailsPage = () => {
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Pet Image */}
-          <div className="h-[300px] lg:aspect-square lg:h-auto">
+          <div className="h-[300px] flex-1 lg:aspect-square lg:h-auto">
             <Card className="h-full overflow-hidden py-0 shadow-lg">
               <CardContent className="h-full p-0">
                 <Image
@@ -202,7 +202,7 @@ export const PetDetailsPage = () => {
           </div>
 
           {/* Basic Info */}
-          <div className="space-y-4 lg:w-2/3">
+          <div className="flex-2 space-y-4 lg:w-2/3">
             <Card className="shadow-lg">
               <CardHeader>
                 <div className="flex flex-col flex-wrap gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -215,7 +215,7 @@ export const PetDetailsPage = () => {
                       {PET_SPECIES_LABELS[pet.species]}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <PetStatusBadge
                       status={pet.status}
                       className="px-2! py-1 text-xs lg:px-3 lg:py-2 lg:text-sm"
