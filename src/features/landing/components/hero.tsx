@@ -5,11 +5,11 @@ import { ArrowDown, PawPrint } from "lucide-react";
 import LimonImage from "@/assets/images/limon.webp";
 import LilaImage from "@/assets/images/lila.webp";
 import LuciferImage from "@/assets/images/lucifer.webp";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useMobile } from "@/hooks/use-media-queries";
 import { useHashScroll } from "@/hooks/use-hash-scroll";
 
 export const Hero = () => {
-  const isMobile = useIsMobile();
+  const isMobile = useMobile();
   const { scrollToSection } = useHashScroll();
 
   const handleCtaClick = () => {

@@ -30,7 +30,7 @@ import { useShelters } from "@/components/providers/shelters-provider";
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getFullName, getNameInitials } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useMobile } from "@/hooks/use-media-queries";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +76,7 @@ const AppSidebar = () => {
   );
 
   const { state: sidebarState } = useSidebar();
-  const isMobile = useIsMobile();
+  const isMobile = useMobile();
   const isCollapsed = useMemo(
     () => sidebarState === "collapsed",
     [sidebarState],

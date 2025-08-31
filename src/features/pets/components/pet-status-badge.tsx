@@ -3,6 +3,7 @@ import { PET_STATUS_LABELS, PetStatus } from "@/features/pets/constants";
 
 interface PetStatusBadgeProps {
   status: PetStatus;
+  className?: string;
 }
 
 const statusConfig = {
@@ -12,9 +13,9 @@ const statusConfig = {
   IN_VET: "vet",
 };
 
-export const PetStatusBadge = ({ status }: PetStatusBadgeProps) => {
+export const PetStatusBadge = ({ status, className }: PetStatusBadgeProps) => {
   return (
-    <Badge variant={statusConfig[status] as any}>
+    <Badge variant={statusConfig[status] as any} className={className}>
       {PET_STATUS_LABELS[status]}
     </Badge>
   );

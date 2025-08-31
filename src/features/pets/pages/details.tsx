@@ -5,15 +5,18 @@ import { Button } from "@/components/ui/button";
 import { PetStatusBadge, PetForm } from "@/features/pets/components";
 import {
   Clock,
-  Heart,
   Palette,
   Ruler,
   User,
   Edit,
   Archive,
+  HeartPlus,
+  BookOpenText,
+  CalendarDays,
 } from "lucide-react";
 // import { useToast } from "@/hooks/use-toast";
-import petHero from "@/assets/images/lila.webp";
+import lilaImage from "@/assets/images/lila.webp";
+import limonImage from "@/assets/images/limon.webp";
 import { Pet } from "@/features/pets/types/pet";
 import {
   PET_SEX_LABELS,
@@ -26,22 +29,42 @@ import { BulletList } from "@/components/ui/bullet-list";
 import { Image } from "@/components/ui/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { useParams } from "react-router-dom";
 
 // Mock data for demonstration (simulates API response)
-const mockPetData: Pet = {
+const mockPetDataLila: Pet = {
   id: 1,
   name: "Lila",
   species: "DOG",
   breed: "Mestiza",
   status: "ADOPTED",
-  age: 3,
+  age: 6,
   sex: "FEMALE",
   size: "LARGE",
   colors: ["Canela", "Cervato", "Negro"],
   description:
     "Lila es una perrita muy cariñosa y juguetona. Le encanta jugar con los niños y es muy buena con otros perros.",
   vaccines: ["rabia", "sextuple1"],
-  photoUrl: petHero,
+  photoUrl: lilaImage,
+  createdAt: new Date().getTime(),
+  updatedAt: new Date().getTime(),
+  archivedAt: null,
+};
+
+const mockPetDataLimon: Pet = {
+  id: 2,
+  name: "Limón",
+  species: "DOG",
+  breed: "Mestizo, Labrador, Pitbull",
+  status: "ADOPTED",
+  age: 5,
+  sex: "MALE",
+  size: "MEDIUM",
+  colors: ["Blanco", "Cervato"],
+  description:
+    "Limón es un perro que puede parecer ansioso y distante en un principio, pero una vez que se le conoce, se hace muy cariñoso y leal.",
+  vaccines: ["rabia", "sextuple1"],
+  photoUrl: limonImage,
   createdAt: new Date().getTime(),
   updatedAt: new Date().getTime(),
   archivedAt: null,
@@ -104,6 +127,8 @@ export const PetDetailsPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isArchived, setIsArchived] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { petId } = useParams();
+
   // const { toast } = useToast();
 
   const handleEditPet = (updatedPet: Pet) => {
@@ -127,7 +152,7 @@ export const PetDetailsPage = () => {
   useEffect(() => {
     // Replace with real API call
     const timer = setTimeout(() => {
-      setPet(mockPetData);
+      setPet(petId === "2" ? mockPetDataLimon : mockPetDataLila);
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
@@ -163,7 +188,7 @@ export const PetDetailsPage = () => {
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Pet Image */}
-          <div className="lg:w-1/3">
+          <div className="h-[300px] lg:aspect-square lg:h-auto">
             <Card className="h-full overflow-hidden py-0 shadow-lg">
               <CardContent className="h-full p-0">
                 <Image
@@ -180,7 +205,7 @@ export const PetDetailsPage = () => {
           <div className="space-y-4 lg:w-2/3">
             <Card className="shadow-lg">
               <CardHeader>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col flex-wrap gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <CardTitle className="text-foreground text-3xl font-bold">
                       {pet.name}
@@ -190,13 +215,15 @@ export const PetDetailsPage = () => {
                       {PET_SPECIES_LABELS[pet.species]}
                     </p>
                   </div>
-                  <div className="flex gap-2">
-                    <PetStatusBadge status={pet.status} />
+                  <div className="flex items-center gap-2">
+                    <PetStatusBadge
+                      status={pet.status}
+                      className="px-2! py-1 text-xs lg:px-3 lg:py-2 lg:text-sm"
+                    />
                     <Button
                       onClick={() => setIsEditDialogOpen(true)}
                       variant="outline"
-                      size="sm"
-                      className="gap-2"
+                      className="gap-2 px-2! py-1 text-xs lg:px-3 lg:py-2 lg:text-sm"
                     >
                       <Edit className="h-4 w-4" />
                       Editar
@@ -204,8 +231,7 @@ export const PetDetailsPage = () => {
                     <Button
                       onClick={handleArchivePet}
                       variant="outline"
-                      size="sm"
-                      className="text-destructive hover:text-destructive gap-2"
+                      className="text-destructive hover:text-destructive gap-2 px-2! py-1 text-xs lg:px-3 lg:py-2 lg:text-sm"
                     >
                       <Archive className="h-4 w-4" />
                       Archivar
@@ -214,7 +240,7 @@ export const PetDetailsPage = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 items-start gap-4 md:grid-cols-4">
+                <div className="flex w-full flex-wrap justify-between gap-4">
                   <div className="flex gap-2">
                     <Clock className="text-muted-foreground mt-1 h-4 w-4 flex-shrink-0" />
                     <div>
@@ -288,8 +314,8 @@ export const PetDetailsPage = () => {
             {/* Description */}
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="text-primary h-5 w-5" />
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <BookOpenText className="text-primary h-5 w-5" />
                   Acerca de {pet.name}
                 </CardTitle>
               </CardHeader>
@@ -312,7 +338,10 @@ export const PetDetailsPage = () => {
           {/* Vaccines */}
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-lg">Vacunas</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <HeartPlus className="text-primary h-5 w-5" />
+                Vacunas
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -340,16 +369,16 @@ export const PetDetailsPage = () => {
           {/* Events Timeline */}
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-lg">Eventos recientes</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <CalendarDays className="text-primary h-5 w-5" />
+                Eventos Recientes
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {MOCK_EVENTS.length > 0 ? (
                   MOCK_EVENTS.map((event) => (
-                    <div
-                      key={event.id}
-                      className="border-primary border-l-2 pl-3"
-                    >
+                    <div key={event.id} className="border-l-2 pl-3">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium">{event.title}</p>
                         <span className="text-muted-foreground text-xs">
@@ -375,7 +404,10 @@ export const PetDetailsPage = () => {
           {/* Future Events */}
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="text-lg">Próximos Eventos</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Clock className="text-primary h-5 w-5" />
+                Próximos Eventos
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -383,7 +415,7 @@ export const PetDetailsPage = () => {
                   MOCK_FUTURE_EVENTS.map((event) => (
                     <div
                       key={event.id}
-                      className="border-warning border-l-2 pl-3"
+                      className="border-primary border-l-2 pl-3"
                     >
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium">{event.title}</p>
