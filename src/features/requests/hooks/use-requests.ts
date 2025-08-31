@@ -58,6 +58,8 @@ const mockRequestsData: AdoptionRequest[] = [
     updatedAt: new Date().getTime(),
     approvedAt: null,
     rejectedAt: new Date().getTime(),
+    rejectionReason:
+      "Nos contactamos para solicitar más información y nos comentó que no va a proseguir con la adopción.",
     questionnaire: {
       location: "Campana, Buenos Aires, Argentina",
       familyComposition: "Soltero, 1 hija",

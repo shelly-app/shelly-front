@@ -161,6 +161,13 @@ export const RequestCard = ({ request }: RequestCardProps) => {
                 {request.message}
               </p>
             )}
+
+            {request.rejectionReason && (
+              <p>
+                <strong>Motivo del rechazo:&nbsp;</strong>
+                {request.rejectionReason}
+              </p>
+            )}
           </CardContent>
         )}
       </Card>

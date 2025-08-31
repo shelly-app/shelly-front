@@ -10,6 +10,7 @@ export interface AdoptionRequest extends BaseEntity {
   requesterPhone?: string;
   status: "pending" | "approved" | "rejected";
   message?: string;
+  rejectionReason?: string;
   rejectedAt: number | null;
   approvedAt: number | null;
 
