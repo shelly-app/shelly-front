@@ -190,7 +190,7 @@ export const PetDetailsPage = () => {
           {/* Pet Image */}
           <div className="h-[300px] flex-1 lg:aspect-square lg:h-auto">
             <Card className="h-full overflow-hidden py-0 shadow-lg">
-              <CardContent className="h-full p-0">
+              <CardContent className="h-full max-h-[500px] p-0">
                 <Image
                   alt={pet.name}
                   src={pet.photoUrl}

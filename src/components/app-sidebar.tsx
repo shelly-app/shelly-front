@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   LucidePawPrint,
@@ -30,7 +30,7 @@ import { useShelters } from "@/components/providers/shelters-provider";
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getFullName, getNameInitials } from "@/lib/utils";
-import { useMediaQuery, useMobile } from "@/hooks/use-media-queries";
+import { useMobile } from "@/hooks/use-media-queries";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
 import { useNavigate } from "react-router-dom";
@@ -75,7 +75,7 @@ const AppSidebar = () => {
     [signOutAction],
   );
 
-  const { state: sidebarState, setOpen } = useSidebar();
+  const { state: sidebarState } = useSidebar();
   const isMobile = useMobile();
   const isCollapsed = useMemo(
     () => sidebarState === "collapsed",
@@ -87,7 +87,6 @@ const AppSidebar = () => {
   // We should use the User model from our db.
   // const { user } = useUser();
   const { user } = useAuth();
-  const shouldAutoCollapseSidebar = useMediaQuery("(max-width: 1200px)");
 
   const userProfile = useMemo(() => {
     if (!user) return null;
@@ -101,12 +100,6 @@ const AppSidebar = () => {
       picture: user.profile?.picture,
     };
   }, [user]);
-
-  useEffect(() => {
-    if (shouldAutoCollapseSidebar) {
-      setOpen(false);
-    }
-  }, [shouldAutoCollapseSidebar, setOpen]);
 
   return (
     <Sidebar collapsible="icon" variant="floating">
