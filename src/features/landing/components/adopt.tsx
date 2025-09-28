@@ -5,28 +5,23 @@ import { cn } from "@/lib/utils";
 import { HeartPlus, House, PawPrint, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
+import { useTranslation } from "react-i18next";
 
 const ADOPT_FEATURES = [
   {
-    title: "Amor incondicional",
-    description:
-      "Las mascotas adoptadas te van a dar amor y compañía sin condiciones. Cada día va a ser una nueva aventura llena de cariño y momentos especiales.",
+    i18nKey: "unconditional_love",
     icon: HeartPlus,
     iconColor: "text-red-500",
     bgColor: "from-red-100 to-red-50",
   },
   {
-    title: "Salvá una vida",
-    description:
-      "Al adoptar, le das una segunda oportunidad a un animal que lo necesita. Tu decisión puede cambiar completamente el destino de una mascota.",
+    i18nKey: "save_a_life",
     icon: House,
     iconColor: "text-green-600",
     bgColor: "from-green-100 to-green-50",
   },
   {
-    title: "Compañía fiel",
-    description:
-      "Encontrá un amigo que te va a acompañar en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio.",
+    i18nKey: "faithful_company",
     icon: PawPrint,
     iconColor: "text-sky-600",
     bgColor: "from-sky-100 to-sky-50",
@@ -37,6 +32,7 @@ type AdoptFeature = (typeof ADOPT_FEATURES)[number];
 
 const AdoptFeatureCard = ({ feature }: { feature: AdoptFeature }) => {
   const Icon = feature.icon;
+  const { t } = useTranslation();
 
   return (
     <div
@@ -50,15 +46,20 @@ const AdoptFeatureCard = ({ feature }: { feature: AdoptFeature }) => {
       <div className="rounded-xl bg-white/90 p-4 shadow-md transition-transform duration-300 group-hover:scale-110">
         <Icon className={cn("h-8 w-8", feature.iconColor)} />
       </div>
-      <H3 className="text-xl font-semibold">{feature.title}</H3>
+      <H3 className="text-xl font-semibold">
+        {t(`landing.adopt.features.${feature.i18nKey}.title`)}
+      </H3>
       <Separator orientation="horizontal" className="w-full" />
-      <Paragraph className="text-gray-600">{feature.description}</Paragraph>
+      <Paragraph className="text-gray-600">
+        {t(`landing.adopt.features.${feature.i18nKey}.description`)}
+      </Paragraph>
     </div>
   );
 };
 
 export const Adopt = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // TODO: This should lead to a page with all the shelters contacts (whatsapp bot link)
   const handleCtaClick = () => {
@@ -72,17 +73,16 @@ export const Adopt = () => {
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">
-          Adoptá una mascota con{" "}
+          {t("landing.adopt.title")}{" "}
           <ShellyGradient variant="h2" size="5xl">
-            Shelly
+            {t("brand.name")}
           </ShellyGradient>
         </H2>
         <Lead className="max-w-2xl text-lg md:text-xl">
-          ¡Dale un hogar a un amigo peludo! Visitá los refugios disponibles y
-          encontrá el compañero perfecto para vos.
+          {t("landing.adopt.subtitle")}
         </Lead>
         <Button size="lg" className="mt-4" onClick={handleCtaClick}>
-          Ver refugios disponibles
+          {t("landing.adopt.cta")}
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
@@ -91,7 +91,7 @@ export const Adopt = () => {
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 md:grid-cols-3">
         {ADOPT_FEATURES.map((feature) => (
-          <AdoptFeatureCard key={feature.title} feature={feature} />
+          <AdoptFeatureCard key={feature.i18nKey} feature={feature} />
         ))}
       </div>
     </section>

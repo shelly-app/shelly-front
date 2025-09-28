@@ -4,6 +4,7 @@ import GoogleIcon from "@/assets/svg/google-icon.svg";
 import { useAuth } from "react-oidc-context";
 import { type AuthProvider } from "@/features/auth/types";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const SVG_ICONS = {
   Google: GoogleIcon,
@@ -29,6 +30,7 @@ export const ProviderSignInButton = ({
 }) => {
   const [searchParams] = useSearchParams();
   const { signinRedirect } = useAuth();
+  const { t } = useTranslation();
 
   const handleSignIn = async () => {
     await signinRedirect({
@@ -51,7 +53,7 @@ export const ProviderSignInButton = ({
         alt={`${provider} icon`}
         className="h-5 w-5"
       />
-      <span>Iniciar sesión con Google</span>
+      <span>{t("auth.sign_in_with", { provider })}</span>
     </button>
   );
 };

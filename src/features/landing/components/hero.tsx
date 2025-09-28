@@ -7,10 +7,13 @@ import LilaImage from "@/assets/images/lila.webp";
 import LuciferImage from "@/assets/images/lucifer.webp";
 import { useMobile } from "@/hooks/use-media-queries";
 import { useHashScroll } from "@/hooks/use-hash-scroll";
+import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 export const Hero = () => {
   const isMobile = useMobile();
   const { scrollToSection } = useHashScroll();
+  const { t } = useTranslation();
 
   const handleCtaClick = () => {
     scrollToSection("#contact");
@@ -25,12 +28,15 @@ export const Hero = () => {
         <div className="flex flex-1 flex-col gap-6 text-center md:text-left">
           <div className="flex flex-col gap-4">
             <H1 className="text-4xl font-bold md:text-5xl lg:text-6xl">
-              Gestioná tu refugio de mascotas con{" "}
-              <span className="text-amber-600">facilidad</span>
+              <Trans
+                i18nKey="landing.hero.title"
+                components={{
+                  span: <span className="text-amber-600" />,
+                }}
+              />
             </H1>
             <Lead className="text-lg md:text-xl">
-              Simplificá la administración de tu refugio y ayudá a más animales
-              a encontrar un hogar a su medida.
+              {t("landing.hero.subtitle")}
             </Lead>
           </div>
 
@@ -40,11 +46,11 @@ export const Hero = () => {
               className="w-full md:w-auto"
               onClick={handleCtaClick}
             >
-              Comenzar ahora
+              {t("landing.hero.cta")}
             </Button>
             <div className="flex items-center gap-2 text-sm text-amber-900/80">
               <PawPrint className="h-4 w-4" />
-              <span>Usado por más de 50 refugios</span>
+              <span>{t("landing.hero.used_by")}</span>
             </div>
           </div>
         </div>
@@ -55,21 +61,21 @@ export const Hero = () => {
               {/* TODO: Get images from pets in adoption from the database */}
               <PetShowcaseCard
                 src={LuciferImage}
-                alt="Mascota en adopción destacada"
+                alt={t("landing.pet_showcase_card.featured_alt")}
                 className="h-full w-full -translate-x-5 translate-y-5 scale-120 brightness-95"
               />
             </div>
             <div className="col-span-1 row-span-2 overflow-hidden rounded-xl shadow-lg transition-transform hover:scale-105">
               <PetShowcaseCard
                 src={LimonImage}
-                alt="Mascota en adopción"
+                alt={t("landing.pet_showcase_card.alt")}
                 className="h-full w-full -translate-x-5 scale-140"
               />
             </div>
             <div className="overflow-hidden rounded-xl shadow-lg transition-transform hover:scale-105">
               <PetShowcaseCard
                 src={LilaImage}
-                alt="Mascota en adopción"
+                alt={t("landing.pet_showcase_card.alt")}
                 className="h-full w-full -translate-x-5 scale-120"
               />
             </div>

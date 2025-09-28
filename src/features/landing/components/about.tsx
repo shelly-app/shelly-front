@@ -12,37 +12,31 @@ import {
   DogIcon,
   UserPenIcon,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ABOUT_FEATURES = {
   firstSection: [
     {
       icon: DogIcon,
-      title: "Visualización",
-      description: "Obtené un vistazo general de tu refugio en un solo lugar.",
       color: "green",
+      i18nKey: "visualization",
     },
     {
       icon: UserPenIcon,
-      title: "Adopciones",
-      description:
-        "Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones.",
       color: "sky",
+      i18nKey: "adoptions",
     },
   ],
   secondSection: [
     {
       icon: BotMessageSquareIcon,
-      title: "Chatbot",
-      description:
-        "Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp.",
       color: "purple",
+      i18nKey: "chatbot",
     },
     {
       icon: ClipboardListIcon,
-      title: "Detalle",
-      description:
-        "Accedé a los detalles de cada mascota con registro histórico de eventos.",
       color: "orange",
+      i18nKey: "details",
     },
   ],
 };
@@ -55,6 +49,7 @@ const COLOR_CLASSES = {
 } as const;
 
 export const About = () => {
+  const { t } = useTranslation();
   return (
     <section
       id="about"
@@ -66,16 +61,14 @@ export const About = () => {
           <TwoSectionsLayout.SectionContent className="flex flex-col items-center gap-16">
             <div className="flex flex-col gap-4">
               <H2 className="leading-tight" size="4xl">
-                El sistema de gestión definitivo para tu refugio
+                {t("landing.about.title")}
               </H2>
               <Lead size="lg">
-                Lo sabemos, gestionar un refugio de mascotas no es fácil.
-                Mantener un registro de tus mascotas, adopciones y eventos es
-                una tarea que requiere mucho tiempo y esfuerzo.{" "}
+                {t("landing.about.subtitle")}{" "}
                 <ShellyGradient variant="lead" size="lg">
-                  Shelly
+                  {t("brand.name")}
                 </ShellyGradient>{" "}
-                vino a cambiar eso.
+                {t("landing.about.subtitle_shelly")}
               </Lead>
             </div>
             <Separator className="w-full bg-transparent bg-radial-[at_50%_50%] from-amber-400/80 to-transparent" />
@@ -103,10 +96,10 @@ export const About = () => {
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-0 md:grid-cols-2 md:grid-rows-2 md:px-8">
         {ABOUT_FEATURES.firstSection.map((feature) => (
-          <AboutFeature key={feature.title} {...feature} />
+          <AboutFeature key={feature.i18nKey} {...feature} />
         ))}
         {ABOUT_FEATURES.secondSection.map((feature) => (
-          <AboutFeature key={feature.title} {...feature} />
+          <AboutFeature key={feature.i18nKey} {...feature} />
         ))}
       </div>
     </section>
@@ -115,15 +108,14 @@ export const About = () => {
 
 const AboutFeature = ({
   icon: Icon,
-  title,
-  description,
+  i18nKey,
   color,
 }: {
   icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  description: string;
+  i18nKey: string;
   color: string;
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="flex gap-4">
       <div
@@ -139,8 +131,8 @@ const AboutFeature = ({
         />
       </div>
       <div className="flex flex-col gap-4">
-        <H3 size="lg">{title}</H3>
-        <Lead>{description}</Lead>
+        <H3 size="lg">{t(`landing.about.features.${i18nKey}.title`)}</H3>
+        <Lead>{t(`landing.about.features.${i18nKey}.description`)}</Lead>
       </div>
     </div>
   );

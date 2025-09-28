@@ -1,0 +1,524 @@
+{
+  "landing": {
+    "about": {
+      "title": "El sistema de gestión definitivo para tu refugio",
+      "subtitle": "Lo sabemos, gestionar un refugio de mascotas no es fácil. Mantener un registro de tus mascotas, adopciones y eventos es una tarea que requiere mucho tiempo y esfuerzo.",
+      "subtitle_shelly": "vino a cambiar eso.",
+      "features": {
+        "visualization": {
+          "title": "Visualización",
+          "description": "Obtené un vistazo general de tu refugio en un solo lugar."
+        },
+        "adoptions": {
+          "title": "Adopciones",
+          "description": "Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones."
+        },
+        "chatbot": {
+          "title": "Chatbot",
+          "description": "Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp."
+        },
+        "details": {
+          "title": "Detalle",
+          "description": "Accedé a los detalles de cada mascota con registro histórico de eventos."
+        }
+      }
+    },
+    "adopt": {
+      "title": "Adoptá una mascota con",
+      "subtitle": "¡Dale un hogar a un amigo peludo! Visitá los refugios disponibles y encontrá el compañero perfecto para vos.",
+      "cta": "Ver refugios disponibles",
+      "features": {
+        "unconditional_love": {
+          "title": "Amor incondicional",
+          "description": "Las mascotas adoptadas te van a dar amor y compañía sin condiciones. Cada día va a ser una nueva aventura llena de cariño y momentos especiales."
+        },
+        "save_a_life": {
+          "title": "Salvá una vida",
+          "description": "Al adoptar, le das una segunda oportunidad a un animal que lo necesita. Tu decisión puede cambiar completamente el destino de una mascota."
+        },
+        "faithful_company": {
+          "title": "Compañía fiel",
+          "description": "Encontrá un amigo que te va a acompañar en los mejores y peores momentos. La lealtad de una mascota adoptada no tiene precio."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contactanos",
+      "subtitle": "¿Sos un refugio que quiere unirse a Shelly o un patrocinador interesado en apoyar nuestra causa?",
+      "success": {
+        "title": "¡Mensaje enviado con éxito!",
+        "subtitle": "Gracias por contactarnos. Nos vamos a poner en contacto con vos pronto."
+      },
+      "shelter": {
+        "tab": "Refugio",
+        "title": "Solicitá acceso para tu refugio",
+        "subtitle": "Unite a nuestra red de refugios y empezá a encontrar hogares para más mascotas",
+        "cta": "Solicitar acceso",
+        "form": {
+          "shelter_name": "Nombre del refugio",
+          "shelter_name_placeholder": "Ej: Refugio Amor Animal",
+          "shelter_type": "Tipo de refugio",
+          "shelter_type_placeholder": "Ej: Perros y gatos, Solo perros, etc.",
+          "shelter_location": "Ubicación del refugio",
+          "shelter_location_placeholder": "Ciudad, Provincia, País",
+          "contact_name": "Nombre del contacto",
+          "contact_name_placeholder": "Tu nombre completo",
+          "email": "Email",
+          "email_placeholder": "tu@email.com",
+          "phone": "Teléfono",
+          "phone_placeholder": "+54 9 11 1234-5678",
+          "message": "Mensaje",
+          "message_placeholder": "Contanos sobre tu refugio, cuántas mascotas tenés actualmente, y cualquier información adicional que consideres relevante..."
+        }
+      },
+      "sponsor": {
+        "tab": "Patrocinador",
+        "title": "Sé parte de nuestra misión",
+        "subtitle": "Apoyá nuestro proyecto y ayudanos a conectar más mascotas con sus familias ideales",
+        "cta": "Enviar mensaje",
+        "form": {
+          "full_name": "Nombre completo",
+          "full_name_placeholder": "Tu nombre completo",
+          "email": "Email",
+          "email_placeholder": "tu@email.com",
+          "organization": "Organización",
+          "organization_placeholder": "Nombre de tu empresa u organización",
+          "phone": "Teléfono",
+          "phone_placeholder": "+54 9 11 1234-5678",
+          "sponsorship_type": "Tipo de patrocinio",
+          "sponsorship_type_placeholder": "Ej: Donación única, Patrocinio mensual, etc.",
+          "budget": "Presupuesto aproximado",
+          "budget_placeholder": "Ej: $10,000 - $50,000",
+          "message": "Mensaje",
+          "message_placeholder": "Contanos sobre tu interés en patrocinar Shelly, cómo te gustaría colaborar, y cualquier pregunta que tengas..."
+        }
+      },
+      "sending": "Enviando..."
+    },
+    "hero": {
+      "title": "Gestioná tu refugio de mascotas con facilidad",
+      "subtitle": "Simplificá la administración de tu refugio y ayudá a más animales a encontrar un hogar a su medida.",
+      "subtitle_shelly": "vino a cambiar eso.",
+      "cta": "Comenzar ahora",
+      "used_by": "Usado por más de 50 refugios"
+    },
+    "pet_showcase_card": {
+      "featured_alt": "Mascota en adopción destacada",
+      "alt": "Mascota en adopción"
+    }
+  },
+  "auth": {
+    "sign_in_with": "Iniciar sesión con {{provider}}",
+    "access": "Acceder",
+    "sign_in": "Iniciar sesión",
+    "dog_cat_graphic_alt": "Gráfico de perro y gato",
+    "shelters": "Refugios"
+  },
+  "footer": {
+    "about": "Sobre Nosotros",
+    "adopt": "Adoptar",
+    "contact": "Contacto",
+    "terms": "Términos y condiciones",
+    "slogan": "Conectando mascotas con sus familias ideales",
+    "made_with_love": "Hecho con amor en Argentina",
+    "copyright": "© {{year}} Shelly. Todos los derechos reservados.",
+    "back_to_top": "Volver arriba"
+  },
+  "navbar": {
+    "home": "Inicio",
+    "about": "Sobre Nosotros",
+    "adopt": "Adoptar",
+    "contact": "Contacto",
+    "open_menu": "Abrir menú",
+    "close_menu": "Cerrar menú"
+  },
+  "brand": {
+    "name": "Shelly",
+    "email": "shelly.app.contact@gmail.com"
+  },
+  "languages": {
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "terms": {
+    "title": "Términos y Condiciones",
+    "last_updated": "Última actualización: {{date}}",
+    "object": {
+      "title": "1. Objeto"
+    },
+    "platform_use": {
+      "title": "2. Uso de la Plataforma"
+    },
+    "data_protection": {
+      "title": "3. Protección de Datos Personales"
+    },
+    "liability_limitation": {
+      "title": "4. Limitación de Responsabilidad"
+    },
+    "prohibited_conduct": {
+      "title": "5. Conductas Prohibidas",
+      "description": "Se prohíbe:"
+    },
+    "breach_consequences": {
+      "title": "6. Consecuencias del Incumplimiento",
+      "description": "El incumplimiento de estos términos podrá derivar en:"
+    },
+    "acceptance": {
+      "title": "7. Aceptación de Condiciones",
+      "description": "El uso de la aplicación implica la aceptación total del presente contrato."
+    },
+    "shelter_responsibilities": {
+      "title": "2. Responsabilidades del Refugio"
+    },
+    "intellectual_property": {
+      "title": "4. Propiedad Intelectual"
+    },
+    "adopters": {
+      "tab": "Para Adoptantes",
+      "title": "Términos y Condiciones para Adoptantes",
+      "object": {
+        "description": "El presente contrato regula el uso de la aplicación por parte de los adoptantes, quienes acceden a ella con el fin de postularse a la adopción responsable de animales gestionados por refugios registrados."
+      },
+      "platform_use": {
+        "item_1": "El adoptante declara que los datos personales proporcionados son veraces y actualizados.",
+        "item_2": "Se compromete a garantizar el bienestar del animal adoptado.",
+        "item_3": "Acepta que la verificación de la información y la decisión final de adopción corresponden exclusivamente al refugio."
+      },
+      "data_protection": {
+        "item_1": "El adoptante autoriza el tratamiento de sus datos conforme a la Ley 25.326 de Protección de Datos Personales.",
+        "item_2": "Podrá solicitar en cualquier momento la eliminación de sus datos personales."
+      },
+      "liability_limitation": {
+        "item_1": "La aplicación actúa únicamente como intermediario tecnológico y no garantiza adopciones.",
+        "item_2": "El equipo de desarrollo no es responsable de disputas, incumplimientos o consecuencias derivadas de la adopción."
+      },
+      "prohibited_conduct": {
+        "item_1": "Proporcionar información falsa.",
+        "item_2": "Suplantar identidades.",
+        "item_3": "Usar indebidamente datos de contacto de refugios u otros usuarios."
+      },
+      "breach_consequences": {
+        "item_1": "Suspensión o eliminación de la cuenta.",
+        "item_2": "Notificación al refugio correspondiente.",
+        "item_3": "Denuncias ante autoridades competentes."
+      }
+    },
+    "shelters": {
+      "tab": "Para Refugios",
+      "title": "Términos y Condiciones para Refugios",
+      "object": {
+        "description": "Este contrato regula el uso de la aplicación por parte de los refugios, quienes utilizan la plataforma para gestionar procesos de adopción y publicación de animales."
+      },
+      "shelter_responsibilities": {
+        "item_1": "Verificar la información proporcionada por los adoptantes.",
+        "item_2": "Evaluar el compromiso del adoptante y tomar decisiones sobre adopciones.",
+        "item_3": "Garantizar que las imágenes y descripciones de animales subidas a la plataforma no infringen derechos de terceros."
+      },
+      "data_protection": {
+        "item_1": "El refugio autoriza el tratamiento de sus datos conforme a la Ley 25.326.",
+        "item_2": "Podrá solicitar la baja y eliminación de sus datos en cualquier momento."
+      },
+      "intellectual_property": {
+        "item_1": "El refugio conserva la titularidad de las imágenes y descripciones cargadas.",
+        "item_2": "Autoriza a la aplicación a mostrar y procesar dichos datos únicamente para el funcionamiento de la plataforma."
+      },
+      "liability_limitation": {
+        "item_1": "La aplicación actúa como intermediario tecnológico, sin garantizar adopciones ni resultados.",
+        "item_2": "El equipo de desarrollo no se hace responsable de conflictos con adoptantes ni de la disponibilidad permanente del servicio."
+      },
+      "prohibited_conduct": {
+        "item_1": "Publicar información falsa o inexacta.",
+        "item_2": "Usar datos de contacto de adoptantes con fines distintos al proceso de adopción.",
+        "item_3": "Manipular el sistema de adopciones de forma que comprometa el bienestar animal."
+      },
+      "breach_consequences": {
+        "item_1": "Suspensión o eliminación de la cuenta.",
+        "item_2": "Denuncias ante autoridades competentes."
+      }
+    }
+  },
+  "app": {
+    "pets": {
+      "title": "Mascotas",
+      "loading": "Cargando mascotas...",
+      "error": "Error al cargar las mascotas",
+      "name": "Nombre",
+      "species": "Especie",
+      "breed": "Raza",
+      "status": "Estado",
+      "no_results": "No hay resultados.",
+      "search_placeholder": "Buscar mascota...",
+      "add_pet": "Agregar mascota",
+      "edit_pet": "Editar información de la mascota",
+      "species_labels": {
+        "DOG": "Perro",
+        "CAT": "Gato"
+      },
+      "status_labels": {
+        "IN_TRANSIT": "En tránsito",
+        "IN_SHELTER": "En refugio",
+        "ADOPTED": "Adoptado",
+        "IN_VET": "En veterinaria"
+      },
+      "sex_labels": {
+        "MALE": "Macho",
+        "FEMALE": "Hembra"
+      },
+      "size_labels": {
+        "SMALL": "Pequeño",
+        "MEDIUM": "Mediano",
+        "LARGE": "Grande"
+      },
+      "colors": {
+        "black": "Negro",
+        "white": "Blanco",
+        "brown": "Marrón",
+        "gray": "Gris",
+        "beige": "Beige",
+        "gold": "Dorado",
+        "red": "Rojo",
+        "coffee": "Café",
+        "cream": "Crema",
+        "sand": "Arena",
+        "chocolate": "Chocolate",
+        "orange": "Naranja",
+        "cinnamon": "Canela",
+        "fawn": "Cervato"
+      },
+      "vaccines": {
+        "dog": {
+          "sextuple1": "1ra Séxtuple",
+          "sextuple2": "2da Séxtuple",
+          "sextuple3": "3ra Séxtuple",
+          "rabia": "Rabia"
+        },
+        "cat": {
+          "triple1": "1ra Triple",
+          "triple2": "2da Triple",
+          "triple3": "3ra Triple",
+          "rabia": "Rabia",
+          "leptospirosis": "Leptospirosis",
+          "felv": "FeLV",
+          "fiv": "FIV"
+        }
+      },
+      "form": {
+        "name_placeholder": "Nombre de la mascota",
+        "select_species": "Selecciona la especie",
+        "select_status": "Selecciona el estado",
+        "breed_placeholder": "Raza de la mascota",
+        "age": "Edad (años)",
+        "age_placeholder": "Edad en años",
+        "sex": "Sexo",
+        "select_sex": "Selecciona el sexo",
+        "size": "Tamaño",
+        "select_size": "Selecciona el tamaño",
+        "colors": "Colores",
+        "select_colors": "Seleccionar colores",
+        "vaccines": "Vacunas",
+        "select_vaccines": "Seleccionar vacunas",
+        "description": "Descripción",
+        "description_placeholder": "Describe la personalidad, características especiales, necesidades médicas, etc.",
+        "image": "Imagen",
+        "cancel": "Cancelar",
+        "save": "Guardar cambios",
+        "add": "Agregar mascota",
+        "add_quickly": "Agregar rápidamente",
+        "saving": "Guardando...",
+        "adding": "Agregando...",
+        "complete_mode": "Modo Completo",
+        "edit_description": "Actualiza los detalles de la mascota a continuación. Todos los cambios se guardarán cuando hagas clic en 'Guardar cambios'.",
+        "add_description": "Completa la información de la nueva mascota. Puedes usar el modo rápido para información básica o el modo completo para todos los detalles."
+      },
+      "validation": {
+        "name_required": "El nombre es requerido",
+        "species_required": "La especie es requerida",
+        "status_required": "El estado es requerido"
+      },
+      "notifications": {
+        "added_successfully": "Mascota agregada exitosamente",
+        "error_processing": "Error al procesar la mascota. Por favor, intenta de nuevo."
+      },
+      "details": {
+        "edit": "Editar",
+        "archive": "Archivar",
+        "age": "Edad",
+        "sex": "Sexo",
+        "size": "Tamaño",
+        "colors": "Colores",
+        "about": "Acerca de {{name}}",
+        "no_description": "{{name}} no tiene descripción aún.",
+        "vaccines": "Vacunas",
+        "no_vaccines": "No hay vacunas registradas",
+        "recent_events": "Eventos Recientes",
+        "no_recent_events": "No hay eventos recientes",
+        "future_events": "Próximos Eventos",
+        "no_future_events": "No hay eventos próximos",
+        "years": "{{count}} año",
+        "years_plural": "{{count}} años",
+        "archived": {
+          "title": "Mascota archivada",
+          "description": "{{name}} ha sido archivada y ya no está disponible en el sistema.",
+          "restore": "Restaurar mascota"
+        }
+      }
+    },
+    "members": {
+      "title": "Miembros",
+      "search_placeholder": "Buscar miembro...",
+      "add_member": "Agregar miembro",
+      "member_since": "Miembro desde {{date}}",
+      "loading": "Cargando miembros...",
+      "error": "Error al cargar los miembros",
+      "invite": {
+        "title": "Invitar nuevo miembro",
+        "description": "El usuario recibirá un correo electrónico con un enlace para crear su cuenta y unirse al refugio.",
+        "email_placeholder": "Correo electrónico del miembro",
+        "send": "Enviar invitación",
+        "cancel": "Cancelar"
+      },
+      "validation": {
+        "invalid_email": "Email inválido"
+      }
+    },
+    "requests": {
+      "title": "Solicitudes de Adopción",
+      "search_placeholder": "Buscar por mascota o solicitante...",
+      "no_results": "No hay resultados.",
+      "loading": "Cargando solicitudes...",
+      "error": "Error al cargar las solicitudes",
+      "status": {
+        "pending": "Pendientes",
+        "approved": "Aprobadas",
+        "rejected": "Rechazadas"
+      },
+      "actions": {
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "contact": "Contactar"
+      },
+      "actions_dialog": {
+        "approve": {
+          "title": "Aprobar solicitud de adopción",
+          "description": "Estás a punto de aprobar la solicitud de adopción de {{petName}} de {{requesterName}}. Puedes incluir un mensaje opcional.",
+          "message_label": "Mensaje (opcional)",
+          "message_placeholder": "¡Felicitaciones! Tu solicitud de adopción ha sido aprobada...",
+          "confirm": "Aprobar"
+        },
+        "reject": {
+          "title": "Rechazar solicitud de adopción",
+          "description": "Estás a punto de rechazar la solicitud de adopción de {{requesterName}}. Puedes incluir un mensaje opcional con los motivos del rechazo.",
+          "message_label": "Mensaje (opcional)",
+          "message_placeholder": "Lamentamos informarte que tu solicitud de adopción ha sido rechazada porque...",
+          "confirm": "Rechazar"
+        },
+        "contact": {
+          "title": "Contactar al solicitante",
+          "description": "Información de contacto de {{requesterName}}.",
+          "name": "Nombre",
+          "email": "Correo electrónico",
+          "phone": "Teléfono",
+          "message_label": "Mensaje (opcional)",
+          "message_placeholder": "Hola, nos contactamos con vos por tu solicitud de adopción...",
+          "send": "Enviar mensaje"
+        },
+        "cancel": "Cancelar",
+        "close": "Cerrar"
+      },
+      "requested_by": "Solicitado por",
+      "requester_email": "Correo electrónico del solicitante",
+      "requester_phone": "Teléfono del solicitante",
+      "yes": "Sí",
+      "no": "No",
+      "message": "Mensaje",
+      "rejection_reason": "Motivo del rechazo",
+      "questionnaire": {
+        "location": "Ubicación",
+        "familyComposition": "Composición familiar",
+        "hasYard": "¿Tiene patio o jardín?"
+      }
+    },
+    "questionnaire": {
+      "location": "Ubicación",
+      "familyComposition": "Composición familiar",
+      "hasYard": "¿Tiene patio o jardín?"
+    }
+  },
+  "file_uploader": {
+    "change_file": "Haz clic o arrastra para cambiar",
+    "drop_file": "Suelta el archivo aquí (máx. 10MB)",
+    "upload_file": "Sube un archivo (JPG, PNG, WebP) (máx. 10MB)",
+    "remove_file": "Eliminar archivo"
+  },
+  "multi_select": {
+    "select_options": "Seleccionar opciones",
+    "more": "más...",
+    "remove_option": "Eliminar {{option}} de la selección",
+    "clear_all": "Limpiar las {{count}} opciones seleccionadas",
+    "no_options_selected": "No hay opciones seleccionadas",
+    "options_selected": "{{count}} opción seleccionada: {{options}}",
+    "options_selected_plural": "{{count}} opciones seleccionadas: {{options}}",
+    "multi_select_label": "Selección múltiple: {{count}} de {{total}} opciones seleccionadas. {{placeholder}}",
+    "dropdown_description": "Menú desplegable de selección múltiple. Usa las flechas para navegar, Enter para seleccionar y Escape para cerrar.",
+    "available_options": "Opciones disponibles",
+    "search_placeholder": "Buscar opciones...",
+    "search_label": "Buscar opciones",
+    "search_description": "Escribe para filtrar opciones. Usa las flechas para navegar por los resultados.",
+    "no_results": "No se encontraron resultados.",
+    "select_all": "(Seleccionar todo)",
+    "select_all_count": "(Seleccionar todo - {{count}} opciones)",
+    "clear": "Limpiar",
+    "close": "Cerrar",
+    "option_count": "{{count}} opción",
+    "option_count_plural": "{{count}} opciones",
+    "option_selected": "{{option}} seleccionada. {{count}} de {{total}} opciones seleccionadas.",
+    "options_selected_count": "{{selected}} opciones seleccionadas. {{count}} de {{total}} en total.",
+    "option_removed": "Opción eliminada. {{count}} de {{total}} opciones seleccionadas.",
+    "dropdown_opened": "Menú desplegable abierto. {{total}} opciones disponibles. Usa las flechas para navegar.",
+    "dropdown_closed": "Menú desplegable cerrado.",
+    "options_found": "{{count}} opción encontrada para \"{{search}}\"",
+    "options_found_plural": "{{count}} opciones encontradas para \"{{search}}\"",
+    "selected": ", seleccionada",
+    "not_selected": ", no seleccionada",
+    "disabled": ", deshabilitada"
+  },
+  "sidebar": {
+    "pets": "Mascotas",
+    "requests": "Solicitudes",
+    "members": "Miembros",
+    "account": "Cuenta",
+    "sign_out": "Cerrar sesión",
+    "user": "Usuario",
+    "admin": "Administrador"
+  },
+  "pet_colors": {
+    "cinnamon": "Canela",
+    "fawn": "Cervato",
+    "black": "Negro",
+    "white": "Blanco"
+  },
+  "mock_pets": {
+    "lila": {
+      "description": "Lila es una perrita muy cariñosa y juguetona. Le encanta jugar con los niños y es muy buena con otros perros."
+    },
+    "limon": {
+      "description": "Limón es un perro que puede parecer ansioso y distante en un principio, pero una vez que se le conoce, se hace muy cariñoso y leal."
+    }
+  },
+  "mock_events": {
+    "vaccination": {
+      "title": "Vacunación",
+      "description_lila": "Lila recibió sus primeras vacunas"
+    },
+    "shelter_entry": {
+      "title": "Ingreso al refugio",
+      "description_lila": "Lila fue recibida en el refugio"
+    }
+  },
+  "mock_future_events": {
+    "vet": {
+      "title": "Veterinaria",
+      "description": "Visita de control"
+    }
+  }
+}

@@ -5,15 +5,15 @@ export const REQUEST_STATUS = {
 } as const;
 
 export const REQUEST_STATUS_LABELS = {
-  pending: "Pendiente",
-  approved: "Aprobado",
-  rejected: "Rechazado",
+  pending: "app.requests.status.pending",
+  approved: "app.requests.status.approved",
+  rejected: "app.requests.status.rejected",
 } as const;
 
 export const QUESTIONNAIRE_LABELS = {
-  location: "Ubicación",
-  familyComposition: "Composición familiar",
-  hasYard: "¿Tiene patio o jardín?",
+  location: "app.requests.questionnaire.location",
+  familyComposition: "app.requests.questionnaire.familyComposition",
+  hasYard: "app.requests.questionnaire.hasYard",
 } as const;
 
 type Values<T> = T[keyof T];

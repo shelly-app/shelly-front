@@ -35,42 +35,47 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Image } from "@/components/ui/image";
-
-// Menu items.
-const MENU_ITEMS = [
-  {
-    title: "Mascotas",
-    path: paths.app.pets.path,
-    icon: LucidePawPrint,
-  },
-  {
-    title: "Solicitudes",
-    path: paths.app.requests.path,
-    icon: LucideFiles,
-  },
-  {
-    title: "Miembros",
-    path: paths.app.members.path,
-    icon: LucideUsers,
-  },
-];
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "@/components/language-selector";
 
 const AppSidebar = () => {
+  const { t } = useTranslation();
   const signOutAction = useSignOutAction();
+
+  const MENU_ITEMS = useMemo(
+    () => [
+      {
+        title: t("sidebar.pets"),
+        path: paths.app.pets.path,
+        icon: LucidePawPrint,
+      },
+      {
+        title: t("sidebar.requests"),
+        path: paths.app.requests.path,
+        icon: LucideFiles,
+      },
+      {
+        title: t("sidebar.members"),
+        path: paths.app.members.path,
+        icon: LucideUsers,
+      },
+    ],
+    [t],
+  );
 
   const userMenuItems = useMemo(
     () => [
       {
-        title: "Cuenta",
+        title: t("sidebar.account"),
         url: "#",
       },
       {
-        title: "Cerrar sesión",
+        title: t("sidebar.sign_out"),
         url: "#",
         action: signOutAction,
       },
     ],
-    [signOutAction],
+    [signOutAction, t],
   );
 
   const { state: sidebarState } = useSidebar();
@@ -156,6 +161,9 @@ const AppSidebar = () => {
           </SidebarMenu>
         </nav>
       </SidebarContent>
+      <div className={cn("px-6 py-3", isCollapsed && "px-2")}>
+        <LanguageSelector isCollapsed={isCollapsed} />
+      </div>
       <hr className="my-2" />
       <SidebarFooter className={cn("p-4", isCollapsed && "p-2 pb-6")}>
         <SidebarMenu>
@@ -163,7 +171,7 @@ const AppSidebar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
-                  tooltip={isCollapsed ? "Usuario" : undefined}
+                  tooltip={isCollapsed ? t("sidebar.user") : undefined}
                   style={isCollapsed ? { padding: "0 !important" } : {}}
                   className={cn(
                     "box-content cursor-pointer gap-3 text-nowrap",
@@ -196,7 +204,7 @@ const AppSidebar = () => {
                           {userProfile?.fullName}
                         </Text>
                         <Text size="xs" variant="secondary">
-                          Administrador
+                          {t("sidebar.admin")}
                         </Text>
                       </div>
                       <ChevronUp className="ml-auto" strokeWidth={1.5} />

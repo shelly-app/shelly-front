@@ -26,12 +26,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
+import { useTranslation } from "react-i18next";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (dialogOpen === false) {
@@ -40,7 +42,9 @@ export const MembersListPage = () => {
   }, [dialogOpen]);
 
   const inviteSchema = z.object({
-    email: z.string().email({ message: "Email inválido" }),
+    email: z
+      .string()
+      .email({ message: t("app.members.validation.invalid_email") }),
   });
 
   type InviteForm = z.infer<typeof inviteSchema>;
@@ -58,11 +62,11 @@ export const MembersListPage = () => {
   });
 
   if (isLoading) {
-    return <SectionLoader text="Cargando miembros..." />;
+    return <SectionLoader text={t("app.members.loading")} />;
   }
 
   if (isError) {
-    return <SectionError text="Error al cargar los miembros" />;
+    return <SectionError text={t("app.members.error")} />;
   }
 
   const visibleMembers = members.filter((m) =>
@@ -73,18 +77,18 @@ export const MembersListPage = () => {
 
   return (
     <section className="container mx-auto space-y-6 pt-5 md:pt-0">
-      <h1 className="text-3xl font-bold">Miembros</h1>
+      <h1 className="text-3xl font-bold">{t("app.members.title")}</h1>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Input
-          placeholder="Buscar miembro..."
+          placeholder={t("app.members.search_placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="sm:w-64"
         />
         <Button size="lg" onClick={() => setDialogOpen(true)}>
           <PlusIcon className="mr-2 h-4 w-4" />
-          Agregar miembro
+          {t("app.members.add_member")}
         </Button>
       </div>
 
@@ -109,7 +113,9 @@ export const MembersListPage = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-muted-foreground flex w-full justify-center text-xs">
-              Miembro desde {formatDate(member.joinedAt)}
+              {t("app.members.member_since", {
+                date: formatDate(member.joinedAt),
+              })}
             </CardContent>
           </Card>
         ))}
@@ -127,11 +133,10 @@ export const MembersListPage = () => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Invitar nuevo miembro</DialogTitle>
+            <DialogTitle>{t("app.members.invite.title")}</DialogTitle>
           </DialogHeader>
           <DialogDescription className="text-sm">
-            El usuario recibirá un correo electrónico con un enlace para crear
-            su cuenta y unirse al refugio.
+            {t("app.members.invite.description")}
           </DialogDescription>
           <form
             onSubmit={handleSubmit((data) => {
@@ -148,7 +153,7 @@ export const MembersListPage = () => {
           >
             <div className="grid gap-2 py-4">
               <Input
-                placeholder="Correo electrónico del miembro"
+                placeholder={t("app.members.invite.email_placeholder")}
                 {...register("email")}
               />
               {errors.email && hasSubmitted && (
@@ -170,10 +175,10 @@ export const MembersListPage = () => {
                   });
                 }}
               >
-                Cancelar
+                {t("app.members.invite.cancel")}
               </Button>
               <Button type="submit" disabled={isSubmitting || !isValid}>
-                Enviar invitación
+                {t("app.members.invite.send")}
               </Button>
             </DialogFooter>
           </form>

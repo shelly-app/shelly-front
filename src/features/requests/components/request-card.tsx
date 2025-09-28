@@ -26,6 +26,7 @@ import {
   QUESTIONNAIRE_LABELS,
   REQUEST_STATUS,
 } from "@/features/requests/constants";
+import { useTranslation } from "react-i18next";
 
 interface RequestCardProps {
   request: AdoptionRequest;
@@ -34,6 +35,7 @@ interface RequestCardProps {
 export const RequestCard = ({ request }: RequestCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState<RequestAction>(null);
+  const { t } = useTranslation();
 
   return (
     <>
@@ -68,7 +70,9 @@ export const RequestCard = ({ request }: RequestCardProps) => {
                 </a>
               </CardTitle>
               <CardDescription className="flex flex-col text-sm">
-                <span>Solicitado por {request.requesterName}</span>
+                <span>
+                  {t("app.requests.requested_by")} {request.requesterName}
+                </span>
                 <span className="text-muted-foreground text-xs">
                   {formatDate(request.createdAt)}
                 </span>
@@ -76,67 +80,71 @@ export const RequestCard = ({ request }: RequestCardProps) => {
             </div>
           </div>
           {/* Contextual menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Ellipsis className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="left">
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAction("approve");
-                }}
-              >
-                Aprobar
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAction("reject");
-                }}
-              >
-                Rechazar
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAction("contact");
-                }}
-              >
-                Contactar
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {request.status === REQUEST_STATUS.PENDING && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Ellipsis className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="left">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAction("approve");
+                  }}
+                >
+                  {t("app.requests.actions.approve")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAction("reject");
+                  }}
+                >
+                  {t("app.requests.actions.reject")}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAction("contact");
+                  }}
+                >
+                  {t("app.requests.actions.contact")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </CardHeader>
         {isOpen && (
           <CardContent className="grid gap-3 pb-4 text-sm">
             {request.status === REQUEST_STATUS.APPROVED && (
               <span className="text-muted-foreground text-xs">
-                Aprobado el: {formatDate(request.approvedAt)}
+                {t("app.requests.status.approved")}:{" "}
+                {formatDate(request.approvedAt)}
               </span>
             )}
             {request.status === REQUEST_STATUS.REJECTED && (
               <span className="text-muted-foreground text-xs">
-                Rechazado el: {formatDate(request.rejectedAt)}
+                {t("app.requests.status.rejected")}:{" "}
+                {formatDate(request.rejectedAt)}
               </span>
             )}
             <p>
-              <strong>Correo:&nbsp;</strong>
+              <strong>{t("app.requests.requester_email")}:&nbsp;</strong>
               {request.requesterEmail}
             </p>
 
             {request.requesterPhone && (
               <p>
-                <strong>Teléfono:&nbsp;</strong>
+                <strong>{t("app.requests.requester_phone")}:&nbsp;</strong>
                 {request.requesterPhone}
               </p>
             )}
@@ -144,20 +152,24 @@ export const RequestCard = ({ request }: RequestCardProps) => {
             {Object.entries(request.questionnaire).map(([key, value]) => (
               <p key={key}>
                 <strong>
-                  {
+                  {t(
                     QUESTIONNAIRE_LABELS[
                       key as keyof typeof QUESTIONNAIRE_LABELS
-                    ]
-                  }
+                    ],
+                  )}
                   :&nbsp;
                 </strong>
-                {typeof value === "boolean" ? (value ? "Sí" : "No") : value}
+                {typeof value === "boolean"
+                  ? value
+                    ? t("app.requests.yes")
+                    : t("app.requests.no")
+                  : value}
               </p>
             ))}
 
             {request.message && (
               <p>
-                <strong>Mensaje:&nbsp;</strong>
+                <strong>{t("app.requests.message")}:&nbsp;</strong>
                 {request.message}
               </p>
             )}
@@ -166,7 +178,7 @@ export const RequestCard = ({ request }: RequestCardProps) => {
               <>
                 <hr className="my-2" />
                 <p>
-                  <strong>Motivo del rechazo:&nbsp;</strong>
+                  <strong>{t("app.requests.rejection_reason")}:&nbsp;</strong>
                   {request.rejectionReason}
                 </p>
               </>

@@ -9,17 +9,19 @@ import { cn } from "@/lib/utils";
 import { useHashScroll } from "@/hooks/use-hash-scroll";
 import { TermsConditionsDialog } from "./terms-conditions-dialog";
 import { useState } from "react";
-
-const FOOTER_LINKS = [
-  { label: "Sobre Nosotros", href: "#about" },
-  { label: "Adoptar", href: "#adopt" },
-  { label: "Contacto", href: "#contact" },
-  { label: "Términos y condiciones", href: "#" },
-] as const;
+import { useTranslation } from "react-i18next";
 
 export const Footer = ({ className }: { className?: string }) => {
+  const { t } = useTranslation();
   const { scrollToSection } = useHashScroll();
   const [termsDialogOpen, setTermsDialogOpen] = useState(false);
+
+  const FOOTER_LINKS = [
+    { id: "about", label: t("footer.about"), href: "#about" },
+    { id: "adopt", label: t("footer.adopt"), href: "#adopt" },
+    { id: "contact", label: t("footer.contact"), href: "#contact" },
+    { id: "terms", label: t("footer.terms"), href: "#" },
+  ] as const;
 
   return (
     <footer className={cn("bg-amber-100 text-amber-900", className)}>
@@ -30,15 +32,15 @@ export const Footer = ({ className }: { className?: string }) => {
           <div className="mb-3 flex items-center gap-2">
             <Image src={ShellyLogo} alt="Shelly Logo" className="h-8 w-8" />
             <ShellyGradient className="text-xl font-bold">
-              Shelly
+              {t("brand.name")}
             </ShellyGradient>
           </div>
           <Text className="mb-3 text-sm text-amber-700">
-            Conectando mascotas con sus familias ideales
+            {t("footer.slogan")}
           </Text>
           <div className="flex items-center gap-2 text-xs text-amber-600">
             <Heart className="h-3 w-3" />
-            <span>Hecho con amor en Argentina</span>
+            <span>{t("footer.made_with_love")}</span>
           </div>
         </div>
 
@@ -50,7 +52,7 @@ export const Footer = ({ className }: { className?: string }) => {
             <button
               key={link.label}
               onClick={() => {
-                if (link.label === "Términos y condiciones") {
+                if (link.id === "terms") {
                   setTermsDialogOpen(true);
                 } else {
                   scrollToSection(link.href);
@@ -66,18 +68,18 @@ export const Footer = ({ className }: { className?: string }) => {
         {/* Contact */}
         <div className="mb-6 flex justify-center">
           <a
-            href="mailto:shelly.app.contact@gmail.com"
+            href={`mailto:${t("brand.email")}`}
             className="flex items-center gap-2 text-sm text-amber-700 transition-colors hover:text-amber-900 hover:underline"
           >
             <Mail className="h-4 w-4" />
-            <span>shelly.app.contact@gmail.com</span>
+            <span>{t("brand.email")}</span>
           </a>
         </div>
 
         {/* Copyright */}
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Text className="text-xs text-amber-600">
-            © {new Date().getFullYear()} Shelly. Todos los derechos reservados.
+            {t("footer.copyright", { year: new Date().getFullYear() })}
           </Text>
           <Button
             variant="ghost"
@@ -86,7 +88,7 @@ export const Footer = ({ className }: { className?: string }) => {
             className="text-amber-700 transition-all duration-200 hover:bg-amber-200 hover:text-amber-900"
           >
             <ArrowUp className="mr-2 h-3 w-3" />
-            Volver arriba
+            {t("footer.back_to_top")}
           </Button>
         </div>
       </div>

@@ -39,3 +39,7 @@ export const formatDate = (date: number | null) => {
     year: "numeric",
   });
 };
+
+export const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

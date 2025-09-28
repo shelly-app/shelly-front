@@ -9,18 +9,21 @@ import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
-const NAV_ITEMS = [
-  { id: "/", label: "Inicio" },
-  { id: "#about", label: "Sobre Nosotros" },
-  { id: "#adopt", label: "Adoptar" },
-  { id: "#contact", label: "Contacto" },
-];
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "@/components/language-selector";
 
 export const Navbar = () => {
+  const { t } = useTranslation();
   const isScrolled = useIsScrolled(50);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollToSection } = useHashScroll();
+
+  const NAV_ITEMS = [
+    { id: "/", label: t("navbar.home") },
+    { id: "#about", label: t("navbar.about") },
+    { id: "#adopt", label: t("navbar.adopt") },
+    { id: "#contact", label: t("navbar.contact") },
+  ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -59,12 +62,12 @@ export const Navbar = () => {
               isScrolled && "text-xl md:text-2xl",
             )}
           >
-            Shelly
+            {t("brand.name")}
           </ShellyGradient>
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden items-center gap-12 lg:flex">
+        <div className="hidden items-center gap-10 lg:flex">
           <menu className="flex items-center gap-10 text-amber-800">
             {NAV_ITEMS.map((item) => (
               <NavItem key={item.id} id={item.id}>
@@ -72,6 +75,7 @@ export const Navbar = () => {
               </NavItem>
             ))}
           </menu>
+          <LanguageSelector className="w-fit" />
           <SignInLink />
         </div>
 
@@ -81,7 +85,9 @@ export const Navbar = () => {
           size="icon"
           className="relative z-50 lg:hidden"
           onClick={toggleMenu}
-          aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-label={
+            isMenuOpen ? t("navbar.close_menu") : t("navbar.open_menu")
+          }
         >
           {isMenuOpen ? (
             <X className="h-6 w-6 text-amber-800" />
@@ -117,6 +123,7 @@ export const Navbar = () => {
             ))}
           </menu>
           <SignInLink className="mt-4" />
+          <LanguageSelector />
         </div>
       </div>
     </>
