@@ -1,8 +1,9 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { PET_COLORS } from "@/features/pets/constants";
+import { PET_COLOR_LABELS, PET_COLORS } from "@/features/pets/constants";
 import { XCircle } from "lucide-react";
+import { capitalize } from "@/lib/utils";
 
 interface ColorBadgeProps {
   /** Color name as defined in PET_COLORS */
@@ -52,7 +53,9 @@ export const ColorBadge: React.FC<ColorBadgeProps> = ({
         borderColor: light ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)",
       }}
     >
-      <span>{color}</span>
+      <span>
+        {capitalize(PET_COLOR_LABELS[color as keyof typeof PET_COLOR_LABELS])}
+      </span>
       {removable && (
         <XCircle
           aria-label="Remove color"

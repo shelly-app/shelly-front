@@ -3,11 +3,13 @@ import { useIsScrolled } from "@/hooks/use-is-scrolled";
 import { cn } from "@/lib/utils";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export const SignInLink = ({ className }: { className?: string }) => {
   const { isAuthenticated } = useAuth();
   const isScrolled = useIsScrolled(50);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleClick = () => {
     if (isAuthenticated) {
@@ -29,7 +31,7 @@ export const SignInLink = ({ className }: { className?: string }) => {
         className,
       )}
     >
-      {isAuthenticated ? "Acceder" : "Iniciar sesión"}
+      {isAuthenticated ? t("auth.access") : t("auth.sign_in")}
     </Button>
   );
 };

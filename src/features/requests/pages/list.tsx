@@ -5,15 +5,16 @@ import { RequestCard } from "@/features/requests/components";
 import { useRequests } from "@/features/requests/hooks/use-requests";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import { REQUEST_STATUS_LABELS } from "@/features/requests/constants";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
+import { useTranslation } from "react-i18next";
 
 export const RequestsListPage = () => {
   const { requests, isLoading, isError } = useRequests();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   const tabParam = searchParams.get("tab") ?? "pending";
   const [search, setSearch] = useState("");
@@ -36,32 +37,32 @@ export const RequestsListPage = () => {
   }, [requests, tabParam, search]);
 
   if (isLoading) {
-    return <SectionLoader text="Cargando solicitudes..." />;
+    return <SectionLoader text={t("app.requests.loading")} />;
   }
 
   if (isError) {
-    return <SectionError text="Error al cargar las solicitudes" />;
+    return <SectionError text={t("app.requests.error")} />;
   }
 
   return (
     <section className="container mx-auto space-y-6 pt-5 md:pt-0">
-      <h1 className="text-3xl font-bold">Solicitudes de Adopción</h1>
+      <h1 className="text-3xl font-bold">{t("app.requests.title")}</h1>
       <Tabs value={tabParam} onValueChange={handleTabChange} className="w-full">
         <TabsList className="w-full justify-center md:w-fit md:justify-start">
           <TabsTrigger value="pending">
-            {REQUEST_STATUS_LABELS.pending}
+            {t("app.requests.status.pending")}
           </TabsTrigger>
           <TabsTrigger value="approved">
-            {REQUEST_STATUS_LABELS.approved}
+            {t("app.requests.status.approved")}
           </TabsTrigger>
           <TabsTrigger value="rejected">
-            {REQUEST_STATUS_LABELS.rejected}
+            {t("app.requests.status.rejected")}
           </TabsTrigger>
         </TabsList>
 
         <div className="mt-4">
           <Input
-            placeholder="Buscar por mascota o solicitante..."
+            placeholder={t("app.requests.search_placeholder")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             fullWidth
@@ -73,7 +74,7 @@ export const RequestsListPage = () => {
             <div className="flex flex-col gap-4">
               {visibleRequests.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  No hay resultados.
+                  {t("app.requests.no_results")}
                 </p>
               ) : (
                 visibleRequests.map((req) => (

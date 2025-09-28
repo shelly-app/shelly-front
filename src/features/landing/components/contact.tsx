@@ -9,6 +9,7 @@ import { Building2, Heart, Send, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import { useContactForm } from "@/features/landing/hooks/use-contact-form";
 import { Progress } from "@/components/ui/progress";
+import { useTranslation } from "react-i18next";
 
 export const Contact = () => {
   const [activeTab, setActiveTab] = useState("shelter");
@@ -20,6 +21,7 @@ export const Contact = () => {
     handleInputChange,
     handleSubmit,
   } = useContactForm();
+  const { t } = useTranslation();
 
   if (isSubmitted) {
     return (
@@ -32,11 +34,10 @@ export const Contact = () => {
             <CheckCircle className="h-12 w-12 text-green-600" />
           </div>
           <H2 className="text-center text-3xl font-bold md:text-4xl">
-            ¡Mensaje enviado con éxito!
+            {t("landing.contact.success.title")}
           </H2>
           <Lead className="text-lg">
-            Gracias por contactarnos. Nos vamos a poner en contacto con vos
-            pronto.
+            {t("landing.contact.success.subtitle")}
           </Lead>
           <Progress value={progress} className="w-full" />
         </div>
@@ -51,11 +52,10 @@ export const Contact = () => {
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">
-          Contactanos
+          {t("landing.contact.title")}
         </H2>
         <Lead className="max-w-2xl text-lg md:text-xl">
-          ¿Sos un refugio que quiere unirse a Shelly o un patrocinador
-          interesado en apoyar nuestra causa?
+          {t("landing.contact.subtitle")}
         </Lead>
       </div>
 
@@ -70,7 +70,7 @@ export const Contact = () => {
               className="flex items-center gap-2"
             >
               <Building2 className="h-4 w-4" />
-              Refugio
+              {t("landing.contact.shelter.tab")}
             </TabsTrigger>
             <TabsTrigger
               value="sponsor"
@@ -78,7 +78,7 @@ export const Contact = () => {
               className="flex items-center gap-2"
             >
               <Heart className="h-4 w-4" />
-              Patrocinador
+              {t("landing.contact.sponsor.tab")}
             </TabsTrigger>
           </TabsList>
 
@@ -86,37 +86,44 @@ export const Contact = () => {
             <div className="rounded-2xl bg-white/80 p-8 shadow-lg backdrop-blur-sm">
               <div className="mb-6 text-center">
                 <H3 className="text-2xl font-semibold">
-                  Solicitá acceso para tu refugio
+                  {t("landing.contact.shelter.title")}
                 </H3>
                 <Paragraph className="mt-2 text-gray-600">
-                  Unite a nuestra red de refugios y empezá a encontrar hogares
-                  para más mascotas
+                  {t("landing.contact.shelter.subtitle")}
                 </Paragraph>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="shelter-name">Nombre del refugio *</Label>
+                    <Label htmlFor="shelter-name">
+                      {t("landing.contact.shelter.form.shelter_name")} *
+                    </Label>
                     <Input
                       id="shelter-name"
                       value={formData.shelterName}
                       onChange={(e) =>
                         handleInputChange("shelterName", e.target.value)
                       }
-                      placeholder="Ej: Refugio Amor Animal"
+                      placeholder={t(
+                        "landing.contact.shelter.form.shelter_name_placeholder",
+                      )}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="shelter-type">Tipo de refugio *</Label>
+                    <Label htmlFor="shelter-type">
+                      {t("landing.contact.shelter.form.shelter_type")} *
+                    </Label>
                     <Input
                       id="shelter-type"
                       value={formData.shelterType}
                       onChange={(e) =>
                         handleInputChange("shelterType", e.target.value)
                       }
-                      placeholder="Ej: Perros y gatos, Solo perros, etc."
+                      placeholder={t(
+                        "landing.contact.shelter.form.shelter_type_placeholder",
+                      )}
                       required
                     />
                   </div>
@@ -124,7 +131,7 @@ export const Contact = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="shelter-location">
-                    Ubicación del refugio *
+                    {t("landing.contact.shelter.form.shelter_location")} *
                   </Label>
                   <Input
                     id="shelter-location"
@@ -132,26 +139,34 @@ export const Contact = () => {
                     onChange={(e) =>
                       handleInputChange("shelterLocation", e.target.value)
                     }
-                    placeholder="Ciudad, Provincia, País"
+                    placeholder={t(
+                      "landing.contact.shelter.form.shelter_location_placeholder",
+                    )}
                     required
                   />
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="contact-name">Nombre del contacto *</Label>
+                    <Label htmlFor="contact-name">
+                      {t("landing.contact.shelter.form.contact_name")} *
+                    </Label>
                     <Input
                       id="contact-name"
                       value={formData.name}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
-                      placeholder="Tu nombre completo"
+                      placeholder={t(
+                        "landing.contact.shelter.form.contact_name_placeholder",
+                      )}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="contact-email">Email *</Label>
+                    <Label htmlFor="contact-email">
+                      {t("landing.contact.shelter.form.email")} *
+                    </Label>
                     <Input
                       id="contact-email"
                       type="email"
@@ -159,32 +174,42 @@ export const Contact = () => {
                       onChange={(e) =>
                         handleInputChange("email", e.target.value)
                       }
-                      placeholder="tu@email.com"
+                      placeholder={t(
+                        "landing.contact.shelter.form.email_placeholder",
+                      )}
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="contact-phone">Teléfono</Label>
+                  <Label htmlFor="contact-phone">
+                    {t("landing.contact.shelter.form.phone")}
+                  </Label>
                   <Input
                     id="contact-phone"
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => handleInputChange("phone", e.target.value)}
-                    placeholder="+54 9 11 1234-5678"
+                    placeholder={t(
+                      "landing.contact.shelter.form.phone_placeholder",
+                    )}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="shelter-message">Mensaje *</Label>
+                  <Label htmlFor="shelter-message">
+                    {t("landing.contact.shelter.form.message")} *
+                  </Label>
                   <Textarea
                     id="shelter-message"
                     value={formData.message}
                     onChange={(e) =>
                       handleInputChange("message", e.target.value)
                     }
-                    placeholder="Contanos sobre tu refugio, cuántas mascotas tenés actualmente, y cualquier información adicional que consideres relevante..."
+                    placeholder={t(
+                      "landing.contact.shelter.form.message_placeholder",
+                    )}
                     rows={4}
                     required
                   />
@@ -199,12 +224,12 @@ export const Contact = () => {
                   {isPending ? (
                     <>
                       <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      Enviando...
+                      {t("landing.contact.sending")}
                     </>
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      Solicitar acceso
+                      {t("landing.contact.shelter.cta")}
                     </>
                   )}
                 </Button>
@@ -216,30 +241,35 @@ export const Contact = () => {
             <div className="rounded-2xl bg-white/80 p-8 shadow-lg backdrop-blur-sm">
               <div className="mb-6 text-center">
                 <H3 className="text-2xl font-semibold">
-                  Sé parte de nuestra misión
+                  {t("landing.contact.sponsor.title")}
                 </H3>
                 <Paragraph className="mt-2 text-gray-600">
-                  Apoyá nuestro proyecto y ayudanos a conectar más mascotas con
-                  sus familias ideales
+                  {t("landing.contact.sponsor.subtitle")}
                 </Paragraph>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="sponsor-name">Nombre completo *</Label>
+                    <Label htmlFor="sponsor-name">
+                      {t("landing.contact.sponsor.form.full_name")} *
+                    </Label>
                     <Input
                       id="sponsor-name"
                       value={formData.name}
                       onChange={(e) =>
                         handleInputChange("name", e.target.value)
                       }
-                      placeholder="Tu nombre completo"
+                      placeholder={t(
+                        "landing.contact.sponsor.form.full_name_placeholder",
+                      )}
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sponsor-email">Email *</Label>
+                    <Label htmlFor="sponsor-email">
+                      {t("landing.contact.sponsor.form.email")} *
+                    </Label>
                     <Input
                       id="sponsor-email"
                       type="email"
@@ -247,7 +277,9 @@ export const Contact = () => {
                       onChange={(e) =>
                         handleInputChange("email", e.target.value)
                       }
-                      placeholder="tu@email.com"
+                      placeholder={t(
+                        "landing.contact.sponsor.form.email_placeholder",
+                      )}
                       required
                     />
                   </div>
@@ -255,18 +287,24 @@ export const Contact = () => {
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="sponsor-organization">Organización</Label>
+                    <Label htmlFor="sponsor-organization">
+                      {t("landing.contact.sponsor.form.organization")}
+                    </Label>
                     <Input
                       id="sponsor-organization"
                       value={formData.organization}
                       onChange={(e) =>
                         handleInputChange("organization", e.target.value)
                       }
-                      placeholder="Nombre de tu empresa u organización"
+                      placeholder={t(
+                        "landing.contact.sponsor.form.organization_placeholder",
+                      )}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sponsor-phone">Teléfono</Label>
+                    <Label htmlFor="sponsor-phone">
+                      {t("landing.contact.sponsor.form.phone")}
+                    </Label>
                     <Input
                       id="sponsor-phone"
                       type="tel"
@@ -274,7 +312,9 @@ export const Contact = () => {
                       onChange={(e) =>
                         handleInputChange("phone", e.target.value)
                       }
-                      placeholder="+54 9 11 1234-5678"
+                      placeholder={t(
+                        "landing.contact.sponsor.form.phone_placeholder",
+                      )}
                     />
                   </div>
                 </div>
@@ -282,7 +322,7 @@ export const Contact = () => {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="contacthip-type">
-                      Tipo de patrocinio *
+                      {t("landing.contact.sponsor.form.sponsorship_type")} *
                     </Label>
                     <Input
                       id="contacthip-type"
@@ -290,13 +330,15 @@ export const Contact = () => {
                       onChange={(e) =>
                         handleInputChange("contacthipType", e.target.value)
                       }
-                      placeholder="Ej: Donación única, Patrocinio mensual, etc."
+                      placeholder={t(
+                        "landing.contact.sponsor.form.sponsorship_type_placeholder",
+                      )}
                       required
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="sponsor-budget">
-                      Presupuesto aproximado
+                      {t("landing.contact.sponsor.form.budget")}
                     </Label>
                     <Input
                       id="sponsor-budget"
@@ -304,20 +346,26 @@ export const Contact = () => {
                       onChange={(e) =>
                         handleInputChange("budget", e.target.value)
                       }
-                      placeholder="Ej: $10,000 - $50,000"
+                      placeholder={t(
+                        "landing.contact.sponsor.form.budget_placeholder",
+                      )}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="sponsor-message">Mensaje *</Label>
+                  <Label htmlFor="sponsor-message">
+                    {t("landing.contact.sponsor.form.message")} *
+                  </Label>
                   <Textarea
                     id="sponsor-message"
                     value={formData.message}
                     onChange={(e) =>
                       handleInputChange("message", e.target.value)
                     }
-                    placeholder="Contanos sobre tu interés en patrocinar Shelly, cómo te gustaría colaborar, y cualquier pregunta que tengas..."
+                    placeholder={t(
+                      "landing.contact.sponsor.form.message_placeholder",
+                    )}
                     rows={4}
                     required
                   />
@@ -332,12 +380,12 @@ export const Contact = () => {
                   {isPending ? (
                     <>
                       <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                      Enviando...
+                      {t("landing.contact.sending")}
                     </>
                   ) : (
                     <>
                       <Heart className="mr-2 h-4 w-4" />
-                      Enviar mensaje
+                      {t("landing.contact.sponsor.cta")}
                     </>
                   )}
                 </Button>

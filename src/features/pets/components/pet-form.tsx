@@ -43,39 +43,44 @@ import {
   PET_SEXES,
   PET_SIZES,
   VACCINES,
+  PET_COLOR_LABELS,
 } from "@/features/pets/constants";
 import { useAddPet } from "@/features/pets/hooks";
 import { Pet } from "@/features/pets/types/pet";
 import { FileUploader } from "@/components/file-uploader";
+import { useTranslation } from "react-i18next";
+import { capitalize } from "@/lib/utils";
 
-// Single schema that handles both modes
-const petFormSchema = z.object({
-  name: z.string().min(1, "El nombre es requerido"),
-  species: z.enum([PET_SPECIES.DOG, PET_SPECIES.CAT], {
-    required_error: "La especie es requerida",
-  }),
-  status: z.enum(
-    [
-      PET_STATUS.IN_TRANSIT,
-      PET_STATUS.IN_SHELTER,
-      PET_STATUS.ADOPTED,
-      PET_STATUS.IN_VET,
-    ],
-    {
-      required_error: "El estado es requerido",
-    },
-  ),
-  breed: z.string().optional(),
-  age: z.number().min(0).max(30).optional(),
-  sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE]).optional(),
-  size: z.enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE]).optional(),
-  colors: z.array(z.string()).optional(),
-  vaccines: z.array(z.string()).optional(),
-  description: z.string().optional(),
-  photoUrl: z.string().optional(),
-});
+const getPetFormSchema = (t: (key: string) => string) =>
+  z.object({
+    name: z.string().min(1, t("app.pets.validation.name_required")),
+    species: z.enum([PET_SPECIES.DOG, PET_SPECIES.CAT], {
+      required_error: t("app.pets.validation.species_required"),
+    }),
+    status: z.enum(
+      [
+        PET_STATUS.IN_TRANSIT,
+        PET_STATUS.IN_SHELTER,
+        PET_STATUS.ADOPTED,
+        PET_STATUS.IN_VET,
+      ],
+      {
+        required_error: t("app.pets.validation.status_required"),
+      },
+    ),
+    breed: z.string().optional(),
+    age: z.number().min(0).max(30).optional(),
+    sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE]).optional(),
+    size: z
+      .enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE])
+      .optional(),
+    colors: z.array(z.string()).optional(),
+    vaccines: z.array(z.string()).optional(),
+    description: z.string().optional(),
+    photoUrl: z.string().optional(),
+  });
 
-type PetFormData = z.infer<typeof petFormSchema>;
+type PetFormData = z.infer<ReturnType<typeof getPetFormSchema>>;
 
 interface PetFormProps {
   mode: "add" | "edit";
@@ -92,6 +97,8 @@ export const PetForm = ({
   onOpenChange,
   onSave,
 }: PetFormProps) => {
+  const { t } = useTranslation();
+  const petFormSchema = getPetFormSchema(t);
   const [isCompleteMode, setIsCompleteMode] = useState(
     mode === "edit" ? true : false,
   );
@@ -139,7 +146,9 @@ export const PetForm = ({
 
       return {
         value: color,
-        label: color,
+        label: capitalize(
+          PET_COLOR_LABELS[color as keyof typeof PET_COLOR_LABELS],
+        ),
         icon: () => (
           <div
             className="h-4 w-4 rounded-full"
@@ -194,33 +203,37 @@ export const PetForm = ({
   // Get vaccine options based on the selected species
   const vaccineOptions = useMemo(() => {
     const speciesVaccines = VACCINES[species];
-    return Object.entries(speciesVaccines).map(([value, label]) => ({
+    return Object.entries(speciesVaccines).map(([value, labelKey]) => ({
       value,
-      label,
+      label: t(labelKey),
     }));
-  }, [species]);
+  }, [species, t]);
 
   // Get options for form selects
   const speciesOptions = Object.entries(PET_SPECIES_LABELS).map(
-    ([value, label]) => ({
+    ([value, labelKey]) => ({
       value,
-      label,
+      label: t(labelKey),
     }),
   );
   const statusOptions = Object.entries(PET_STATUS_LABELS).map(
-    ([value, label]) => ({
+    ([value, labelKey]) => ({
       value,
-      label,
+      label: t(labelKey),
     }),
   );
-  const sexOptions = Object.entries(PET_SEX_LABELS).map(([value, label]) => ({
-    value,
-    label,
-  }));
-  const sizeOptions = Object.entries(PET_SIZE_LABELS).map(([value, label]) => ({
-    value,
-    label,
-  }));
+  const sexOptions = Object.entries(PET_SEX_LABELS).map(
+    ([value, labelKey]) => ({
+      value,
+      label: t(labelKey),
+    }),
+  );
+  const sizeOptions = Object.entries(PET_SIZE_LABELS).map(
+    ([value, labelKey]) => ({
+      value,
+      label: t(labelKey),
+    }),
+  );
 
   const onSubmit = async (data: PetFormData) => {
     try {
@@ -249,7 +262,7 @@ export const PetForm = ({
         await addPetAsync(submitData);
 
         // Show success message
-        console.log("Mascota agregada exitosamente");
+        console.log(t("app.pets.notifications.added_successfully"));
 
         // Close modal and reset form
         onOpenChange(false);
@@ -258,9 +271,7 @@ export const PetForm = ({
       }
     } catch {
       // Error is handled by the mutation, but we can show a message here too
-      console.error(
-        "Error al procesar la mascota. Por favor, intenta de nuevo.",
-      );
+      console.error(t("app.pets.notifications.error_processing"));
     }
   };
 
@@ -303,14 +314,12 @@ export const PetForm = ({
       <DialogContent className="max-h-full max-w-2xl overflow-y-auto p-4 sm:max-h-[90dvh] sm:p-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg">
-            {mode === "edit"
-              ? "Editar información de la mascota"
-              : "Agregar nueva mascota"}
+            {mode === "edit" ? t("app.pets.edit_pet") : t("app.pets.add_pet")}
           </DialogTitle>
           <DialogDescription className="text-sm">
             {mode === "edit"
-              ? "Actualiza los detalles de la mascota a continuación. Todos los cambios se guardarán cuando hagas clic en 'Guardar cambios'."
-              : "Completa la información de la nueva mascota. Puedes usar el modo rápido para información básica o el modo completo para todos los detalles."}
+              ? t("app.pets.form.edit_description")
+              : t("app.pets.form.add_description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -331,7 +340,7 @@ export const PetForm = ({
                   htmlFor="mode"
                   className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Modo Completo
+                  {t("app.pets.form.complete_mode")}
                 </label>
               </div>
             )}
@@ -339,10 +348,12 @@ export const PetForm = ({
             {/* Basic fields - always visible */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
               <FormItem className="min-w-0 space-y-1">
-                <FormLabel className="text-sm">Nombre *</FormLabel>
+                <FormLabel className="text-sm">
+                  {t("app.pets.name")} *
+                </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Nombre de la mascota"
+                    placeholder={t("app.pets.form.name_placeholder")}
                     className="h-9"
                     {...form.register("name")}
                   />
@@ -355,7 +366,9 @@ export const PetForm = ({
                 name="species"
                 render={({ field }) => (
                   <FormItem className="min-w-0 space-y-1">
-                    <FormLabel className="text-sm">Especie *</FormLabel>
+                    <FormLabel className="text-sm">
+                      {t("app.pets.species")} *
+                    </FormLabel>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
@@ -365,7 +378,9 @@ export const PetForm = ({
                     >
                       <FormControl>
                         <SelectTrigger className="h-9 w-full cursor-pointer">
-                          <SelectValue placeholder="Selecciona la especie" />
+                          <SelectValue
+                            placeholder={t("app.pets.form.select_species")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -392,14 +407,18 @@ export const PetForm = ({
                 name="status"
                 render={({ field }) => (
                   <FormItem className="min-w-0 space-y-1">
-                    <FormLabel className="text-sm">Estado *</FormLabel>
+                    <FormLabel className="text-sm">
+                      {t("app.pets.status")} *
+                    </FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger className="h-9 w-full cursor-pointer">
-                          <SelectValue placeholder="Selecciona el estado" />
+                          <SelectValue
+                            placeholder={t("app.pets.form.select_status")}
+                          />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -420,10 +439,10 @@ export const PetForm = ({
               />
 
               <FormItem className="min-w-0 space-y-1">
-                <FormLabel className="text-sm">Raza</FormLabel>
+                <FormLabel className="text-sm">{t("app.pets.breed")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Raza de la mascota"
+                    placeholder={t("app.pets.form.breed_placeholder")}
                     className="h-9"
                     {...form.register("breed")}
                   />
@@ -441,11 +460,13 @@ export const PetForm = ({
                     name="age"
                     render={({ field }) => (
                       <FormItem className="space-y-1">
-                        <FormLabel className="text-sm">Edad (años)</FormLabel>
+                        <FormLabel className="text-sm">
+                          {t("app.pets.form.age")}
+                        </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
-                            placeholder="Edad en años"
+                            placeholder={t("app.pets.form.age_placeholder")}
                             className="h-9 w-full sm:max-w-[49%]"
                             max={40}
                             {...field}
@@ -469,14 +490,18 @@ export const PetForm = ({
                       name="sex"
                       render={({ field }) => (
                         <FormItem className="min-w-0 space-y-1">
-                          <FormLabel className="text-sm">Sexo</FormLabel>
+                          <FormLabel className="text-sm">
+                            {t("app.pets.form.sex")}
+                          </FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                           >
                             <FormControl>
                               <SelectTrigger className="h-9 w-full cursor-pointer">
-                                <SelectValue placeholder="Selecciona el sexo" />
+                                <SelectValue
+                                  placeholder={t("app.pets.form.select_sex")}
+                                />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -501,14 +526,18 @@ export const PetForm = ({
                       name="size"
                       render={({ field }) => (
                         <FormItem className="min-w-0 space-y-1">
-                          <FormLabel className="text-sm">Tamaño</FormLabel>
+                          <FormLabel className="text-sm">
+                            {t("app.pets.form.size")}
+                          </FormLabel>
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
                           >
                             <FormControl>
                               <SelectTrigger className="h-9 w-full cursor-pointer">
-                                <SelectValue placeholder="Selecciona el tamaño" />
+                                <SelectValue
+                                  placeholder={t("app.pets.form.select_size")}
+                                />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -535,7 +564,9 @@ export const PetForm = ({
                   name="colors"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel className="w-fit">Colores</FormLabel>
+                      <FormLabel className="w-fit">
+                        {t("app.pets.form.colors")}
+                      </FormLabel>
                       <FormControl>
                         <MultiSelect
                           searchable
@@ -543,7 +574,7 @@ export const PetForm = ({
                           options={getColorOptions()}
                           defaultValue={field.value || []}
                           onValueChange={field.onChange}
-                          placeholder="Seleccionar colores"
+                          placeholder={t("app.pets.form.select_colors")}
                           maxCount={5}
                         />
                       </FormControl>
@@ -557,14 +588,16 @@ export const PetForm = ({
                   name="vaccines"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel className="w-fit">Vacunas</FormLabel>
+                      <FormLabel className="w-fit">
+                        {t("app.pets.form.vaccines")}
+                      </FormLabel>
                       <FormControl>
                         <MultiSelect
                           disabled={!form.getValues("species") || isLoading}
                           options={vaccineOptions || []}
                           defaultValue={field.value || []}
                           onValueChange={field.onChange}
-                          placeholder="Seleccionar vacunas"
+                          placeholder={t("app.pets.form.select_vaccines")}
                           maxCount={4}
                           searchable
                         />
@@ -579,10 +612,14 @@ export const PetForm = ({
                   name="description"
                   render={({ field }) => (
                     <FormItem className="min-w-0">
-                      <FormLabel className="w-fit">Descripción</FormLabel>
+                      <FormLabel className="w-fit">
+                        {t("app.pets.form.description")}
+                      </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Describe la personalidad, características especiales, necesidades médicas, etc."
+                          placeholder={t(
+                            "app.pets.form.description_placeholder",
+                          )}
                           rows={4}
                           {...field}
                         />
@@ -597,7 +634,9 @@ export const PetForm = ({
                   name="photoUrl"
                   render={() => (
                     <FormItem className="min-w-0">
-                      <FormLabel className="w-fit">Imagen</FormLabel>
+                      <FormLabel className="w-fit">
+                        {t("app.pets.form.image")}
+                      </FormLabel>
                       <FormControl>
                         <FileUploader
                           onFileChange={handleFileChange}
@@ -619,18 +658,18 @@ export const PetForm = ({
                 onClick={() => onOpenChange(false)}
                 disabled={isLoading}
               >
-                Cancelar
+                {t("app.pets.form.cancel")}
               </Button>
               <Button type="submit" disabled={isLoading}>
                 {isLoading
                   ? mode === "edit"
-                    ? "Guardando..."
-                    : "Agregando..."
+                    ? t("app.pets.form.saving")
+                    : t("app.pets.form.adding")
                   : mode === "edit"
-                    ? "Guardar cambios"
+                    ? t("app.pets.form.save")
                     : isCompleteMode
-                      ? "Agregar mascota"
-                      : "Agregar rápidamente"}
+                      ? t("app.pets.form.add")
+                      : t("app.pets.form.add_quickly")}
               </Button>
             </DialogFooter>
           </form>
@@ -643,13 +682,14 @@ export const PetForm = ({
 // Keep the old AddPet component for backward compatibility
 export const AddPet = () => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="lg">
           <PlusIcon className="mr-2 h-4 w-4" />
-          Agregar mascota
+          {t("app.pets.add_pet")}
         </Button>
       </DialogTrigger>
       <PetForm mode="add" open={open} onOpenChange={setOpen} />

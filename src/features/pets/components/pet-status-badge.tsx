@@ -14,6 +14,7 @@ const statusConfig = {
 };
 
 export const PetStatusBadge = ({ status, className }: PetStatusBadgeProps) => {
+  console.log(status, PET_STATUS_LABELS[status]);
   return (
     <Badge variant={statusConfig[status] as any} className={className}>
       {PET_STATUS_LABELS[status]}

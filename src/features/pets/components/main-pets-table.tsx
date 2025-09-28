@@ -22,11 +22,12 @@ import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { SearchPet, AddPet, PetStatusBadge } from "@/features/pets/components";
 import { PET_SPECIES_LABELS, PetStatus } from "@/features/pets/constants";
+import { useTranslation } from "react-i18next";
 
-export const columns: ColumnDef<Pet>[] = [
+const columns: ColumnDef<Pet>[] = [
   {
     accessorKey: "name",
-    header: "Nombre",
+    header: "app.pets.name",
     cell: ({ row }) => {
       const pet = row.original;
       return (
@@ -41,7 +42,7 @@ export const columns: ColumnDef<Pet>[] = [
   },
   {
     accessorKey: "species",
-    header: "Especie",
+    header: "app.pets.species",
     cell: ({ row }) => (
       <div className="capitalize">
         {
@@ -54,14 +55,14 @@ export const columns: ColumnDef<Pet>[] = [
   },
   {
     accessorKey: "breed",
-    header: () => "Raza",
+    header: "app.pets.breed",
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("breed")}</div>
     ),
   },
   {
     accessorKey: "status",
-    header: () => "Estado",
+    header: "app.pets.status",
     cell: ({ row }) => {
       const status = row.getValue("status") as PetStatus;
       return (
@@ -82,6 +83,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
   const [petSearchFilter, setPetSearchFilter] = useState<ColumnFiltersState>(
     [],
   );
+  const { t } = useTranslation();
 
   const table = useReactTable({
     data,
@@ -112,7 +114,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
                   >
                     {!header.isPlaceholder &&
                       flexRender(
-                        header.column.columnDef.header,
+                        t(header.column.columnDef.header as string),
                         header.getContext(),
                       )}
                   </TableHead>
@@ -149,7 +151,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
             ) : (
               <TableRow className="h-24 p-6">
                 <TableCell colSpan={columns.length} className="text-center">
-                  No hay resultados.
+                  {t("app.pets.no_results")}
                 </TableCell>
               </TableRow>
             )}

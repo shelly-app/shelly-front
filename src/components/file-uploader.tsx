@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { XIcon } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDropzone } from "react-dropzone";
 
 export const FileUploader = ({
@@ -17,6 +18,7 @@ export const FileUploader = ({
     throw new Error("You must specify at least one file type");
   }
 
+  const { t } = useTranslation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -65,7 +67,7 @@ export const FileUploader = ({
                 {selectedFile.name}
               </div>
               <div className="text-muted-foreground mt-1 text-xs">
-                Haz clic o arrastra para cambiar
+                {t("file_uploader.change_file")}
               </div>
             </div>
           </>
@@ -73,8 +75,8 @@ export const FileUploader = ({
           <div className="flex h-full flex-col items-center justify-center text-center">
             <p className="text-muted-foreground text-sm">
               {isDragActive
-                ? "Suelta la imagen aquí (máx. 10MB)"
-                : "Sube una imagen de la mascota (JPG, PNG, WebP) (máx. 10MB)"}
+                ? t("file_uploader.drop_file")
+                : t("file_uploader.upload_file")}
             </p>
           </div>
         )}
@@ -88,7 +90,7 @@ export const FileUploader = ({
           className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
         >
           <XIcon className="mr-1 h-3 w-3" />
-          Eliminar imagen
+          {t("file_uploader.remove_file")}
         </Button>
       )}
     </div>

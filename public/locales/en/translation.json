@@ -1,0 +1,519 @@
+{
+  "landing": {
+    "about": {
+      "title": "The ultimate management system for your shelter",
+      "subtitle": "We know, managing a pet shelter is not easy. Keeping track of your pets, adoptions, and events is a time-consuming and effortless task.",
+      "subtitle_shelly": "came to change that.",
+      "features": {
+        "visualization": {
+          "title": "Visualization",
+          "description": "Get a general overview of your shelter in one place."
+        },
+        "adoptions": {
+          "title": "Adoptions",
+          "description": "Manage adoption requests efficiently and without complications."
+        },
+        "chatbot": {
+          "title": "Chatbot",
+          "description": "Automate the follow-up process and the reception of adoption requests through a WhatsApp bot."
+        },
+        "details": {
+          "title": "Details",
+          "description": "Access the details of each pet with a historical record of events."
+        }
+      }
+    },
+    "adopt": {
+      "title": "Adopt a pet with",
+      "subtitle": "Give a furry friend a home! Visit the available shelters and find the perfect companion for you.",
+      "cta": "See available shelters",
+      "features": {
+        "unconditional_love": {
+          "title": "Unconditional love",
+          "description": "Adopted pets will give you unconditional love and companionship. Every day will be a new adventure full of affection and special moments."
+        },
+        "save_a_life": {
+          "title": "Save a life",
+          "description": "By adopting, you give a second chance to an animal in need. Your decision can completely change a pet's destiny."
+        },
+        "faithful_company": {
+          "title": "Faithful company",
+          "description": "Find a friend who will accompany you in the best and worst moments. The loyalty of an adopted pet is priceless."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact us",
+      "subtitle": "Are you a shelter that wants to join Shelly or a sponsor interested in supporting our cause?",
+      "success": {
+        "title": "Message sent successfully!",
+        "subtitle": "Thanks for contacting us. We will get in touch with you soon."
+      },
+      "shelter": {
+        "tab": "Shelter",
+        "title": "Request access for your shelter",
+        "subtitle": "Join our network of shelters and start finding homes for more pets",
+        "cta": "Request access",
+        "form": {
+          "shelter_name": "Shelter name",
+          "shelter_name_placeholder": "Ex: Animal Love Shelter",
+          "shelter_type": "Shelter type",
+          "shelter_type_placeholder": "Ex: Dogs and cats, Only dogs, etc.",
+          "shelter_location": "Shelter location",
+          "shelter_location_placeholder": "City, Province, Country",
+          "contact_name": "Contact name",
+          "contact_name_placeholder": "Your full name",
+          "email": "Email",
+          "email_placeholder": "you@email.com",
+          "phone": "Phone",
+          "phone_placeholder": "+1 123-456-7890",
+          "message": "Message",
+          "message_placeholder": "Tell us about your shelter, how many pets you currently have, and any additional information you consider relevant..."
+        }
+      },
+      "sponsor": {
+        "tab": "Sponsor",
+        "title": "Be part of our mission",
+        "subtitle": "Support our project and help us connect more pets with their ideal families",
+        "cta": "Send message",
+        "form": {
+          "full_name": "Full name",
+          "full_name_placeholder": "Your full name",
+          "email": "Email",
+          "email_placeholder": "you@email.com",
+          "organization": "Organization",
+          "organization_placeholder": "Name of your company or organization",
+          "phone": "Phone",
+          "phone_placeholder": "+1 123-456-7890",
+          "sponsorship_type": "Sponsorship type",
+          "sponsorship_type_placeholder": "Ex: One-time donation, Monthly sponsorship, etc.",
+          "budget": "Approximate budget",
+          "budget_placeholder": "Ex: $1,000 - $5,000",
+          "message": "Message",
+          "message_placeholder": "Tell us about your interest in sponsoring Shelly, how you would like to collaborate, and any questions you have..."
+        }
+      },
+      "sending": "Sending..."
+    },
+    "hero": {
+      "title": "Manage your pet shelter with ease",
+      "subtitle": "Simplify the administration of your shelter and help more animals find a home that suits them.",
+      "subtitle_shelly": "came to change that.",
+      "cta": "Get started now",
+      "used_by": "Used by more than 50 shelters"
+    },
+    "pet_showcase_card": {
+      "featured_alt": "Featured pet for adoption",
+      "alt": "Pet for adoption"
+    }
+  },
+  "auth": {
+    "sign_in_with": "Sign in with {{provider}}",
+    "access": "Access",
+    "sign_in": "Sign in",
+    "dog_cat_graphic_alt": "Dog and cat graphic",
+    "shelters": "Shelters"
+  },
+  "footer": {
+    "about": "About Us",
+    "adopt": "Adopt",
+    "contact": "Contact",
+    "terms": "Terms and conditions",
+    "slogan": "Connecting pets with their ideal families",
+    "made_with_love": "Made with love in Argentina",
+    "copyright": "© {{year}} Shelly. All rights reserved.",
+    "back_to_top": "Back to top"
+  },
+  "navbar": {
+    "home": "Home",
+    "about": "About Us",
+    "adopt": "Adopt",
+    "contact": "Contact",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu"
+  },
+  "brand": {
+    "name": "Shelly",
+    "email": "shelly.app.contact@gmail.com"
+  },
+  "languages": {
+    "en": "English",
+    "es": "Spanish"
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "last_updated": "Last updated: {{date}}",
+    "object": {
+      "title": "1. Object"
+    },
+    "platform_use": {
+      "title": "2. Use of the Platform"
+    },
+    "data_protection": {
+      "title": "3. Personal Data Protection"
+    },
+    "liability_limitation": {
+      "title": "4. Limitation of Liability"
+    },
+    "prohibited_conduct": {
+      "title": "5. Prohibited Conduct",
+      "description": "It is prohibited to:"
+    },
+    "breach_consequences": {
+      "title": "6. Consequences of Breach",
+      "description": "Failure to comply with these terms may result in:"
+    },
+    "acceptance": {
+      "title": "7. Acceptance of Conditions",
+      "description": "The use of the application implies full acceptance of this contract."
+    },
+    "shelter_responsibilities": {
+      "title": "2. Shelter Responsibilities"
+    },
+    "intellectual_property": {
+      "title": "4. Intellectual Property"
+    },
+    "adopters": {
+      "tab": "For Adopters",
+      "title": "Terms and Conditions for Adopters",
+      "object": {
+        "description": "This contract governs the use of the application by adopters, who access it to apply for the responsible adoption of animals managed by registered shelters."
+      },
+      "platform_use": {
+        "item_1": "The adopter declares that the personal data provided is truthful and up-to-date.",
+        "item_2": "They commit to ensuring the well-being of the adopted animal.",
+        "item_3": "They accept that the verification of information and the final adoption decision correspond exclusively to the shelter."
+      },
+      "data_protection": {
+        "item_1": "The adopter authorizes the processing of their data in accordance with Law 25.326 on Personal Data Protection.",
+        "item_2": "They may request the deletion of their personal data at any time."
+      },
+      "liability_limitation": {
+        "item_1": "The application acts solely as a technological intermediary and does not guarantee adoptions.",
+        "item_2": "The development team is not responsible for disputes, breaches, or consequences arising from the adoption."
+      },
+      "prohibited_conduct": {
+        "item_1": "Provide false information.",
+        "item_2": "Impersonate identities.",
+        "item_3": "Improperly use contact details of shelters or other users."
+      },
+      "breach_consequences": {
+        "item_1": "Suspension or deletion of the account.",
+        "item_2": "Notification to the corresponding shelter.",
+        "item_3": "Reports to competent authorities."
+      }
+    },
+    "shelters": {
+      "tab": "For Shelters",
+      "title": "Terms and Conditions for Shelters",
+      "object": {
+        "description": "This contract regulates the use of the application by shelters, who use the platform to manage adoption processes and the publication of animals."
+      },
+      "shelter_responsibilities": {
+        "item_1": "Verify the information provided by adopters.",
+        "item_2": "Evaluate the adopter's commitment and make decisions on adoptions.",
+        "item_3": "Ensure that the images and descriptions of animals uploaded to the platform do not infringe on third-party rights."
+      },
+      "data_protection": {
+        "item_1": "The shelter authorizes the processing of its data in accordance with Law 25.326.",
+        "item_2": "It may request the deletion of its data at any time."
+      },
+      "intellectual_property": {
+        "item_1": "The shelter retains ownership of the uploaded images and descriptions.",
+        "item_2": "It authorizes the application to display and process such data solely for the operation of the platform."
+      },
+      "liability_limitation": {
+        "item_1": "The application acts as a technological intermediary, without guaranteeing adoptions or results.",
+        "item_2": "The development team is not responsible for conflicts with adopters or for the permanent availability of the service."
+      },
+      "prohibited_conduct": {
+        "item_1": "Publish false or inaccurate information.",
+        "item_2": "Use adopter contact information for purposes other than the adoption process.",
+        "item_3": "Manipulate the adoption system in a way that compromises animal welfare."
+      },
+      "breach_consequences": {
+        "item_1": "Suspension or deletion of the account.",
+        "item_2": "Reports to competent authorities."
+      }
+    }
+  },
+  "app": {
+    "pets": {
+      "title": "Pets",
+      "loading": "Loading pets...",
+      "error": "Error loading pets",
+      "name": "Name",
+      "species": "Species",
+      "breed": "Breed",
+      "status": "Status",
+      "no_results": "No results.",
+      "search_placeholder": "Search pet...",
+      "add_pet": "Add pet",
+      "edit_pet": "Edit pet information",
+      "species_labels": {
+        "DOG": "Dog",
+        "CAT": "Cat"
+      },
+      "status_labels": {
+        "IN_TRANSIT": "In transit",
+        "IN_SHELTER": "In shelter",
+        "ADOPTED": "Adopted",
+        "IN_VET": "In vet"
+      },
+      "sex_labels": {
+        "MALE": "Male",
+        "FEMALE": "Female"
+      },
+      "size_labels": {
+        "SMALL": "Small",
+        "MEDIUM": "Medium",
+        "LARGE": "Large"
+      },
+      "colors": {
+        "black": "Black",
+        "white": "White",
+        "brown": "Brown",
+        "gray": "Gray",
+        "beige": "Beige",
+        "gold": "Gold",
+        "red": "Red",
+        "coffee": "Coffee",
+        "cream": "Cream",
+        "sand": "Sand",
+        "chocolate": "Chocolate",
+        "orange": "Orange",
+        "cinnamon": "Cinnamon",
+        "fawn": "Fawn"
+      },
+      "vaccines": {
+        "dog": {
+          "sextuple1": "1st Sextuple",
+          "sextuple2": "2nd Sextuple",
+          "sextuple3": "3rd Sextuple",
+          "rabia": "Rabies"
+        },
+        "cat": {
+          "triple1": "1st Triple",
+          "triple2": "2nd Triple",
+          "triple3": "3rd Triple",
+          "rabia": "Rabies",
+          "leptospirosis": "Leptospirosis",
+          "felv": "FeLV",
+          "fiv": "FIV"
+        }
+      },
+      "form": {
+        "name_placeholder": "Pet's name",
+        "select_species": "Select species",
+        "select_status": "Select status",
+        "breed_placeholder": "Pet's breed",
+        "age": "Age (years)",
+        "age_placeholder": "Age in years",
+        "sex": "Sex",
+        "select_sex": "Select sex",
+        "size": "Size",
+        "select_size": "Select size",
+        "colors": "Colors",
+        "select_colors": "Select colors",
+        "vaccines": "Vaccines",
+        "select_vaccines": "Select vaccines",
+        "description": "Description",
+        "description_placeholder": "Describe personality, special features, medical needs, etc.",
+        "image": "Image",
+        "cancel": "Cancel",
+        "save": "Save changes",
+        "add": "Add pet",
+        "add_quickly": "Add quickly",
+        "saving": "Saving...",
+        "adding": "Adding...",
+        "complete_mode": "Complete Mode",
+        "edit_description": "Update the pet's details below. All changes will be saved when you click 'Save changes'.",
+        "add_description": "Complete the new pet's information. You can use the quick mode for basic information or the complete mode for all details."
+      },
+      "validation": {
+        "name_required": "Name is required",
+        "species_required": "Species is required",
+        "status_required": "Status is required"
+      },
+      "notifications": {
+        "added_successfully": "Pet added successfully",
+        "error_processing": "Error processing pet. Please try again."
+      },
+      "details": {
+        "edit": "Edit",
+        "archive": "Archive",
+        "age": "Age",
+        "sex": "Sex",
+        "size": "Size",
+        "colors": "Colors",
+        "about": "About {{name}}",
+        "no_description": "{{name}} has no description yet.",
+        "vaccines": "Vaccines",
+        "no_vaccines": "No vaccines registered",
+        "recent_events": "Recent Events",
+        "no_recent_events": "No recent events",
+        "future_events": "Future Events",
+        "no_future_events": "No future events",
+        "years": "{{count}} year",
+        "years_plural": "{{count}} years",
+        "archived": {
+          "title": "Pet Archived",
+          "description": "{{name}} has been archived and is no longer available in the system.",
+          "restore": "Restore pet"
+        }
+      }
+    },
+    "members": {
+      "title": "Members",
+      "search_placeholder": "Search member...",
+      "add_member": "Add member",
+      "member_since": "Member since {{date}}",
+      "loading": "Loading members...",
+      "error": "Error loading members",
+      "invite": {
+        "title": "Invite new member",
+        "description": "The user will receive an email with a link to create their account and join the shelter.",
+        "email_placeholder": "Member's email",
+        "send": "Send invitation",
+        "cancel": "Cancel"
+      },
+      "validation": {
+        "invalid_email": "Invalid email"
+      }
+    },
+    "requests": {
+      "title": "Adoption Requests",
+      "search_placeholder": "Search by pet or requester...",
+      "no_results": "No results.",
+      "loading": "Loading requests...",
+      "error": "Error loading requests",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject",
+        "contact": "Contact"
+      },
+      "actions_dialog": {
+        "approve": {
+          "title": "Approve adoption request",
+          "description": "You are about to approve the adoption request for {{petName}} from {{requesterName}}. You can include an optional message.",
+          "message_label": "Message (optional)",
+          "message_placeholder": "Congratulations! Your adoption request has been approved...",
+          "confirm": "Approve"
+        },
+        "reject": {
+          "title": "Reject adoption request",
+          "description": "You are about to reject {{requesterName}}'s adoption request. You can include an optional message with the reasons for the rejection.",
+          "message_label": "Message (optional)",
+          "message_placeholder": "We regret to inform you that your adoption request has been rejected because...",
+          "confirm": "Reject"
+        },
+        "contact": {
+          "title": "Contact requester",
+          "description": "Contact information for {{requesterName}}.",
+          "name": "Name",
+          "email": "Email",
+          "phone": "Phone",
+          "message_label": "Message (optional)",
+          "message_placeholder": "Hello, we are contacting you regarding your adoption request...",
+          "send": "Send message"
+        },
+        "cancel": "Cancel",
+        "close": "Close"
+      },
+      "requested_by": "Requested by",
+      "requester_email": "Requester email",
+      "requester_phone": "Requester phone",
+      "yes": "Yes",
+      "no": "No",
+      "message": "Message",
+      "rejection_reason": "Rejection reason",
+      "questionnaire": {
+        "location": "Location",
+        "familyComposition": "Family composition",
+        "hasYard": "Do you have a yard or garden?"
+      }
+    }
+  },
+  "file_uploader": {
+    "change_file": "Click or drag to change",
+    "drop_file": "Drop the file here (max. 10MB)",
+    "upload_file": "Upload a file (JPG, PNG, WebP) (max. 10MB)",
+    "remove_file": "Remove file"
+  },
+  "multi_select": {
+    "select_options": "Select options",
+    "more": "more...",
+    "remove_option": "Remove {{option}} from selection",
+    "clear_all": "Clear all {{count}} selected options",
+    "no_options_selected": "No options selected",
+    "options_selected": "{{count}} option selected: {{options}}",
+    "options_selected_plural": "{{count}} options selected: {{options}}",
+    "multi_select_label": "Multi-select: {{count}} of {{total}} options selected. {{placeholder}}",
+    "dropdown_description": "Multi-select dropdown. Use arrow keys to navigate, Enter to select, and Escape to close.",
+    "available_options": "Available options",
+    "search_placeholder": "Search options...",
+    "search_label": "Search options",
+    "search_description": "Type to filter options. Use arrow keys to navigate results.",
+    "no_results": "No results found.",
+    "select_all": "(Select all)",
+    "select_all_count": "(Select all - {{count}} options)",
+    "clear": "Clear",
+    "close": "Close",
+    "option_count": "{{count}} option",
+    "option_count_plural": "{{count}} options",
+    "option_selected": "{{option}} selected. {{count}} of {{total}} options selected.",
+    "options_selected_count": "{{selected}} options selected. {{count}} of {{total}} total selected.",
+    "option_removed": "Option removed. {{count}} of {{total}} options selected.",
+    "dropdown_opened": "Dropdown opened. {{total}} options available. Use arrow keys to navigate.",
+    "dropdown_closed": "Dropdown closed.",
+    "options_found": "{{count}} option found for \"{{search}}\"",
+    "options_found_plural": "{{count}} options found for \"{{search}}\"",
+    "selected": ", selected",
+    "not_selected": ", not selected",
+    "disabled": ", disabled"
+  },
+  "sidebar": {
+    "pets": "Pets",
+    "requests": "Requests",
+    "members": "Members",
+    "account": "Account",
+    "sign_out": "Sign out",
+    "user": "User",
+    "admin": "Administrator"
+  },
+  "pet_colors": {
+    "cinnamon": "Cinnamon",
+    "fawn": "Fawn",
+    "black": "Black",
+    "white": "White"
+  },
+  "mock_pets": {
+    "lila": {
+      "description": "Lila is a very affectionate and playful dog. She loves to play with children and is very good with other dogs."
+    },
+    "limon": {
+      "description": "Limón is a dog that may seem anxious and distant at first, but once you get to know him, he becomes very affectionate and loyal."
+    }
+  },
+  "mock_events": {
+    "vaccination": {
+      "title": "Vaccination",
+      "description_lila": "Lila received her first vaccines"
+    },
+    "shelter_entry": {
+      "title": "Shelter Entry",
+      "description_lila": "Lila was received at the shelter"
+    }
+  },
+  "mock_future_events": {
+    "vet": {
+      "title": "Veterinarian",
+      "description": "Check-up visit"
+    }
+  }
+}
