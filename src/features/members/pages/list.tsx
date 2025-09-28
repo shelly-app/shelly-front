@@ -24,6 +24,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
+import SectionLoader from "@/components/section-loader";
+import SectionError from "@/components/section-error";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
@@ -56,19 +58,11 @@ export const MembersListPage = () => {
   });
 
   if (isLoading) {
-    return (
-      <section className="text-muted-foreground container mx-auto py-10 text-center">
-        Cargando miembros...
-      </section>
-    );
+    return <SectionLoader text="Cargando miembros..." />;
   }
 
   if (isError) {
-    return (
-      <section className="text-destructive container mx-auto py-10 text-center">
-        Error al cargar los miembros
-      </section>
-    );
+    return <SectionError text="Error al cargar los miembros" />;
   }
 
   const visibleMembers = members.filter((m) =>

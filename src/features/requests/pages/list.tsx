@@ -6,6 +6,8 @@ import { useRequests } from "@/features/requests/hooks/use-requests";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { REQUEST_STATUS_LABELS } from "@/features/requests/constants";
+import SectionLoader from "@/components/section-loader";
+import SectionError from "@/components/section-error";
 
 export const RequestsListPage = () => {
   const { requests, isLoading, isError } = useRequests();
@@ -34,36 +36,11 @@ export const RequestsListPage = () => {
   }, [requests, tabParam, search]);
 
   if (isLoading) {
-    return (
-      <section className="container mx-auto py-10">
-        <div className="flex items-center justify-center p-8">
-          <div className="text-center">
-            <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-b-2 border-amber-500" />
-            <p className="text-muted-foreground">Cargando solicitudes...</p>
-          </div>
-        </div>
-      </section>
-    );
+    return <SectionLoader text="Cargando solicitudes..." />;
   }
 
   if (isError) {
-    return (
-      <section className="container mx-auto py-10">
-        <div className="flex items-center justify-center p-8">
-          <div className="text-center">
-            <p className="text-destructive mb-4">
-              Error al cargar las solicitudes
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="rounded bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
-            >
-              Reintentar
-            </button>
-          </div>
-        </div>
-      </section>
-    );
+    return <SectionError text="Error al cargar las solicitudes" />;
   }
 
   return (
