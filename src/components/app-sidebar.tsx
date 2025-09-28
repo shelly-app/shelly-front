@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import ShellyLogo from "@/assets/images/shelly-logo.webp";
 
 import {
   LucidePawPrint,
@@ -16,6 +17,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
@@ -27,12 +29,12 @@ import {
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getFullName, getNameInitials } from "@/lib/utils";
-import { useMobile } from "@/hooks/use-media-queries";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
+import { Image } from "@/components/ui/image";
 
 // Menu items.
 const MENU_ITEMS = [
@@ -72,7 +74,6 @@ const AppSidebar = () => {
   );
 
   const { state: sidebarState } = useSidebar();
-  const isMobile = useMobile();
   const isCollapsed = useMemo(
     () => sidebarState === "collapsed",
     [sidebarState],
@@ -100,10 +101,33 @@ const AppSidebar = () => {
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader className="flex items-center pt-6">
-        <ShellyGradient className="text-4xl">
-          {isCollapsed && !isMobile ? "S" : "Shelly"}
-        </ShellyGradient>
+      <SidebarTrigger className="bg-sidebar absolute top-2 -right-4 hidden h-8 w-8 cursor-pointer rounded-full border md:block" />
+      <SidebarHeader
+        className={cn(
+          "flex items-center justify-start px-6 pt-6",
+          isCollapsed && "px-2 pt-8",
+        )}
+      >
+        <div className="flex w-full items-center gap-2">
+          <Image
+            src={ShellyLogo}
+            alt="Shelly Logo"
+            className={cn(
+              "h-12 w-12 transition-all duration-200 ease-in-out",
+              isCollapsed && "h-8 w-8",
+            )}
+          />
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-200 ease-in-out",
+              isCollapsed ? "hidden" : "w-auto opacity-100",
+            )}
+          >
+            <ShellyGradient className="text-3xl font-bold whitespace-nowrap">
+              Shelly
+            </ShellyGradient>
+          </div>
+        </div>
       </SidebarHeader>
       <SidebarContent className={cn("px-6 pt-6", isCollapsed && "px-2")}>
         <nav>
@@ -119,7 +143,9 @@ const AppSidebar = () => {
                     className="flex cursor-pointer items-center gap-2"
                   >
                     <item.icon />
-                    <Text variant="primary">{item.title}</Text>
+                    <Text size="sm" weight="medium" variant="primary">
+                      {item.title}
+                    </Text>
                   </div>
                 </SidebarMenuButton>
                 {!!newPetsCount && (
