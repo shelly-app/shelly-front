@@ -10,7 +10,7 @@ const Table = ({ className, ...props }: React.ComponentProps<"table">) => {
     >
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("text-md w-full caption-bottom", className)}
         {...props}
       />
     </div>

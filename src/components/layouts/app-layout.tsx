@@ -5,10 +5,8 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="h-full w-full p-4">
-        <SidebarTrigger className="mt-2 cursor-pointer" />
-        {children}
-      </main>
+      <SidebarTrigger className="bg-sidebar fixed top-4 left-4 block h-8 w-8 cursor-pointer rounded-full border md:hidden" />
+      <main className="h-full w-full px-8 pt-8 pb-20">{children}</main>
     </SidebarProvider>
   );
 };

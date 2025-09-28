@@ -25,7 +25,7 @@ export const Contact = () => {
     return (
       <section
         id="contact"
-        className="relative flex min-h-[600px] flex-col items-center justify-center gap-8 overflow-hidden bg-gradient-to-b from-amber-100 to-amber-50 px-4 py-24 md:py-32"
+        className="relative flex min-h-[600px] flex-col items-center justify-center gap-8 overflow-hidden bg-gradient-to-b from-amber-100 to-amber-50 px-4 pb-32"
       >
         <div className="flex max-w-2xl flex-col items-center gap-6 text-center">
           <div className="rounded-full bg-green-100 p-4">
@@ -47,7 +47,7 @@ export const Contact = () => {
   return (
     <section
       id="contact"
-      className="relative flex min-h-[800px] flex-col items-center justify-center gap-16 overflow-hidden bg-gradient-to-b from-amber-100 to-amber-50 px-4 py-24 md:py-32"
+      className="relative flex min-h-[800px] flex-col items-center justify-center gap-16 overflow-hidden bg-gradient-to-b from-amber-100 to-amber-50 px-4 pb-32"
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">

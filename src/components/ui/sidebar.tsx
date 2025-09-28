@@ -243,8 +243,7 @@ const Sidebar = ({
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
           className={cn(
-            "bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col gap-6 group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm",
-            { "p-2": state !== "collapsed" },
+            "bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm",
           )}
         >
           {children}
@@ -267,14 +266,14 @@ const SidebarTrigger = ({
       data-slot="sidebar-trigger"
       variant="ghost"
       size="icon"
-      className={cn("size-7", className)}
+      className={cn("", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon style={{ width: "100%", height: "100%" }} />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
+import ShellyLogo from "@/assets/images/shelly-logo.webp";
 
 import {
   LucidePawPrint,
-  ChevronDown,
   ChevronUp,
   LucideUsers,
   LucideFiles,
@@ -17,6 +17,7 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
@@ -25,18 +26,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useShelters } from "@/components/providers/shelters-provider";
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getFullName, getNameInitials } from "@/lib/utils";
-import { useMobile } from "@/hooks/use-media-queries";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "react-oidc-context";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
-import { Separator } from "@/components/ui/separator";
+import { Image } from "@/components/ui/image";
 
 // Menu items.
 const MENU_ITEMS = [
@@ -76,7 +74,6 @@ const AppSidebar = () => {
   );
 
   const { state: sidebarState } = useSidebar();
-  const isMobile = useMobile();
   const isCollapsed = useMemo(
     () => sidebarState === "collapsed",
     [sidebarState],
@@ -98,26 +95,57 @@ const AppSidebar = () => {
         user.profile?.family_name,
       ),
       picture: user.profile?.picture,
+      role: "ADMIN",
     };
   }, [user]);
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
-      <SidebarHeader className="flex items-center gap-6">
-        <SidebarHeaderContent isCollapsed={isCollapsed} isMobile={isMobile} />
+    <Sidebar collapsible="icon" variant="sidebar">
+      <SidebarTrigger className="bg-sidebar absolute top-2 -right-4 hidden h-8 w-8 cursor-pointer rounded-full border md:block" />
+      <SidebarHeader
+        className={cn(
+          "flex items-center justify-start px-6 pt-6",
+          isCollapsed && "px-2 pt-8",
+        )}
+      >
+        <div className="flex w-full items-center gap-2">
+          <Image
+            src={ShellyLogo}
+            alt="Shelly Logo"
+            className={cn(
+              "h-12 w-12 transition-all duration-200 ease-in-out",
+              isCollapsed && "h-8 w-8",
+            )}
+          />
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-200 ease-in-out",
+              isCollapsed ? "hidden" : "w-auto opacity-100",
+            )}
+          >
+            <ShellyGradient className="text-3xl font-bold whitespace-nowrap">
+              Shelly
+            </ShellyGradient>
+          </div>
+        </div>
       </SidebarHeader>
-      <SidebarContent className="px-2">
+      <SidebarContent className={cn("px-6 pt-6", isCollapsed && "px-2")}>
         <nav>
-          <SidebarMenu>
+          <SidebarMenu className={cn(isCollapsed && "gap-4")}>
             {MENU_ITEMS.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={isCollapsed ? item.title : undefined}
+                >
                   <div
                     onClick={() => navigate(item.path)}
                     className="flex cursor-pointer items-center gap-2"
                   >
                     <item.icon />
-                    <Text variant="primary">{item.title}</Text>
+                    <Text size="sm" weight="medium" variant="primary">
+                      {item.title}
+                    </Text>
                   </div>
                 </SidebarMenuButton>
                 {!!newPetsCount && (
@@ -128,22 +156,25 @@ const AppSidebar = () => {
           </SidebarMenu>
         </nav>
       </SidebarContent>
-      <SidebarFooter className="px-2">
+      <hr className="my-2" />
+      <SidebarFooter className={cn("p-4", isCollapsed && "p-2 pb-6")}>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
+                  tooltip={isCollapsed ? "Usuario" : undefined}
+                  style={isCollapsed ? { padding: "0 !important" } : {}}
                   className={cn(
-                    "cursor-pointer text-nowrap",
+                    "box-content cursor-pointer gap-3 text-nowrap",
                     isCollapsed &&
-                      !isMobile &&
-                      "relative rounded-full transition-transform hover:scale-110",
+                      "relative box-border rounded-full transition-transform hover:scale-110",
                   )}
                 >
                   <Avatar
                     className={cn(
-                      isCollapsed && !isMobile && "absolute top-0 left-0",
+                      "size-10",
+                      isCollapsed && "absolute top-0 left-0 size-8",
                     )}
                   >
                     <AvatarImage
@@ -154,17 +185,31 @@ const AppSidebar = () => {
                       {getNameInitials(userProfile?.fullName)}
                     </AvatarFallback>
                   </Avatar>{" "}
-                  {(!isCollapsed || isMobile) && (
-                    <>
-                      <Text variant="primary">{userProfile?.fullName}</Text>
-                      <ChevronUp className="ml-auto" />
-                    </>
+                  {!isCollapsed && (
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex flex-col">
+                        <Text
+                          size="sm"
+                          className="font-medium"
+                          variant="primary"
+                        >
+                          {userProfile?.fullName}
+                        </Text>
+                        <Text size="xs" variant="secondary">
+                          Administrador
+                        </Text>
+                      </div>
+                      <ChevronUp className="ml-auto" strokeWidth={1.5} />
+                    </div>
                   )}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
-                className="w-[--radix-popper-anchor-width]"
+                className={cn(
+                  "w-[--radix-popper-anchor-width]",
+                  isCollapsed && "ml-4",
+                )}
               >
                 {userMenuItems.map((item) => (
                   <DropdownMenuItem
@@ -181,57 +226,6 @@ const AppSidebar = () => {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  );
-};
-
-const SidebarHeaderContent = ({ isCollapsed = false, isMobile = false }) => {
-  const { shelters, currentShelter, setCurrentShelter, isLoading } =
-    useShelters();
-
-  return (
-    <>
-      <ShellyGradient className="text-4xl">
-        {isCollapsed && !isMobile ? "S" : "Shelly"}
-      </ShellyGradient>
-      <Separator orientation="horizontal" className="w-full" />
-      {isLoading ? (
-        <Skeleton className="bg-sidebar-border h-12 w-full" />
-      ) : (
-        <SidebarMenu>
-          <SidebarMenuItem>
-            {shelters.length > 0 ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton className="cursor-pointer justify-center">
-                    <Text variant="ellipsis" weight="medium">
-                      {isCollapsed && !isMobile
-                        ? currentShelter?.name[0].toUpperCase()
-                        : currentShelter?.name}
-                    </Text>
-                    {(!isCollapsed || isMobile) && (
-                      <ChevronDown className="ml-auto" />
-                    )}
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="max-w-3xs bg-amber-50">
-                  {shelters.map((shelter) => (
-                    <DropdownMenuItem
-                      key={shelter.id}
-                      onClick={() => setCurrentShelter(shelter)}
-                      className="cursor-pointer hover:bg-amber-100"
-                    >
-                      <Text variant="ellipsis">{shelter.name}</Text>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              currentShelter?.name
-            )}
-          </SidebarMenuItem>
-        </SidebarMenu>
-      )}
-    </>
   );
 };
 

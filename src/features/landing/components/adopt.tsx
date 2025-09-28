@@ -68,7 +68,7 @@ export const Adopt = () => {
   return (
     <section
       id="adopt"
-      className="relative flex min-h-[800px] flex-col items-center justify-center gap-16 overflow-hidden bg-gradient-to-b from-amber-200 to-amber-100 px-4 py-24 md:py-32"
+      className="relative flex min-h-[800px] flex-col items-center justify-center gap-16 overflow-hidden bg-gradient-to-b from-amber-200 to-amber-100 px-4 pb-32"
     >
       <div className="flex max-w-3xl flex-col items-center gap-6 text-center">
         <H2 className="text-center text-4xl font-bold md:text-5xl">

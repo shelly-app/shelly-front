@@ -30,9 +30,9 @@ export const columns: ColumnDef<Pet>[] = [
     cell: ({ row }) => {
       const pet = row.original;
       return (
-        <div className="flex items-center gap-2">
-          <PetAvatar pet={pet} size="sm" />
-          <div className="font-medium text-amber-900">
+        <div className="flex items-center gap-4">
+          <PetAvatar pet={pet} size="md" />
+          <div className="group-hover:text-primary font-semibold transition-colors">
             {row.getValue("name")}
           </div>
         </div>
@@ -65,7 +65,7 @@ export const columns: ColumnDef<Pet>[] = [
     cell: ({ row }) => {
       const status = row.getValue("status") as PetStatus;
       return (
-        <div className="">
+        <div>
           <PetStatusBadge status={status} />
         </div>
       );
@@ -93,29 +93,30 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
       columnFilters: petSearchFilter,
     },
   });
+
   return (
     <div className="w-full">
-      <div className="flex flex-col items-center justify-between gap-4 pb-4 sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 pb-8 sm:flex-row">
         <SearchPet table={table} />
         <AddPet />
       </div>
-      <div className="rounded-md border">
+      <div className="bg-card rounded-md border shadow-lg">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="bg-muted py-6 text-sm first-of-type:pl-6 last-of-type:pr-6"
+                  >
+                    {!header.isPlaceholder &&
+                      flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -124,7 +125,7 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="cursor-pointer transition-colors hover:bg-amber-100/60"
+                  className="group hover:bg-muted/40 cursor-pointer transition-colors"
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
                     navigate(
@@ -133,7 +134,10 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className="py-6 first-of-type:pl-6 last-of-type:pr-6"
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -143,11 +147,8 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+              <TableRow className="h-24 p-6">
+                <TableCell colSpan={columns.length} className="text-center">
                   No hay resultados.
                 </TableCell>
               </TableRow>

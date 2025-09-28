@@ -102,7 +102,7 @@ const MOCK_FUTURE_EVENTS = [
 
 // Skeleton component shown while fetching data
 const PetDetailsSkeleton = () => (
-  <div className="min-h-screen p-6">
+  <div className="min-h-screen py-6">
     <div className="mx-auto max-w-6xl space-y-6">
       {/* Header Section Skeleton */}
       <div className="flex flex-col gap-6 lg:flex-row">
@@ -164,7 +164,7 @@ export const PetDetailsPage = () => {
 
   if (isArchived || !pet) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center p-6">
+      <div className="bg-background flex min-h-screen items-center justify-center py-6">
         <Card className="max-w-md text-center shadow-lg">
           <CardContent className="p-6">
             <Archive className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
@@ -183,7 +183,7 @@ export const PetDetailsPage = () => {
   }
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen py-6">
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">

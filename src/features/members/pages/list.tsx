@@ -23,6 +23,7 @@ import { useState, useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
@@ -77,8 +78,8 @@ export const MembersListPage = () => {
   );
 
   return (
-    <section className="container mx-auto space-y-6 py-10">
-      <h1 className="text-3xl font-bold">Miembros del refugio</h1>
+    <section className="container mx-auto space-y-6 pt-5 md:pt-0">
+      <h1 className="text-3xl font-bold">Miembros</h1>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <Input
@@ -87,7 +88,10 @@ export const MembersListPage = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="sm:w-64"
         />
-        <Button onClick={() => setDialogOpen(true)}>Agregar miembro</Button>
+        <Button size="lg" onClick={() => setDialogOpen(true)}>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Agregar miembro
+        </Button>
       </div>
 
       <div className="flex flex-wrap justify-center gap-6 md:justify-start">
