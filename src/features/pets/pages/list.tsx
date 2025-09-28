@@ -39,7 +39,7 @@ export const PetsListPage = () => {
 
   return (
     <section className="container mx-auto space-y-6 pt-5">
-      <h1 className="text-3xl font-bold">Mascotas del refugio</h1>
+      <h1 className="text-3xl font-bold">Mascotas</h1>
       <MainPetsTable data={pets} />
     </section>
   );

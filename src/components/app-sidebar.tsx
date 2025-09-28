@@ -94,22 +94,26 @@ const AppSidebar = () => {
         user.profile?.family_name,
       ),
       picture: user.profile?.picture,
+      role: "ADMIN",
     };
   }, [user]);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarHeader className="flex items-center gap-6">
+      <SidebarHeader className="flex items-center pt-6">
         <ShellyGradient className="text-4xl">
           {isCollapsed && !isMobile ? "S" : "Shelly"}
         </ShellyGradient>
       </SidebarHeader>
-      <SidebarContent className="px-2">
+      <SidebarContent className={cn("px-6 pt-6", isCollapsed && "px-2")}>
         <nav>
-          <SidebarMenu>
+          <SidebarMenu className={cn(isCollapsed && "gap-4")}>
             {MENU_ITEMS.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={isCollapsed ? item.title : undefined}
+                >
                   <div
                     onClick={() => navigate(item.path)}
                     className="flex cursor-pointer items-center gap-2"
@@ -126,22 +130,25 @@ const AppSidebar = () => {
           </SidebarMenu>
         </nav>
       </SidebarContent>
-      <SidebarFooter className="px-2">
+      <hr className="my-2" />
+      <SidebarFooter className={cn("p-4", isCollapsed && "p-2 pb-6")}>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
+                  tooltip={isCollapsed ? "Usuario" : undefined}
+                  style={isCollapsed ? { padding: "0 !important" } : {}}
                   className={cn(
-                    "cursor-pointer text-nowrap",
+                    "box-content cursor-pointer gap-3 text-nowrap",
                     isCollapsed &&
-                      !isMobile &&
-                      "relative rounded-full transition-transform hover:scale-110",
+                      "relative box-border rounded-full transition-transform hover:scale-110",
                   )}
                 >
                   <Avatar
                     className={cn(
-                      isCollapsed && !isMobile && "absolute top-0 left-0",
+                      "size-10",
+                      isCollapsed && "absolute top-0 left-0 size-8",
                     )}
                   >
                     <AvatarImage
@@ -152,17 +159,31 @@ const AppSidebar = () => {
                       {getNameInitials(userProfile?.fullName)}
                     </AvatarFallback>
                   </Avatar>{" "}
-                  {(!isCollapsed || isMobile) && (
-                    <>
-                      <Text variant="primary">{userProfile?.fullName}</Text>
-                      <ChevronUp className="ml-auto" />
-                    </>
+                  {!isCollapsed && (
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex flex-col">
+                        <Text
+                          size="sm"
+                          className="font-medium"
+                          variant="primary"
+                        >
+                          {userProfile?.fullName}
+                        </Text>
+                        <Text size="xs" variant="secondary">
+                          Administrador
+                        </Text>
+                      </div>
+                      <ChevronUp className="ml-auto" strokeWidth={1.5} />
+                    </div>
                   )}
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 side="top"
-                className="w-[--radix-popper-anchor-width]"
+                className={cn(
+                  "w-[--radix-popper-anchor-width]",
+                  isCollapsed && "ml-4",
+                )}
               >
                 {userMenuItems.map((item) => (
                   <DropdownMenuItem
