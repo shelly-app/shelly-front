@@ -49,6 +49,17 @@ let mockPetsData: Pet[] = [
     updatedAt: new Date().getTime(),
     archivedAt: null,
   },
+  {
+    id: 5,
+    photoUrl: "https://placedog.net/201/210",
+    name: "Firulais",
+    species: PET_SPECIES.DOG,
+    breed: "Mestizo",
+    status: PET_STATUS.ADOPTED,
+    createdAt: new Date().getTime(),
+    updatedAt: new Date().getTime(),
+    archivedAt: null,
+  },
 ];
 
 const fetchPets = async (): Promise<Pet[]> => {

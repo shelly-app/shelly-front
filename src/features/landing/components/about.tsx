@@ -58,12 +58,12 @@ export const About = () => {
   return (
     <section
       id="about"
-      className="flex flex-col gap-24 bg-gradient-to-b from-amber-300/70 to-amber-200 px-4 py-8"
+      className="flex flex-col gap-16 bg-gradient-to-b from-amber-300/70 to-amber-200 px-4 pt-8 pb-32"
     >
       <TwoSectionsLayout
-        className="mx-auto flex w-full max-w-7xl items-center gap-8 px-0"
+        className="mx-auto flex w-full max-w-7xl items-center gap-16 px-0"
         firstSectionContent={
-          <TwoSectionsLayout.SectionContent className="flex flex-col items-center gap-24">
+          <TwoSectionsLayout.SectionContent className="flex flex-col items-center gap-16">
             <div className="flex flex-col gap-4">
               <H2 className="leading-tight" size="4xl">
                 El sistema de gestión definitivo para tu refugio
