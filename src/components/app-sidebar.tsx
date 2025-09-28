@@ -102,7 +102,7 @@ const AppSidebar = () => {
   }, [user]);
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar collapsible="icon" variant="sidebar">
       <SidebarHeader className="flex items-center gap-6">
         <SidebarHeaderContent isCollapsed={isCollapsed} isMobile={isMobile} />
       </SidebarHeader>

@@ -647,7 +647,7 @@ export const AddPet = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
+        <Button size="sm" className="h-10 w-full sm:w-auto">
           <PlusIcon className="mr-2 h-4 w-4" />
           Agregar mascota
         </Button>
