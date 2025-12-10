@@ -1,45 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query";
 import type { Pet } from "@/features/pets/types/pet";
-import {
-  PET_SPECIES,
-  PET_SEXES,
-  PET_SIZES,
-  PET_STATUS,
-} from "@/features/pets/constants";
-import Lila from "@/assets/images/lila.webp";
+import { petApi } from "../api/pet-api";
+import { mapApiPetDetailToDomain } from "../api/pet-mapper";
 
-// Mock function to fetch a single pet by ID
 const fetchPetById = async (petId: string): Promise<Pet> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // Simulate potential error (5% chance)
-  if (Math.random() < 0.05) {
-    throw new Error("Error al cargar la mascota. Por favor, intenta de nuevo.");
-  }
-
-  // Mock data - in a real app, this would be an API call
-  const mockPet: Pet = {
-    id: parseInt(petId),
-    photoUrl: Lila,
-    name: `Lila`,
-    species: PET_SPECIES.DOG,
-    breed: "Mestiza",
-    status: PET_STATUS.ADOPTED,
-    age: 6,
-    sex: PET_SEXES.FEMALE,
-    size: PET_SIZES.MEDIUM,
-    colors: ["Marrón"],
-    description:
-      "Lila es una perrita muy cariñosa y juguetona. Le encanta estar con niños y otros animales. Es muy tranquila y le gusta mucho estar con su familia.",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    archivedAt: null,
-    vaccines: ["sextuple1", "rabia"],
-  };
-
-  return mockPet;
+  const apiPet = await petApi.getPetById(parseInt(petId));
+  return mapApiPetDetailToDomain(apiPet);
 };
 
 export const usePetDetails = (petId: string) => {

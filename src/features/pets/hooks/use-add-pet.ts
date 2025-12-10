@@ -7,7 +7,9 @@ import {
   PetSex,
   PetSize,
 } from "@/features/pets/constants";
-import { addPetToMockData } from "./use-pets";
+import { petApi } from "../api/pet-api";
+import { mapApiPetToDomain } from "../api/pet-mapper";
+import type { CreatePetPayload } from "../types/pet-api";
 
 // Types for the form data
 export type QuickAddPetData = {
@@ -28,38 +30,35 @@ export type CompleteAddPetData = QuickAddPetData & {
 
 export type AddPetData = QuickAddPetData | CompleteAddPetData;
 
-// Mock API function to create a pet
-const createPet = async (data: AddPetData): Promise<Pet> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+// TODO: This mapping function needs to be implemented properly with actual lookup data
+// For now, using placeholder values - this should be replaced with actual API lookup values
+const mapFormDataToPayload = (data: AddPetData): CreatePetPayload => {
+  // TODO: Replace these placeholder IDs with actual lookups from the backend
+  // These should come from GET /species, /statuses, /sexes, /sizes endpoints
+  const speciesId = 1; // Placeholder
+  const statusId = 1; // Placeholder
+  const sexId = 1; // Placeholder
+  const sizeId = 1; // Placeholder
+  const colorIds = [1]; // Placeholder
+  const shelterId = 1; // TODO: Get from user context or shelter selection
 
-  // Simulate potential error (10% chance)
-  if (Math.random() < 0.1) {
-    throw new Error("Error al crear la mascota. Por favor, intenta de nuevo.");
-  }
-
-  // Create a new pet with generated ID and timestamp
-  const newPet: Pet = {
-    id: Math.floor(Math.random() * 10000) + 1000, // Generate random ID
-    photoUrl: (data as CompleteAddPetData).photoUrl || "https://cataas.com/cat", // Default image if none provided
+  return {
     name: data.name,
-    species: data.species,
-    breed: (data as CompleteAddPetData).breed || "Mestizo",
-    status: data.status,
-    age: (data as CompleteAddPetData).age,
-    sex: (data as CompleteAddPetData).sex,
-    size: (data as CompleteAddPetData).size,
-    colors:
-      (data as CompleteAddPetData).color !== undefined
-        ? [(data as CompleteAddPetData).color!]
-        : undefined,
+    breed: (data as CompleteAddPetData).breed,
     description: (data as CompleteAddPetData).description,
-    updatedAt: null,
-    archivedAt: null,
-    createdAt: new Date().getTime(),
+    speciesId,
+    statusId,
+    sexId,
+    sizeId,
+    colorIds,
+    shelterId,
   };
+};
 
-  return newPet;
+const createPet = async (data: AddPetData): Promise<Pet> => {
+  const payload = mapFormDataToPayload(data);
+  const apiPet = await petApi.createPet(payload);
+  return mapApiPetToDomain(apiPet);
 };
 
 export const useAddPet = () => {
@@ -67,10 +66,7 @@ export const useAddPet = () => {
 
   const mutation = useMutation<Pet, Error, AddPetData>({
     mutationFn: createPet,
-    onSuccess: (newPet) => {
-      // Add the pet to the mock data
-      addPetToMockData(newPet);
-
+    onSuccess: () => {
       // Invalidate the query to refetch with updated data
       queryClient.invalidateQueries({ queryKey: ["pets"] });
     },
