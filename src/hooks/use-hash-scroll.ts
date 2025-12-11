@@ -1,8 +1,9 @@
 import { useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const useHashScroll = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const scrollToElement = useCallback((id: string) => {
     const element = document.getElementById(id);
@@ -42,11 +43,15 @@ export const useHashScroll = () => {
       const isHome = cleanId === "/" || cleanId === "";
 
       if (location.pathname === "/") {
+        // Already on landing page, just scroll
         scrollToElement(isHome ? "hero" : cleanId);
         window.history.pushState(null, "", isHome ? "/" : `#${cleanId}`);
+      } else {
+        // On a different page, navigate to landing page with hash
+        navigate(isHome ? "/" : `/#${cleanId}`);
       }
     },
-    [location.pathname, scrollToElement],
+    [location.pathname, scrollToElement, navigate],
   );
 
   return { scrollToSection };

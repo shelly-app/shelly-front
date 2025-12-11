@@ -1,13 +1,12 @@
 import { useAuth } from "react-oidc-context";
 import { useEffect } from "react";
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { TwoSectionsLayout } from "@/components/layouts/two-sections-layout";
 import { AuthLayout } from "@/components/layouts/auth-layout";
 import { SignInLoadingDialog } from "@/features/auth/components/sign-in-loading-dialog";
 import { SocialSignIn } from "@/features/auth/components/social-sign-in";
 import { SignInPetsFigure } from "@/features/auth/components/sign-in-pets-figure";
-
 import { paths } from "@/config/paths";
 import { ArrowLeft } from "lucide-react";
 
@@ -49,9 +48,13 @@ export const SignInRoute = () => {
           </TwoSectionsLayout.SectionContent>
         }
       />
-      <NavLink to={paths.home.path}>
-        <ArrowLeft className="absolute top-4 left-4 z-10 h-8 w-8 cursor-pointer rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-400/10 md:top-6 md:left-6 md:h-10 md:w-10" />
-      </NavLink>
+      <button
+        onClick={() => navigate(-1)}
+        aria-label="Go back"
+        className="absolute top-4 left-4 z-10 cursor-pointer md:top-6 md:left-6"
+      >
+        <ArrowLeft className="h-8 w-8 rounded-full p-1 text-gray-700 transition-colors hover:bg-gray-400/10 md:h-10 md:w-10" />
+      </button>
     </AuthLayout>
   );
 };
