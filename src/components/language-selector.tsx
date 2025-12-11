@@ -34,7 +34,7 @@ const LanguageSelector = ({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className={cn(isCollapsed && "p-2")}>
         <Button
           variant="ghost"
           size="sm"

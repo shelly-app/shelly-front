@@ -27,6 +27,8 @@ import { PlusIcon } from "lucide-react";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { paths } from "@/config/paths";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
@@ -34,6 +36,7 @@ export const MembersListPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (dialogOpen === false) {
@@ -96,7 +99,10 @@ export const MembersListPage = () => {
         {visibleMembers.map((member: Member) => (
           <Card
             key={member.id}
-            className="flex h-68 w-52 flex-col items-center justify-between overflow-hidden shadow-md transition-shadow hover:shadow-lg"
+            className="flex h-68 w-52 cursor-pointer flex-col items-center justify-between overflow-hidden shadow-md transition-shadow hover:shadow-lg"
+            onClick={() =>
+              navigate(paths.app.members.profile.getHref(String(member.id)))
+            }
           >
             <CardHeader className="flex w-full flex-col items-center gap-2 p-4">
               <Avatar className="h-20 w-20">

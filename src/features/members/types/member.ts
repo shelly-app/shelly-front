@@ -5,5 +5,6 @@ export interface Member extends BaseEntity {
   fullName: string;
   profilePhoto?: string;
   location: string;
+  phoneNumber?: string;
   joinedAt: number; // Unix timestamp
 }

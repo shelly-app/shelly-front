@@ -32,6 +32,10 @@ export const paths = {
     members: {
       path: "/app/members",
       getHref: () => "/app/members",
+      profile: {
+        path: "/app/members/:memberId",
+        getHref: (id: string) => `/app/members/${id}`,
+      },
     },
   },
 } as const;

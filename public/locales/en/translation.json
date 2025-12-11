@@ -437,6 +437,33 @@
         "familyComposition": "Family composition",
         "hasYard": "Do you have a yard or garden?"
       }
+    },
+    "profile": {
+      "edit_profile": "Edit profile",
+      "location": "Location",
+      "phone": "Phone",
+      "not_provided": "Not provided",
+      "member_since": "Member since",
+      "error": {
+        "not_found": "Member profile not found"
+      },
+      "validation": {
+        "name_required": "Name must be at least 2 characters",
+        "location_required": "Location must be at least 2 characters"
+      },
+      "edit_dialog": {
+        "title": "Edit profile",
+        "description": "Update your personal information. Changes will be saved automatically.",
+        "change_photo": "Click to change photo",
+        "full_name": "Full name",
+        "full_name_placeholder": "Your full name",
+        "location": "Location",
+        "location_placeholder": "City, Country",
+        "phone": "Phone",
+        "phone_placeholder": "+1 123-456-7890",
+        "cancel": "Cancel",
+        "save": "Save changes"
+      }
     }
   },
   "file_uploader": {
@@ -481,7 +508,7 @@
     "pets": "Pets",
     "requests": "Requests",
     "members": "Members",
-    "account": "Account",
+    "profile": "Profile",
     "sign_out": "Sign out",
     "user": "User",
     "admin": "Administrator"

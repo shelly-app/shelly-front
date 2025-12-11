@@ -41,6 +41,7 @@ import LanguageSelector from "@/components/language-selector";
 const AppSidebar = () => {
   const { t } = useTranslation();
   const signOutAction = useSignOutAction();
+  const navigate = useNavigate();
 
   const MENU_ITEMS = useMemo(
     () => [
@@ -66,8 +67,9 @@ const AppSidebar = () => {
   const userMenuItems = useMemo(
     () => [
       {
-        title: t("sidebar.account"),
-        url: "#",
+        title: t("sidebar.profile"),
+        url: paths.app.members.profile.getHref("me"),
+        action: () => navigate(paths.app.members.profile.getHref("me")),
       },
       {
         title: t("sidebar.sign_out"),
@@ -75,7 +77,7 @@ const AppSidebar = () => {
         action: signOutAction,
       },
     ],
-    [signOutAction, t],
+    [signOutAction, t, navigate],
   );
 
   const { state: sidebarState } = useSidebar();
@@ -85,7 +87,6 @@ const AppSidebar = () => {
   );
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
-  const navigate = useNavigate();
   // We should use the User model from our db.
   // const { user } = useUser();
   const { user } = useAuth();

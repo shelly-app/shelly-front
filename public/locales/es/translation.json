@@ -442,6 +442,33 @@
       "location": "Ubicación",
       "familyComposition": "Composición familiar",
       "hasYard": "¿Tiene patio o jardín?"
+    },
+    "profile": {
+      "edit_profile": "Editar perfil",
+      "location": "Ubicación",
+      "phone": "Teléfono",
+      "not_provided": "No proporcionado",
+      "member_since": "Miembro desde",
+      "error": {
+        "not_found": "No se encontró el perfil del miembro"
+      },
+      "validation": {
+        "name_required": "El nombre debe tener al menos 2 caracteres",
+        "location_required": "La ubicación debe tener al menos 2 caracteres"
+      },
+      "edit_dialog": {
+        "title": "Editar perfil",
+        "description": "Actualiza tu información personal. Los cambios se guardarán automáticamente.",
+        "change_photo": "Haz clic para cambiar la foto",
+        "full_name": "Nombre completo",
+        "full_name_placeholder": "Tu nombre completo",
+        "location": "Ubicación",
+        "location_placeholder": "Ciudad, País",
+        "phone": "Teléfono",
+        "phone_placeholder": "+54 11 1234-5678",
+        "cancel": "Cancelar",
+        "save": "Guardar cambios"
+      }
     }
   },
   "file_uploader": {
@@ -486,7 +513,7 @@
     "pets": "Mascotas",
     "requests": "Solicitudes",
     "members": "Miembros",
-    "account": "Cuenta",
+    "profile": "Perfil",
     "sign_out": "Cerrar sesión",
     "user": "Usuario",
     "admin": "Administrador"

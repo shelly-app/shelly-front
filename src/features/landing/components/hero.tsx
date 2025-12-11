@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { H1, Lead } from "@/components/ui/text";
 import { PetShowcaseCard } from "@/features/landing/components/pet-showcase-card";
-import { ArrowDown, PawPrint } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import LimonImage from "@/assets/images/limon.webp";
 import LilaImage from "@/assets/images/lila.webp";
 import LuciferImage from "@/assets/images/lucifer.webp";
@@ -48,10 +48,10 @@ export const Hero = () => {
             >
               {t("landing.hero.cta")}
             </Button>
-            <div className="flex items-center gap-2 text-sm text-amber-900/80">
+            {/* <div className="flex items-center gap-2 text-sm text-amber-900/80">
               <PawPrint className="h-4 w-4" />
               <span>{t("landing.hero.used_by")}</span>
-            </div>
+            </div> */}
           </div>
         </div>
 
