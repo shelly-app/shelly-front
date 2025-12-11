@@ -542,5 +542,20 @@
       "title": "Veterinarian",
       "description": "Check-up visit"
     }
+  },
+  "shelters": {
+    "title": "Available Shelters",
+    "subtitle": "Find the perfect shelter and give a pet in need a loving home",
+    "loading": "Loading shelters...",
+    "error": "Error loading shelters",
+    "no_results": "No shelters found.",
+    "search_placeholder": "Search shelter...",
+    "table": {
+      "name": "Shelter",
+      "location": "Location",
+      "pets": "Pets",
+      "contact": "Contact",
+      "website": "Website"
+    }
   }
 }

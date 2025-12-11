@@ -6,6 +6,7 @@ import { HeartPlus, House, PawPrint, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { useTranslation } from "react-i18next";
+import { paths } from "@/config/paths";
 
 const ADOPT_FEATURES = [
   {
@@ -61,9 +62,8 @@ export const Adopt = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // TODO: This should lead to a page with all the shelters contacts (whatsapp bot link)
   const handleCtaClick = () => {
-    navigate("/shelters");
+    navigate(paths.shelters.path);
   };
 
   return (

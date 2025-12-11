@@ -4,6 +4,11 @@ export const paths = {
     getHref: () => "/",
   },
 
+  shelters: {
+    path: "/shelters",
+    getHref: () => "/shelters",
+  },
+
   auth: {
     signIn: {
       path: "/auth/sign-in",

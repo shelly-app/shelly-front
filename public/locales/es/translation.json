@@ -547,5 +547,20 @@
       "title": "Veterinaria",
       "description": "Visita de control"
     }
+  },
+  "shelters": {
+    "title": "Refugios Disponibles",
+    "subtitle": "Encontrá el refugio ideal y dale un hogar a una mascota que lo necesita",
+    "loading": "Cargando refugios...",
+    "error": "Error al cargar los refugios",
+    "no_results": "No se encontraron refugios.",
+    "search_placeholder": "Buscar refugio...",
+    "table": {
+      "name": "Refugio",
+      "location": "Ubicación",
+      "pets": "Mascotas",
+      "contact": "Contacto",
+      "website": "Sitio web"
+    }
   }
 }

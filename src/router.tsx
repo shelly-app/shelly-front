@@ -44,6 +44,10 @@ const createAppRouter = (queryClient: QueryClient) =>
         import("./routes/auth/sign-in.tsx").then(convert(queryClient)),
     },
     {
+      path: paths.shelters.path,
+      lazy: () => import("./routes/shelters.tsx").then(convert(queryClient)),
+    },
+    {
       path: paths.app.root.path,
       element: (
         <ProtectedRoute>

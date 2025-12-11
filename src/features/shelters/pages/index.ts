@@ -1,0 +1,1 @@
+export { SheltersListPage } from "./list";
