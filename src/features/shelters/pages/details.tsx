@@ -184,7 +184,10 @@ export const ShelterDetailsPage = () => {
           <h2 className="text-xl font-semibold">
             {t("shelters.details.available_pets")}
           </h2>
-          <ShelterPetsTable data={pets} />
+          <p className="text-muted-foreground text-sm">
+            {t("shelters.details.click_to_adopt")}
+          </p>
+          <ShelterPetsTable data={pets} shelter={shelter} />
         </div>
       </section>
     </NavigationLayout>

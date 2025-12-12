@@ -575,8 +575,37 @@
       "pets_available": "{{count}} mascota disponible",
       "pets_available_plural": "{{count}} mascotas disponibles",
       "available_pets": "Mascotas Disponibles para Adopción",
+      "click_to_adopt": "Hacé clic en una mascota para enviar una solicitud de adopción",
       "search_pet_placeholder": "Buscar mascota...",
       "no_pets": "Este refugio no tiene mascotas disponibles en este momento."
+    },
+    "adoption": {
+      "title": "Solicitud de Adopción",
+      "description": "Completá el formulario para enviar tu solicitud de adopción. El refugio se pondrá en contacto contigo.",
+      "form": {
+        "email": "Correo electrónico",
+        "email_placeholder": "tu@email.com",
+        "phone": "Teléfono",
+        "phone_placeholder": "+54 11 1234-5678",
+        "location": "Ubicación",
+        "location_placeholder": "Ciudad, País",
+        "message": "Mensaje",
+        "message_placeholder": "Contanos sobre vos, tu hogar y por qué te gustaría adoptar a esta mascota...",
+        "cancel": "Cancelar",
+        "submit": "Enviar solicitud",
+        "sending": "Enviando..."
+      },
+      "validation": {
+        "email": "Ingresá un correo electrónico válido",
+        "phone": "Ingresá un número de teléfono válido",
+        "location": "Ingresá tu ubicación",
+        "message": "El mensaje debe tener al menos 10 caracteres"
+      },
+      "success": {
+        "title": "¡Solicitud enviada!",
+        "description": "Tu solicitud de adopción para {{petName}} fue enviada a {{shelterName}}. Te contactarán pronto.",
+        "close": "Cerrar"
+      }
     }
   }
 }

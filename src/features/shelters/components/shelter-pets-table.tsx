@@ -23,6 +23,8 @@ import { PET_SPECIES_LABELS, PetStatus } from "@/features/pets/constants";
 import { useTranslation } from "react-i18next";
 import { SearchIcon } from "lucide-react";
 import type { ShelterPet } from "@/features/shelters/constants/mock-shelter-pets";
+import type { Shelter } from "@/features/shelters/types/shelter";
+import { AdoptionRequestDialog } from "./adoption-request-dialog";
 
 const columns: ColumnDef<ShelterPet>[] = [
   {
@@ -33,7 +35,9 @@ const columns: ColumnDef<ShelterPet>[] = [
       return (
         <div className="flex items-center gap-4">
           <PetAvatar pet={pet} size="md" />
-          <div className="font-semibold">{row.getValue("name")}</div>
+          <div className="group-hover:text-primary font-semibold transition-colors">
+            {row.getValue("name")}
+          </div>
         </div>
       );
     },
@@ -74,12 +78,15 @@ const columns: ColumnDef<ShelterPet>[] = [
 
 interface ShelterPetsTableProps {
   data: ShelterPet[];
+  shelter: Shelter | null;
 }
 
-export const ShelterPetsTable = ({ data }: ShelterPetsTableProps) => {
+export const ShelterPetsTable = ({ data, shelter }: ShelterPetsTableProps) => {
   const [petSearchFilter, setPetSearchFilter] = useState<ColumnFiltersState>(
     [],
   );
+  const [selectedPet, setSelectedPet] = useState<ShelterPet | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { t } = useTranslation();
 
   const table = useReactTable({
@@ -92,6 +99,11 @@ export const ShelterPetsTable = ({ data }: ShelterPetsTableProps) => {
       columnFilters: petSearchFilter,
     },
   });
+
+  const handleRowClick = (pet: ShelterPet) => {
+    setSelectedPet(pet);
+    setIsDialogOpen(true);
+  };
 
   return (
     <div className="w-full">
@@ -133,8 +145,9 @@ export const ShelterPetsTable = ({ data }: ShelterPetsTableProps) => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="group hover:bg-muted/40 transition-colors"
+                  className="group hover:bg-muted/40 cursor-pointer transition-colors"
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => handleRowClick(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -159,6 +172,14 @@ export const ShelterPetsTable = ({ data }: ShelterPetsTableProps) => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Adoption Request Dialog */}
+      <AdoptionRequestDialog
+        pet={selectedPet}
+        shelter={shelter}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   );
 };

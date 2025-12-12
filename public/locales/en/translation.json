@@ -570,8 +570,37 @@
       "pets_available": "{{count}} pet available",
       "pets_available_plural": "{{count}} pets available",
       "available_pets": "Available Pets for Adoption",
+      "click_to_adopt": "Click on a pet to send an adoption request",
       "search_pet_placeholder": "Search pet...",
       "no_pets": "This shelter has no pets available at the moment."
+    },
+    "adoption": {
+      "title": "Adoption Request",
+      "description": "Fill out the form to send your adoption request. The shelter will contact you.",
+      "form": {
+        "email": "Email",
+        "email_placeholder": "you@email.com",
+        "phone": "Phone",
+        "phone_placeholder": "+1 123-456-7890",
+        "location": "Location",
+        "location_placeholder": "City, Country",
+        "message": "Message",
+        "message_placeholder": "Tell us about yourself, your home, and why you'd like to adopt this pet...",
+        "cancel": "Cancel",
+        "submit": "Send request",
+        "sending": "Sending..."
+      },
+      "validation": {
+        "email": "Please enter a valid email address",
+        "phone": "Please enter a valid phone number",
+        "location": "Please enter your location",
+        "message": "Message must be at least 10 characters"
+      },
+      "success": {
+        "title": "Request sent!",
+        "description": "Your adoption request for {{petName}} was sent to {{shelterName}}. They will contact you soon.",
+        "close": "Close"
+      }
     }
   }
 }
