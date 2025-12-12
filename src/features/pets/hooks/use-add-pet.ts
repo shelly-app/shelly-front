@@ -7,9 +7,8 @@ import {
   PetSex,
   PetSize,
 } from "@/features/pets/constants";
-import { petApi } from "../api/pet-api";
+import { petApi, type CreatePetRequest } from "../api/pet-api";
 import { mapApiPetToDomain } from "../api/pet-mapper";
-import type { CreatePetPayload } from "../types/pet-api";
 
 // Types for the form data
 export type QuickAddPetData = {
@@ -32,7 +31,7 @@ export type AddPetData = QuickAddPetData | CompleteAddPetData;
 
 // TODO: This mapping function needs to be implemented properly with actual lookup data
 // For now, using placeholder values - this should be replaced with actual API lookup values
-const mapFormDataToPayload = (data: AddPetData): CreatePetPayload => {
+const mapFormDataToPayload = (data: AddPetData): CreatePetRequest => {
   // TODO: Replace these placeholder IDs with actual lookups from the backend
   // These should come from GET /species, /statuses, /sexes, /sizes endpoints
   const speciesId = 1; // Placeholder

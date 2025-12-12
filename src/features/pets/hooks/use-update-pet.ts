@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query";
 import type { Pet } from "@/features/pets/types/pet";
-import { petApi } from "../api/pet-api";
+import { petApi, type UpdatePetRequest } from "../api/pet-api";
 import { mapApiPetToDomain } from "../api/pet-mapper";
-import type { UpdatePetPayload } from "../types/pet-api";
 
 interface UpdatePetData {
   petId: number;
-  data: Partial<UpdatePetPayload>;
+  data: Partial<UpdatePetRequest>;
 }
 
 const updatePet = async ({ petId, data }: UpdatePetData): Promise<Pet> => {
