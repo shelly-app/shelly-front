@@ -10,7 +10,7 @@ interface AuthApiProviderProps {
  * Provider that synchronizes Cognito authentication tokens with API client
  * Automatically sets/removes the Authorization header when auth state changes
  */
-export function AuthApiProvider({ children }: AuthApiProviderProps) {
+export const AuthApiProvider = ({ children }: AuthApiProviderProps) => {
   const auth = useAuth();
 
   useEffect(() => {
@@ -20,4 +20,4 @@ export function AuthApiProvider({ children }: AuthApiProviderProps) {
   }, [auth.user]);
 
   return <>{children}</>;
-}
+};
