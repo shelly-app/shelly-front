@@ -555,12 +555,28 @@
     "error": "Error al cargar los refugios",
     "no_results": "No se encontraron refugios.",
     "search_placeholder": "Buscar refugio...",
+    "back_to_home": "Volver al inicio",
     "table": {
       "name": "Refugio",
       "location": "Ubicación",
       "pets": "Mascotas",
       "contact": "Contacto",
       "website": "Sitio web"
+    },
+    "details": {
+      "loading": "Cargando información del refugio...",
+      "not_found": "Refugio no encontrado",
+      "error_pets": "Error al cargar las mascotas del refugio",
+      "back_to_shelters": "Volver a refugios",
+      "location": "Ubicación",
+      "email": "Correo electrónico",
+      "phone": "Teléfono",
+      "website": "Sitio web",
+      "pets_available": "{{count}} mascota disponible",
+      "pets_available_plural": "{{count}} mascotas disponibles",
+      "available_pets": "Mascotas Disponibles para Adopción",
+      "search_pet_placeholder": "Buscar mascota...",
+      "no_pets": "Este refugio no tiene mascotas disponibles en este momento."
     }
   }
 }

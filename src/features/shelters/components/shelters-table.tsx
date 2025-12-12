@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useNavigate } from "react-router-dom";
 
 import {
   Table,
@@ -23,6 +24,7 @@ import { SearchShelter } from "./search-shelter";
 import { useTranslation } from "react-i18next";
 import { MapPin, Mail, Phone, Globe, PawPrint } from "lucide-react";
 import { getNameInitials } from "@/lib/utils";
+import { paths } from "@/config/paths";
 
 const columns: ColumnDef<Shelter>[] = [
   {
@@ -143,6 +145,7 @@ export const SheltersTable = ({ data }: SheltersTableProps) => {
   const [shelterSearchFilter, setShelterSearchFilter] =
     useState<ColumnFiltersState>([]);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const table = useReactTable({
     data,
@@ -185,8 +188,15 @@ export const SheltersTable = ({ data }: SheltersTableProps) => {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="group hover:bg-muted/40 transition-colors"
+                  className="group hover:bg-muted/40 cursor-pointer transition-colors"
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() =>
+                    navigate(
+                      paths.shelters.shelter.getHref(
+                        row.original.id.toString(),
+                      ),
+                    )
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell

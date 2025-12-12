@@ -7,6 +7,10 @@ export const paths = {
   shelters: {
     path: "/shelters",
     getHref: () => "/shelters",
+    shelter: {
+      path: "/shelters/:shelterId",
+      getHref: (id: string) => `/shelters/${id}`,
+    },
   },
 
   auth: {

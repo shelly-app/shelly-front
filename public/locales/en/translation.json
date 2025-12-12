@@ -550,12 +550,28 @@
     "error": "Error loading shelters",
     "no_results": "No shelters found.",
     "search_placeholder": "Search shelter...",
+    "back_to_home": "Back to home",
     "table": {
       "name": "Shelter",
       "location": "Location",
       "pets": "Pets",
       "contact": "Contact",
       "website": "Website"
+    },
+    "details": {
+      "loading": "Loading shelter information...",
+      "not_found": "Shelter not found",
+      "error_pets": "Error loading shelter pets",
+      "back_to_shelters": "Back to shelters",
+      "location": "Location",
+      "email": "Email",
+      "phone": "Phone",
+      "website": "Website",
+      "pets_available": "{{count}} pet available",
+      "pets_available_plural": "{{count}} pets available",
+      "available_pets": "Available Pets for Adoption",
+      "search_pet_placeholder": "Search pet...",
+      "no_pets": "This shelter has no pets available at the moment."
     }
   }
 }
