@@ -29,7 +29,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 status: string;
                 s3: boolean;
               };
@@ -72,7 +72,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 /** Format: email */
@@ -119,7 +119,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 /** Format: email */
@@ -171,7 +171,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 /** Format: email */
@@ -212,7 +212,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -255,35 +255,13 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
-                birthdate: string | null;
+                species: string;
                 breed: string | null;
-                species: {
-                  id: number;
-                  species: string;
-                };
-                sex: {
-                  id: number;
-                  sex: string;
-                };
-                status: {
-                  id: number;
-                  status: string;
-                };
-                size: {
-                  id: number;
-                  size: string;
-                };
-                description: string | null;
-                shelterId: number;
-                colors: {
-                  id: number;
-                  color: string;
-                }[];
-                createdAt: string;
-                updatedAt: string;
+                status: string;
+                profilePhotoUrl: string | null;
               }[];
               statusCode: number;
             };
@@ -326,7 +304,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 birthdate: string | null;
@@ -395,35 +373,19 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
-                birthdate: string | null;
+                species: string;
                 breed: string | null;
-                species: {
-                  id: number;
-                  species: string;
-                };
-                sex: {
-                  id: number;
-                  sex: string;
-                };
-                status: {
-                  id: number;
-                  status: string;
-                };
-                size: {
-                  id: number;
-                  size: string;
-                };
+                status: string;
+                birthdate: string | null;
+                sex: string;
+                size: string;
                 description: string | null;
-                shelterId: number;
-                colors: {
-                  id: number;
-                  color: string;
-                }[];
-                createdAt: string;
-                updatedAt: string;
+                profilePhotoUrl: string | null;
+                colors: string[];
+                photos: string[];
                 events: {
                   id: number;
                   petId: number;
@@ -442,6 +404,8 @@ export interface paths {
                   deletedAt: string | null;
                   vaccineName: string;
                 }[];
+                createdAt: string;
+                updatedAt: string;
               };
               statusCode: number;
             };
@@ -471,7 +435,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -516,7 +480,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 birthdate: string | null;
@@ -583,7 +547,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 birthdate: string | null;
@@ -655,7 +619,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 address: string | null;
@@ -707,7 +671,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 address: string | null;
@@ -760,7 +724,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 address: string | null;
@@ -802,7 +766,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -844,7 +808,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 address: string | null;
@@ -893,7 +857,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 userId: number;
                 userName: string;
                 /** Format: email */
@@ -954,7 +918,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 userId: number;
                 userName: string;
                 /** Format: email */
@@ -1002,7 +966,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 shelterName: string;
                 shelterType: string;
@@ -1059,7 +1023,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 shelterName: string;
                 shelterType: string;
@@ -1115,7 +1079,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 shelterName: string;
                 shelterType: string;
@@ -1170,7 +1134,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 shelterName: string;
                 shelterType: string;
@@ -1224,7 +1188,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 userId: number;
@@ -1272,7 +1236,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 userId: number;
@@ -1323,7 +1287,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 userId: number;
@@ -1363,7 +1327,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -1401,7 +1365,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 userId: number;
@@ -1457,7 +1421,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 userId: number;
@@ -1509,7 +1473,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 name: string;
@@ -1554,7 +1518,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 name: string;
@@ -1603,7 +1567,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 name: string;
@@ -1641,7 +1605,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -1679,7 +1643,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 name: string;
@@ -1724,7 +1688,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 speciesId: number;
@@ -1762,7 +1726,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 speciesId: number;
@@ -1807,7 +1771,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 name: string;
                 speciesId: number;
@@ -1841,7 +1805,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -1882,7 +1846,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 vaccineId: number;
                 petId: number;
@@ -1921,7 +1885,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 vaccineId: number;
                 petId: number;
@@ -1967,7 +1931,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 vaccineId: number;
                 petId: number;
@@ -2002,7 +1966,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -2042,7 +2006,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 key: string;
@@ -2084,7 +2048,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 key: string;
@@ -2132,7 +2096,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 petId: number;
                 key: string;
@@ -2169,7 +2133,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -2208,7 +2172,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: string;
+              data?: string;
               statusCode: number;
             };
           };
@@ -2252,7 +2216,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 userId: number;
                 roleId: number;
@@ -2291,7 +2255,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 userId: number;
                 roleId: number;
@@ -2336,7 +2300,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: {
+              data?: {
                 id: number;
                 userId: number;
                 roleId: number;
@@ -2370,7 +2334,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: unknown;
+              data?: unknown;
               statusCode: number;
             };
           };
@@ -2408,7 +2372,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: components["schemas"]["PetSpecies"][];
+              data?: components["schemas"]["PetSpecies"][];
               statusCode: number;
             };
           };
@@ -2449,7 +2413,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: components["schemas"]["Sex"][];
+              data?: components["schemas"]["Sex"][];
               statusCode: number;
             };
           };
@@ -2490,7 +2454,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: components["schemas"]["PetStatus"][];
+              data?: components["schemas"]["PetStatus"][];
               statusCode: number;
             };
           };
@@ -2531,7 +2495,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: components["schemas"]["PetSize"][];
+              data?: components["schemas"]["PetSize"][];
               statusCode: number;
             };
           };
@@ -2572,7 +2536,7 @@ export interface paths {
             "application/json": {
               success: boolean;
               message: string;
-              responseObject?: components["schemas"]["PetColor"][];
+              data?: components["schemas"]["PetColor"][];
               statusCode: number;
             };
           };
@@ -2681,6 +2645,48 @@ export interface components {
         deletedAt: string | null;
         vaccineName: string;
       }[];
+    };
+    PetListItem: {
+      id: number;
+      name: string;
+      species: string;
+      breed: string | null;
+      status: string;
+      profilePhotoUrl: string | null;
+    };
+    PetDetailResponse: {
+      id: number;
+      name: string;
+      species: string;
+      breed: string | null;
+      status: string;
+      birthdate: string | null;
+      sex: string;
+      size: string;
+      description: string | null;
+      profilePhotoUrl: string | null;
+      colors: string[];
+      photos: string[];
+      events: {
+        id: number;
+        petId: number;
+        name: string;
+        description: string | null;
+        dateTime: string;
+        createdAt: string;
+        updatedAt: string;
+        deletedAt: string | null;
+      }[];
+      vaccinations: {
+        id: number;
+        vaccineId: number;
+        petId: number;
+        createdAt: string;
+        deletedAt: string | null;
+        vaccineName: string;
+      }[];
+      createdAt: string;
+      updatedAt: string;
     };
     Shelter: {
       id: number;

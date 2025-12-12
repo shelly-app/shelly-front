@@ -1,5 +1,5 @@
 import type { Pet } from "../types/pet";
-import type { PetApiResponse, PetDetailApiResponse } from "../types/pet-api";
+import type { Pet as ApiPet, PetDetail as ApiPetDetail } from "./pet-api";
 
 /**
  * Converts backend lowercase snake_case values to frontend UPPERCASE constants
@@ -11,40 +11,42 @@ const toUpperSnakeCase = (value: string): string => {
 /**
  * Maps API pet response to domain Pet type
  */
-export function mapApiPetToDomain(apiPet: PetApiResponse): Pet {
+export function mapApiPetToDomain(apiPet: ApiPet): Pet {
   return {
     id: apiPet.id,
     name: apiPet.name,
-    species: toUpperSnakeCase(apiPet.species.species) as any,
+    species: toUpperSnakeCase(apiPet.species) as any,
     breed: apiPet.breed || "",
-    status: toUpperSnakeCase(apiPet.status.status) as any,
-    photoUrl: "", // TODO: Fetch from pet-photos endpoint or use placeholder
-    sex: apiPet.sex?.sex
-      ? (toUpperSnakeCase(apiPet.sex.sex) as any)
-      : undefined,
-    size: apiPet.size?.size
-      ? (toUpperSnakeCase(apiPet.size.size) as any)
-      : undefined,
-    colors: apiPet.colors.map((c) => c.color),
-    description: apiPet.description || undefined,
-    createdAt: new Date(apiPet.createdAt).getTime(),
-    updatedAt: new Date(apiPet.updatedAt).getTime(),
+    status: toUpperSnakeCase(apiPet.status) as any,
+    photoUrl: apiPet.profilePhotoUrl || "",
+    sex: undefined,
+    size: undefined,
+    colors: [],
+    description: undefined,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
     archivedAt: null,
   };
 }
 
 /**
  * Maps API pet detail response to domain Pet type
- * Note: Currently maps to Pet type, but could be extended to include events and vaccinations
  */
-export function mapApiPetDetailToDomain(apiPet: PetDetailApiResponse): Pet {
-  const basePet = mapApiPetToDomain(apiPet);
-
-  // Add vaccines from vaccinations if needed
-  const vaccines = apiPet.vaccinations.map((v) => v.vaccineName) as any;
-
+export function mapApiPetDetailToDomain(apiPet: ApiPetDetail): Pet {
   return {
-    ...basePet,
-    vaccines: vaccines.length > 0 ? vaccines : undefined,
+    id: apiPet.id,
+    name: apiPet.name,
+    species: toUpperSnakeCase(apiPet.species) as any,
+    breed: apiPet.breed || "",
+    status: toUpperSnakeCase(apiPet.status) as any,
+    photoUrl: apiPet.profilePhotoUrl || "",
+    sex: apiPet.sex ? (toUpperSnakeCase(apiPet.sex) as any) : undefined,
+    size: apiPet.size ? (toUpperSnakeCase(apiPet.size) as any) : undefined,
+    colors: apiPet.colors || [],
+    description: apiPet.description || undefined,
+    vaccines: apiPet.vaccinations?.map((v) => v.vaccineName) as any,
+    createdAt: new Date(apiPet.createdAt).getTime(),
+    updatedAt: new Date(apiPet.updatedAt).getTime(),
+    archivedAt: null,
   };
 }
