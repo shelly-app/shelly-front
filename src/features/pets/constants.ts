@@ -78,6 +78,16 @@ export const VACCINES = {
 
 export type PetSize = (typeof PET_SIZES)[keyof typeof PET_SIZES];
 
+// Vaccine name mapping from API to translation keys
+export const VACCINE_NAME_LABELS: Record<string, string> = {
+  Rabies: i18n.t("app.pets.vaccine_names.rabies"),
+  DHPP: i18n.t("app.pets.vaccine_names.dhpp"),
+  Bordetella: i18n.t("app.pets.vaccine_names.bordetella"),
+  Leptospirosis: i18n.t("app.pets.vaccine_names.leptospirosis"),
+  Coronavirus: i18n.t("app.pets.vaccine_names.coronavirus"),
+  "Lyme Disease": i18n.t("app.pets.vaccine_names.lyme_disease"),
+};
+
 // Helper functions to get options for forms
 export const getSpeciesOptions = () => [
   { value: PET_SPECIES.DOG, label: PET_SPECIES_LABELS[PET_SPECIES.DOG] },

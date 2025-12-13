@@ -19,6 +19,7 @@ import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
+  VACCINE_NAME_LABELS,
 } from "@/features/pets/constants";
 import { intlFormat } from "date-fns";
 import { BulletList } from "@/components/ui/bullet-list";
@@ -343,7 +344,12 @@ export const PetDetailsPage = () => {
             <CardContent>
               <div className="space-y-2">
                 {pet.vaccines && pet.vaccines.length > 0 ? (
-                  <BulletList variant="success" options={pet.vaccines} />
+                  <BulletList
+                    variant="success"
+                    options={pet.vaccines.map(
+                      (vaccine) => t(VACCINE_NAME_LABELS[vaccine]) || vaccine,
+                    )}
+                  />
                 ) : (
                   <p className="text-muted-foreground text-sm">
                     {t("app.pets.details.no_vaccines")}
