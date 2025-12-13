@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
@@ -14,90 +14,21 @@ import {
   BookOpenText,
   CalendarDays,
 } from "lucide-react";
-// import { useToast } from "@/hooks/use-toast";
-import lilaImage from "@/assets/images/lila.webp";
-import limonImage from "@/assets/images/limon.webp";
 import { Pet } from "@/features/pets/types/pet";
 import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
-  VACCINES,
+  VACCINE_NAME_LABELS,
 } from "@/features/pets/constants";
-import { addDays, intlFormat, subDays } from "date-fns";
+import { intlFormat } from "date-fns";
 import { BulletList } from "@/components/ui/bullet-list";
 import { Image } from "@/components/ui/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-// Mock data for demonstration (simulates API response)
-const getMockPetDataLila = (t: (key: string) => string): Pet => ({
-  id: 1,
-  name: "Lila",
-  species: "DOG",
-  breed: "Mestiza",
-  status: "ADOPTED",
-  age: 6,
-  sex: "FEMALE",
-  size: "LARGE",
-  colors: ["cinnamon", "fawn", "black"],
-  description: t("mock_pets.lila.description"),
-  vaccines: ["rabia", "sextuple1"],
-  photoUrl: lilaImage,
-  createdAt: new Date().getTime(),
-  updatedAt: new Date().getTime(),
-  archivedAt: null,
-});
-
-const getMockPetDataLimon = (t: (key: string) => string): Pet => ({
-  id: 2,
-  name: "Limón",
-  species: "DOG",
-  breed: "Mestizo, Labrador, Pitbull",
-  status: "ADOPTED",
-  age: 5,
-  sex: "MALE",
-  size: "MEDIUM",
-  colors: ["white", "fawn"],
-  description: t("mock_pets.limon.description"),
-  vaccines: ["rabia", "sextuple1"],
-  photoUrl: limonImage,
-  createdAt: new Date().getTime(),
-  updatedAt: new Date().getTime(),
-  archivedAt: null,
-});
-
-const getMockEvents = (t: (key: string) => string) => [
-  {
-    id: "2",
-    title: t("mock_events.vaccination.title"),
-    date: intlFormat(new Date().getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_events.vaccination.description_lila"),
-  },
-  {
-    id: "1",
-    title: t("mock_events.shelter_entry.title"),
-    date: intlFormat(subDays(new Date(), 15).getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_events.shelter_entry.description_lila"),
-  },
-];
-
-const getMockFutureEvents = (t: (key: string) => string) => [
-  {
-    id: "1",
-    title: t("mock_future_events.vet.title"),
-    date: intlFormat(addDays(new Date(), 15).getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_future_events.vet.description"),
-  },
-];
+import { usePetDetails } from "@/features/pets/hooks/use-pet-details";
 
 // Skeleton component shown while fetching data
 const PetDetailsSkeleton = () => (
@@ -122,47 +53,44 @@ const PetDetailsSkeleton = () => (
 );
 
 export const PetDetailsPage = () => {
-  const [pet, setPet] = useState<Pet | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isArchived, setIsArchived] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { petId } = useParams();
   const { t } = useTranslation();
 
-  // const { toast } = useToast();
+  // Fetch pet details from API
+  const { pet, isLoading, isError } = usePetDetails(petId || "");
 
   const handleEditPet = (updatedPet: Pet) => {
     console.log("updatedPet", updatedPet);
-    setPet(updatedPet);
-    // toast({
-    //   title: "Pet Updated",
-    //   description: `${updatedPet.name}'s information has been successfully updated.`,
-    // });
+    // Pet will be automatically refetched by React Query
   };
 
   const handleArchivePet = () => {
     setIsArchived(true);
-    // toast({
-    //   title: "Pet Archived",
-    //   description: `${pet.name} has been archived successfully.`,
-    // });
   };
-
-  // Simulate data fetching
-  useEffect(() => {
-    // Replace with real API call
-    const timer = setTimeout(() => {
-      setPet(petId === "2" ? getMockPetDataLimon(t) : getMockPetDataLila(t));
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [petId, t]);
 
   if (isLoading) {
     return <PetDetailsSkeleton />;
   }
 
-  if (isArchived || !pet) {
+  if (isError || !pet) {
+    return (
+      <div className="bg-background flex min-h-screen items-center justify-center py-6">
+        <Card className="max-w-md text-center shadow-lg">
+          <CardContent className="p-6">
+            <Archive className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
+            <h2 className="mb-2 text-xl font-semibold">Pet Not Found</h2>
+            <p className="text-muted-foreground mb-4">
+              The pet you're looking for could not be found.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isArchived) {
     return (
       <div className="bg-background flex min-h-screen items-center justify-center py-6">
         <Card className="max-w-md text-center shadow-lg">
@@ -183,23 +111,78 @@ export const PetDetailsPage = () => {
     );
   }
 
+  // Separate past and future events
+  const now = new Date();
+  const pastEvents =
+    pet.events
+      ?.filter((event) => new Date(event.dateTime) <= now)
+      .sort(
+        (a, b) =>
+          new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime(),
+      ) || [];
+  const futureEvents =
+    pet.events
+      ?.filter((event) => new Date(event.dateTime) > now)
+      .sort(
+        (a, b) =>
+          new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime(),
+      ) || [];
+
   return (
     <div className="min-h-screen py-6">
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">
-          {/* Pet Image */}
-          <div className="h-[300px] flex-1 lg:aspect-square lg:h-auto">
-            <Card className="h-full overflow-hidden py-0 shadow-lg">
-              <CardContent className="h-full max-h-[500px] p-0">
-                <Image
-                  alt={pet.name}
-                  src={pet.photoUrl}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </CardContent>
-            </Card>
+          {/* Pet Photos */}
+          <div className="flex-1 space-y-4">
+            {/* Main Photo */}
+            <div className="h-[300px] lg:aspect-square lg:h-auto">
+              <Card className="h-full overflow-hidden py-0 shadow-lg">
+                <CardContent className="h-full max-h-[500px] p-0">
+                  <Image
+                    alt={pet.name}
+                    src={pet.photoUrl || "/placeholder-pet.jpg"}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Additional Photos Gallery */}
+            {pet.photos && pet.photos.length > 1 && (
+              <div className="grid grid-cols-3 gap-2">
+                {pet.photos.slice(1, 4).map((photoUrl, index) => (
+                  <Card key={index} className="overflow-hidden shadow-md">
+                    <CardContent className="p-0">
+                      <Image
+                        alt={`${pet.name} photo ${index + 2}`}
+                        src={photoUrl}
+                        className="aspect-square h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    </CardContent>
+                  </Card>
+                ))}
+                {pet.photos.length > 4 && (
+                  <Card className="relative overflow-hidden shadow-md">
+                    <CardContent className="p-0">
+                      <Image
+                        alt={`${pet.name} more photos`}
+                        src={pet.photos[4]}
+                        className="aspect-square h-full w-full object-cover opacity-50"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                        <span className="text-lg font-bold text-white">
+                          +{pet.photos.length - 4}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Basic Info */}
@@ -363,15 +346,9 @@ export const PetDetailsPage = () => {
                 {pet.vaccines && pet.vaccines.length > 0 ? (
                   <BulletList
                     variant="success"
-                    options={
-                      pet.vaccines?.map((vaccine) =>
-                        t(
-                          VACCINES[pet.species][
-                            vaccine as keyof (typeof VACCINES)[typeof pet.species]
-                          ],
-                        ),
-                      ) || []
-                    }
+                    options={pet.vaccines.map(
+                      (vaccine) => t(VACCINE_NAME_LABELS[vaccine]) || vaccine,
+                    )}
                   />
                 ) : (
                   <p className="text-muted-foreground text-sm">
@@ -392,13 +369,15 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {getMockEvents(t).length > 0 ? (
-                  getMockEvents(t).map((event) => (
+                {pastEvents.length > 0 ? (
+                  pastEvents.slice(0, 5).map((event) => (
                     <div key={event.id} className="border-l-2 pl-3">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">{event.title}</p>
+                        <p className="text-sm font-medium">{event.name}</p>
                         <span className="text-muted-foreground text-xs">
-                          {event.date}
+                          {intlFormat(new Date(event.dateTime), {
+                            locale: "es-AR",
+                          })}
                         </span>
                       </div>
                       {event.description && (
@@ -427,16 +406,18 @@ export const PetDetailsPage = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {getMockFutureEvents(t).length > 0 ? (
-                  getMockFutureEvents(t).map((event) => (
+                {futureEvents.length > 0 ? (
+                  futureEvents.slice(0, 5).map((event) => (
                     <div
                       key={event.id}
                       className="border-primary border-l-2 pl-3"
                     >
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">{event.title}</p>
+                        <p className="text-sm font-medium">{event.name}</p>
                         <span className="text-muted-foreground text-xs">
-                          {event.date}
+                          {intlFormat(new Date(event.dateTime), {
+                            locale: "es-AR",
+                          })}
                         </span>
                       </div>
                       {event.description && (

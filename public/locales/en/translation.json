@@ -302,6 +302,14 @@
           "fiv": "FIV"
         }
       },
+      "vaccine_names": {
+        "rabies": "Rabies",
+        "dhpp": "DHPP (Distemper, Hepatitis, Parvovirus, Parainfluenza)",
+        "bordetella": "Bordetella (Kennel Cough)",
+        "leptospirosis": "Leptospirosis",
+        "coronavirus": "Coronavirus",
+        "lyme_disease": "Lyme Disease"
+      },
       "form": {
         "name_placeholder": "Pet's name",
         "select_species": "Select species",

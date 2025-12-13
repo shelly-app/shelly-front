@@ -11,6 +11,7 @@ import { MainErrorFallback } from "@/components/errors/main";
 // import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from "@/lib/react-query";
 import { SheltersProvider } from "@/components/providers/shelters-provider";
+import { AuthApiProvider } from "@/components/providers/auth-api-provider";
 import { Suspense, useState } from "react";
 
 type AppProviderProps = {
@@ -36,10 +37,12 @@ const AppProvider = ({ children }: AppProviderProps) => {
       <ErrorBoundary FallbackComponent={MainErrorFallback}>
         <QueryClientProvider client={queryClient}>
           <AuthProvider {...authConfig}>
-            <SheltersProvider>
-              {import.meta.env.DEV && <ReactQueryDevtools />}
-              {children}
-            </SheltersProvider>
+            <AuthApiProvider>
+              <SheltersProvider>
+                {import.meta.env.DEV && <ReactQueryDevtools />}
+                {children}
+              </SheltersProvider>
+            </AuthApiProvider>
           </AuthProvider>
         </QueryClientProvider>
       </ErrorBoundary>

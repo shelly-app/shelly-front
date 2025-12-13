@@ -78,6 +78,16 @@ export const VACCINES = {
 
 export type PetSize = (typeof PET_SIZES)[keyof typeof PET_SIZES];
 
+// Vaccine name mapping from API to translation keys
+export const VACCINE_NAME_LABELS: Record<string, string> = {
+  Rabies: i18n.t("app.pets.vaccine_names.rabies"),
+  DHPP: i18n.t("app.pets.vaccine_names.dhpp"),
+  Bordetella: i18n.t("app.pets.vaccine_names.bordetella"),
+  Leptospirosis: i18n.t("app.pets.vaccine_names.leptospirosis"),
+  Coronavirus: i18n.t("app.pets.vaccine_names.coronavirus"),
+  "Lyme Disease": i18n.t("app.pets.vaccine_names.lyme_disease"),
+};
+
 // Helper functions to get options for forms
 export const getSpeciesOptions = () => [
   { value: PET_SPECIES.DOG, label: PET_SPECIES_LABELS[PET_SPECIES.DOG] },
@@ -130,6 +140,7 @@ export const PET_COLORS = {
   gray: "#808080",
   beige: "#F5F5DC",
   gold: "#FFD700",
+  golden: "#FFD700",
   red: "#DC143C",
   coffee: "#A0522D",
   cream: "#FFFDD0",
@@ -147,6 +158,7 @@ export const PET_COLOR_LABELS = {
   gray: i18n.t("app.pets.colors.gray"),
   beige: i18n.t("app.pets.colors.beige"),
   gold: i18n.t("app.pets.colors.gold"),
+  golden: i18n.t("app.pets.colors.gold"),
   red: i18n.t("app.pets.colors.red"),
   coffee: i18n.t("app.pets.colors.coffee"),
   cream: i18n.t("app.pets.colors.cream"),

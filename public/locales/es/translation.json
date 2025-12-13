@@ -302,6 +302,14 @@
           "fiv": "FIV"
         }
       },
+      "vaccine_names": {
+        "rabies": "Rabia",
+        "dhpp": "Séxtuple (DHPP)",
+        "bordetella": "Bordetella (Tos de las perreras)",
+        "leptospirosis": "Leptospirosis",
+        "coronavirus": "Coronavirus",
+        "lyme_disease": "Enfermedad de Lyme"
+      },
       "form": {
         "name_placeholder": "Nombre de la mascota",
         "select_species": "Selecciona la especie",

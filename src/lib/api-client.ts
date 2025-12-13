@@ -16,6 +16,18 @@ export const api = Axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
 });
 
+/**
+ * Set the authentication token for API requests
+ * This should be called when the user logs in or when the token changes
+ */
+export function setAuthToken(token: string | null) {
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common["Authorization"];
+  }
+}
+
 api.interceptors.request.use(authRequestInterceptor);
 api.interceptors.response.use(
   (response) => {
