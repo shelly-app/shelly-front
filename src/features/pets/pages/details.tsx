@@ -19,7 +19,6 @@ import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
-  VACCINES,
 } from "@/features/pets/constants";
 import { intlFormat } from "date-fns";
 import { BulletList } from "@/components/ui/bullet-list";
@@ -344,18 +343,7 @@ export const PetDetailsPage = () => {
             <CardContent>
               <div className="space-y-2">
                 {pet.vaccines && pet.vaccines.length > 0 ? (
-                  <BulletList
-                    variant="success"
-                    options={
-                      pet.vaccines?.map((vaccine) =>
-                        t(
-                          VACCINES[pet.species][
-                            vaccine as keyof (typeof VACCINES)[typeof pet.species]
-                          ],
-                        ),
-                      ) || []
-                    }
-                  />
+                  <BulletList variant="success" options={pet.vaccines} />
                 ) : (
                   <p className="text-muted-foreground text-sm">
                     {t("app.pets.details.no_vaccines")}
