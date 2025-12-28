@@ -10,7 +10,8 @@
     "prepare": "husky",
     "lint": "eslint src",
     "check-types": "tsc --project tsconfig.json --pretty --noEmit",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "generate:types": "bash scripts/generate-types.sh"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -87,6 +88,7 @@
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
+    "openapi-typescript": "^7.10.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sharp": "^0.34.2",
