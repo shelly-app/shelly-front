@@ -1,4 +1,4 @@
-import { WebStorageStateStore } from "oidc-client-ts";
+import { UserManager, WebStorageStateStore } from "oidc-client-ts";
 
 const cognitoAuthConfig = {
   authority: import.meta.env.VITE_APP_COGNITO_AUTHORITY,
@@ -21,3 +21,5 @@ export const cognitoLogoutConfig = {
   logout_uri: import.meta.env.VITE_APP_COGNITO_LOGOUT_URI,
   cognito_domain: import.meta.env.VITE_APP_COGNITO_DOMAIN,
 };
+
+export const userManager = new UserManager(authConfig);

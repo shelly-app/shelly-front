@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
@@ -14,90 +14,22 @@ import {
   BookOpenText,
   CalendarDays,
 } from "lucide-react";
-// import { useToast } from "@/hooks/use-toast";
-import lilaImage from "@/assets/images/lila.webp";
-import limonImage from "@/assets/images/limon.webp";
 import { Pet } from "@/features/pets/types/pet";
 import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
-  VACCINES,
 } from "@/features/pets/constants";
-import { addDays, intlFormat, subDays } from "date-fns";
-import { BulletList } from "@/components/ui/bullet-list";
-import { Image } from "@/components/ui/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-// Mock data for demonstration (simulates API response)
-const getMockPetDataLila = (t: (key: string) => string): Pet => ({
-  id: 1,
-  name: "Lila",
-  species: "DOG",
-  breed: "Mestiza",
-  status: "ADOPTED",
-  age: 6,
-  sex: "FEMALE",
-  size: "LARGE",
-  colors: ["cinnamon", "fawn", "black"],
-  description: t("mock_pets.lila.description"),
-  vaccines: ["rabia", "sextuple1"],
-  photoUrl: lilaImage,
-  createdAt: new Date().getTime(),
-  updatedAt: new Date().getTime(),
-  archivedAt: null,
-});
-
-const getMockPetDataLimon = (t: (key: string) => string): Pet => ({
-  id: 2,
-  name: "Limón",
-  species: "DOG",
-  breed: "Mestizo, Labrador, Pitbull",
-  status: "ADOPTED",
-  age: 5,
-  sex: "MALE",
-  size: "MEDIUM",
-  colors: ["white", "fawn"],
-  description: t("mock_pets.limon.description"),
-  vaccines: ["rabia", "sextuple1"],
-  photoUrl: limonImage,
-  createdAt: new Date().getTime(),
-  updatedAt: new Date().getTime(),
-  archivedAt: null,
-});
-
-const getMockEvents = (t: (key: string) => string) => [
-  {
-    id: "2",
-    title: t("mock_events.vaccination.title"),
-    date: intlFormat(new Date().getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_events.vaccination.description_lila"),
-  },
-  {
-    id: "1",
-    title: t("mock_events.shelter_entry.title"),
-    date: intlFormat(subDays(new Date(), 15).getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_events.shelter_entry.description_lila"),
-  },
-];
-
-const getMockFutureEvents = (t: (key: string) => string) => [
-  {
-    id: "1",
-    title: t("mock_future_events.vet.title"),
-    date: intlFormat(addDays(new Date(), 15).getTime(), {
-      locale: "es-AR",
-    }),
-    description: t("mock_future_events.vet.description"),
-  },
-];
+import { usePetDetails } from "@/features/pets/hooks/use-pet-details";
+import { useUpdatePet } from "@/features/pets/hooks/use-update-pet";
+import { useDeletePet } from "@/features/pets/hooks/use-delete-pet";
+import { calculateAge } from "@/features/pets/utils/age";
+import { PetAvatar } from "@/components/ui/pet-avatar";
+import { paths } from "@/config/paths";
 
 // Skeleton component shown while fetching data
 const PetDetailsSkeleton = () => (
@@ -122,47 +54,38 @@ const PetDetailsSkeleton = () => (
 );
 
 export const PetDetailsPage = () => {
-  const [pet, setPet] = useState<Pet | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
-  const [isArchived, setIsArchived] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { petId } = useParams();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { pet, isLoading } = usePetDetails(petId ?? "");
+  const { updatePetAsync } = useUpdatePet(Number(petId));
+  const { deletePetAsync } = useDeletePet(Number(petId));
 
-  // const { toast } = useToast();
-
-  const handleEditPet = (updatedPet: Pet) => {
-    console.log("updatedPet", updatedPet);
-    setPet(updatedPet);
-    // toast({
-    //   title: "Pet Updated",
-    //   description: `${updatedPet.name}'s information has been successfully updated.`,
-    // });
+  const handleEditPet = async (updatedPet: Pet) => {
+    await updatePetAsync({
+      name: updatedPet.name,
+      specie: updatedPet.specie,
+      status: updatedPet.status,
+      breed: updatedPet.breed,
+      birthDate: updatedPet.birthDate,
+      sex: updatedPet.sex,
+      size: updatedPet.size,
+      colors: updatedPet.colors,
+      description: updatedPet.description,
+    });
   };
 
-  const handleArchivePet = () => {
-    setIsArchived(true);
-    // toast({
-    //   title: "Pet Archived",
-    //   description: `${pet.name} has been archived successfully.`,
-    // });
+  const handleArchivePet = async () => {
+    await deletePetAsync();
+    navigate(paths.app.pets.path);
   };
-
-  // Simulate data fetching
-  useEffect(() => {
-    // Replace with real API call
-    const timer = setTimeout(() => {
-      setPet(petId === "2" ? getMockPetDataLimon(t) : getMockPetDataLila(t));
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [petId, t]);
 
   if (isLoading) {
     return <PetDetailsSkeleton />;
   }
 
-  if (isArchived || !pet) {
+  if (!pet) {
     return (
       <div className="bg-background flex min-h-screen items-center justify-center py-6">
         <Card className="max-w-md text-center shadow-lg">
@@ -172,10 +95,13 @@ export const PetDetailsPage = () => {
               {t("app.pets.details.archived.title")}
             </h2>
             <p className="text-muted-foreground mb-4">
-              {t("app.pets.details.archived.description", { name: pet?.name })}
+              {t("app.pets.details.archived.description", { name: "" })}
             </p>
-            <Button onClick={() => setIsArchived(false)} variant="outline">
-              {t("app.pets.details.archived.restore")}
+            <Button
+              onClick={() => navigate(paths.app.pets.path)}
+              variant="outline"
+            >
+              {t("app.pets.back")}
             </Button>
           </CardContent>
         </Card>
@@ -183,21 +109,18 @@ export const PetDetailsPage = () => {
     );
   }
 
+  const age = calculateAge(pet.birthDate, t);
+
   return (
     <div className="min-h-screen py-6">
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Pet Image */}
-          <div className="h-[300px] flex-1 lg:aspect-square lg:h-auto">
-            <Card className="h-full overflow-hidden py-0 shadow-lg">
-              <CardContent className="h-full max-h-[500px] p-0">
-                <Image
-                  alt={pet.name}
-                  src={pet.photoUrl}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
+          <div className="flex h-[300px] flex-1 items-center justify-center lg:aspect-square lg:h-auto">
+            <Card className="flex h-full items-center justify-center overflow-hidden py-0 shadow-lg">
+              <CardContent className="flex h-full max-h-[500px] items-center justify-center p-4">
+                <PetAvatar pet={pet} size="lg" />
               </CardContent>
             </Card>
           </div>
@@ -213,7 +136,11 @@ export const PetDetailsPage = () => {
                     </CardTitle>
                     <p className="text-muted-foreground text-lg">
                       {pet.breed && pet.breed !== "" ? `${pet.breed} • ` : ""}
-                      {t(PET_SPECIES_LABELS[pet.species])}
+                      {t(
+                        PET_SPECIES_LABELS[
+                          pet.specie as keyof typeof PET_SPECIES_LABELS
+                        ] ?? pet.specie,
+                      )}
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -248,15 +175,8 @@ export const PetDetailsPage = () => {
                       <p className="text-muted-foreground text-sm">
                         {t("app.pets.details.age")}
                       </p>
-                      {pet.age ? (
-                        <p className="font-medium">
-                          {t(
-                            pet.age === 1
-                              ? "app.pets.details.year"
-                              : "app.pets.details.years_plural",
-                            { count: pet.age },
-                          )}
-                        </p>
+                      {age ? (
+                        <p className="font-medium">{age}</p>
                       ) : (
                         <p className="text-muted-foreground text-sm">--</p>
                       )}
@@ -273,7 +193,7 @@ export const PetDetailsPage = () => {
                           {t(
                             PET_SEX_LABELS[
                               pet.sex as keyof typeof PET_SEX_LABELS
-                            ],
+                            ] ?? pet.sex,
                           )}
                         </p>
                       ) : (
@@ -292,7 +212,7 @@ export const PetDetailsPage = () => {
                           {t(
                             PET_SIZE_LABELS[
                               pet.size as keyof typeof PET_SIZE_LABELS
-                            ],
+                            ] ?? pet.size,
                           )}
                         </p>
                       ) : (
@@ -359,26 +279,25 @@ export const PetDetailsPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {pet.vaccines && pet.vaccines.length > 0 ? (
-                  <BulletList
-                    variant="success"
-                    options={
-                      pet.vaccines?.map((vaccine) =>
-                        t(
-                          VACCINES[pet.species][
-                            vaccine as keyof (typeof VACCINES)[typeof pet.species]
-                          ],
-                        ),
-                      ) || []
-                    }
-                  />
-                ) : (
-                  <p className="text-muted-foreground text-sm">
-                    {t("app.pets.details.no_vaccines")}
-                  </p>
-                )}
-              </div>
+              {pet.vaccinations && pet.vaccinations.length > 0 ? (
+                <ol className="border-border relative space-y-4 border-l">
+                  {pet.vaccinations.map((v, i) => (
+                    <li key={i} className="ml-4">
+                      <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
+                      <p className="text-sm leading-tight font-medium">
+                        {v.vaccine}
+                      </p>
+                      <time className="text-muted-foreground text-xs">
+                        {new Date(v.administeredAt).toLocaleDateString()}
+                      </time>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  {t("app.pets.details.no_vaccines")}
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -391,66 +310,47 @@ export const PetDetailsPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {getMockEvents(t).length > 0 ? (
-                  getMockEvents(t).map((event) => (
-                    <div key={event.id} className="border-l-2 pl-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">{event.title}</p>
-                        <span className="text-muted-foreground text-xs">
-                          {event.date}
-                        </span>
-                      </div>
+              {pet.events && pet.events.length > 0 ? (
+                <ol className="border-border relative space-y-4 border-l">
+                  {pet.events.map((event) => (
+                    <li key={event.id} className="ml-4">
+                      <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
+                      <p className="text-sm leading-tight font-medium">
+                        {event.name}
+                      </p>
+                      <time className="text-muted-foreground text-xs">
+                        {new Date(event.createdAt).toLocaleDateString()}
+                      </time>
                       {event.description && (
-                        <p className="text-muted-foreground mt-1 text-xs">
+                        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
                           {event.description}
                         </p>
                       )}
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-sm">
-                    {t("app.pets.details.no_recent_events")}
-                  </p>
-                )}
-              </div>
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  {t("app.pets.details.no_recent_events")}
+                </p>
+              )}
             </CardContent>
           </Card>
 
-          {/* Future Events */}
+          {/* Shelter Info */}
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <Clock className="text-primary h-5 w-5" />
-                {t("app.pets.details.future_events")}
+                {t("app.pets.details.shelter_info")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                {getMockFutureEvents(t).length > 0 ? (
-                  getMockFutureEvents(t).map((event) => (
-                    <div
-                      key={event.id}
-                      className="border-primary border-l-2 pl-3"
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">{event.title}</p>
-                        <span className="text-muted-foreground text-xs">
-                          {event.date}
-                        </span>
-                      </div>
-                      {event.description && (
-                        <p className="text-muted-foreground mt-1 text-xs">
-                          {event.description}
-                        </p>
-                      )}
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted-foreground text-sm">
-                    {t("app.pets.details.no_future_events")}
-                  </p>
-                )}
+              <div className="space-y-2">
+                <p className="text-sm font-medium">{pet.shelter.name}</p>
+                <p className="text-muted-foreground text-sm">
+                  {pet.shelter.city}
+                </p>
               </div>
             </CardContent>
           </Card>

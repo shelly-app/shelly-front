@@ -238,7 +238,9 @@
     }
   },
   "app": {
+    "no_shelter": "No eres miembro de ningún refugio. Contactá a un administrador para ser agregado.",
     "pets": {
+      "back": "Volver a mascotas",
       "title": "Mascotas",
       "loading": "Cargando mascotas...",
       "error": "Error al cargar las mascotas",
@@ -255,10 +257,10 @@
         "CAT": "Gato"
       },
       "status_labels": {
-        "IN_TRANSIT": "En tránsito",
         "IN_SHELTER": "En refugio",
         "ADOPTED": "Adoptado",
-        "IN_VET": "En veterinaria"
+        "IN_FOSTER": "En hogar transitorio",
+        "DECEASED": "Fallecido"
       },
       "sex_labels": {
         "MALE": "Macho",
@@ -302,13 +304,25 @@
           "fiv": "FIV"
         }
       },
+      "color_labels": {
+        "black": "Negro",
+        "white": "Blanco",
+        "brown": "Marrón",
+        "golden": "Dorado"
+      },
       "form": {
         "name_placeholder": "Nombre de la mascota",
         "select_species": "Selecciona la especie",
         "select_status": "Selecciona el estado",
         "breed_placeholder": "Raza de la mascota",
+        "birth_date": "Fecha de nacimiento",
         "age": "Edad (años)",
         "age_placeholder": "Edad en años",
+        "age_label": "Edad",
+        "age_approximate": "Aproximada",
+        "age_exact": "Fecha exacta",
+        "age_years": "Años",
+        "age_months": "Meses",
         "sex": "Sexo",
         "select_sex": "Selecciona el sexo",
         "size": "Tamaño",
@@ -343,6 +357,10 @@
         "edit": "Editar",
         "archive": "Archivar",
         "age": "Edad",
+        "age_years_one": "1 año",
+        "age_years_other": "{{count}} años",
+        "age_months_one": "1 mes",
+        "age_months_other": "{{count}} meses",
         "sex": "Sexo",
         "size": "Tamaño",
         "colors": "Colores",
@@ -356,6 +374,7 @@
         "no_future_events": "No hay eventos próximos",
         "years": "{{count}} año",
         "years_plural": "{{count}} años",
+        "shelter_info": "Info del Refugio",
         "archived": {
           "title": "Mascota archivada",
           "description": "{{name}} ha sido archivada y ya no está disponible en el sistema.",
@@ -444,7 +463,10 @@
       "hasYard": "¿Tiene patio o jardín?"
     },
     "profile": {
+      "loading": "Cargando perfil...",
       "edit_profile": "Editar perfil",
+      "email": "Email",
+      "role": "Rol",
       "location": "Ubicación",
       "phone": "Teléfono",
       "not_provided": "No proporcionado",
@@ -516,7 +538,8 @@
     "profile": "Perfil",
     "sign_out": "Cerrar sesión",
     "user": "Usuario",
-    "admin": "Administrador"
+    "admin": "Administrador",
+    "select_shelter": "Seleccionar refugio"
   },
   "pet_colors": {
     "cinnamon": "Canela",

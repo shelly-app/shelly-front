@@ -1,8 +1,13 @@
 export { usePets } from "./use-pets";
 export { useAddPet } from "./use-add-pet";
+export type { AddPetData } from "./use-add-pet";
 export { usePetDetails } from "./use-pet-details";
-export type {
-  QuickAddPetData,
-  CompleteAddPetData,
-  AddPetData,
-} from "./use-add-pet";
+export { useUpdatePet } from "./use-update-pet";
+export { useDeletePet } from "./use-delete-pet";
+export { useAddVaccination } from "./use-add-vaccination";
+export { useAddEvent } from "./use-add-event";
+export { useDeleteEvent } from "./use-delete-event";
+export { usePetStatuses } from "./use-pet-statuses";
+export { usePetSpecies } from "./use-pet-species";
+export { usePetColors } from "./use-pet-colors";
+export { usePetVaccines } from "./use-pet-vaccines";

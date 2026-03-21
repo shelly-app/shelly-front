@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -21,58 +21,8 @@ import { PetAvatar } from "@/components/ui/pet-avatar";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { SearchPet, AddPet, PetStatusBadge } from "@/features/pets/components";
-import { PET_SPECIES_LABELS, PetStatus } from "@/features/pets/constants";
+import { PET_SPECIES_LABELS } from "@/features/pets/constants";
 import { useTranslation } from "react-i18next";
-
-const columns: ColumnDef<Pet>[] = [
-  {
-    accessorKey: "name",
-    header: "app.pets.name",
-    cell: ({ row }) => {
-      const pet = row.original;
-      return (
-        <div className="flex items-center gap-4">
-          <PetAvatar pet={pet} size="md" />
-          <div className="group-hover:text-primary font-semibold transition-colors">
-            {row.getValue("name")}
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "species",
-    header: "app.pets.species",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {
-          PET_SPECIES_LABELS[
-            row.getValue("species") as keyof typeof PET_SPECIES_LABELS
-          ]
-        }
-      </div>
-    ),
-  },
-  {
-    accessorKey: "breed",
-    header: "app.pets.breed",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("breed")}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: "app.pets.status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as PetStatus;
-      return (
-        <div>
-          <PetStatusBadge status={status} />
-        </div>
-      );
-    },
-  },
-];
 
 interface MainPetsTableProps {
   data: Pet[];
@@ -84,6 +34,59 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
     [],
   );
   const { t } = useTranslation();
+
+  const columns = useMemo<ColumnDef<Pet>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: "app.pets.name",
+        cell: ({ row }) => {
+          const pet = row.original;
+          return (
+            <div className="flex items-center gap-4">
+              <PetAvatar pet={pet} size="md" />
+              <div className="group-hover:text-primary font-semibold transition-colors">
+                {row.getValue("name")}
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "specie",
+        header: "app.pets.species",
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {t(
+              PET_SPECIES_LABELS[
+                row.getValue("specie") as keyof typeof PET_SPECIES_LABELS
+              ] ?? row.getValue("specie"),
+            )}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "breed",
+        header: "app.pets.breed",
+        cell: ({ row }) => (
+          <div className="capitalize">{row.getValue("breed")}</div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: "app.pets.status",
+        cell: ({ row }) => {
+          const status = row.getValue("status") as string;
+          return (
+            <div>
+              <PetStatusBadge status={status} />
+            </div>
+          );
+        },
+      },
+    ],
+    [t],
+  );
 
   const table = useReactTable({
     data,

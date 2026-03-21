@@ -24,16 +24,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { Text } from "@/components/ui/text";
 
-import type { ShelterPet } from "@/features/shelters/constants/mock-shelter-pets";
+import type { DetailedPet } from "@/features/pets/types/pet";
 import type { Shelter } from "@/features/shelters/types/shelter";
 import { getNameInitials } from "@/lib/utils";
 
 interface AdoptionRequestDialogProps {
-  pet: ShelterPet | null;
+  pet: DetailedPet | null;
   shelter: Shelter | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -151,7 +151,6 @@ export const AdoptionRequestDialog = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={shelter.logoUrl} alt={shelter.name} />
                     <AvatarFallback className="text-xs">
                       {getNameInitials(shelter.name)}
                     </AvatarFallback>

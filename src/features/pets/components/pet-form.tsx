@@ -37,39 +37,39 @@ import {
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
   PET_STATUS_LABELS,
-  PET_COLORS,
   PET_SPECIES,
   PET_STATUS,
   PET_SEXES,
   PET_SIZES,
-  VACCINES,
-  PET_COLOR_LABELS,
 } from "@/features/pets/constants";
 import { useAddPet } from "@/features/pets/hooks";
+import { usePetColors } from "@/features/pets/hooks/use-pet-colors";
+import { usePetVaccines } from "@/features/pets/hooks/use-pet-vaccines";
 import { Pet } from "@/features/pets/types/pet";
-import { FileUploader } from "@/components/file-uploader";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@/lib/utils";
 
 const getPetFormSchema = (t: (key: string) => string) =>
   z.object({
     name: z.string().min(1, t("app.pets.validation.name_required")),
-    species: z.enum([PET_SPECIES.DOG, PET_SPECIES.CAT], {
+    specie: z.enum([PET_SPECIES.DOG, PET_SPECIES.CAT], {
       required_error: t("app.pets.validation.species_required"),
     }),
     status: z.enum(
       [
-        PET_STATUS.IN_TRANSIT,
         PET_STATUS.IN_SHELTER,
         PET_STATUS.ADOPTED,
-        PET_STATUS.IN_VET,
+        PET_STATUS.IN_FOSTER,
+        PET_STATUS.DECEASED,
       ],
       {
         required_error: t("app.pets.validation.status_required"),
       },
     ),
     breed: z.string().optional(),
-    age: z.number().min(0).max(30).optional(),
+    birthDate: z.string().optional(),
+    ageYears: z.coerce.number().int().min(0).max(30).optional(),
+    ageMonths: z.coerce.number().int().min(0).max(11).optional(),
     sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE]).optional(),
     size: z
       .enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE])
@@ -77,8 +77,36 @@ const getPetFormSchema = (t: (key: string) => string) =>
     colors: z.array(z.string()).optional(),
     vaccines: z.array(z.string()).optional(),
     description: z.string().optional(),
-    photoUrl: z.string().optional(),
   });
+
+const approximateToBirthDate = (years: number, months: number): string => {
+  const today = new Date();
+  const birth = new Date(
+    Date.UTC(
+      today.getUTCFullYear() - years,
+      today.getUTCMonth() - months,
+      today.getUTCDate(),
+    ),
+  );
+  return birth.toISOString().split("T")[0];
+};
+
+const birthDateToApproximate = (
+  birthDate: string,
+): {
+  years: number;
+  months: number;
+} => {
+  const birth = new Date(birthDate);
+  const today = new Date();
+  let years = today.getUTCFullYear() - birth.getUTCFullYear();
+  let months = today.getUTCMonth() - birth.getUTCMonth();
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+  return { years: Math.max(0, years), months: Math.max(0, months) };
+};
 
 type PetFormData = z.infer<ReturnType<typeof getPetFormSchema>>;
 
@@ -102,92 +130,52 @@ export const PetForm = ({
   const [isCompleteMode, setIsCompleteMode] = useState(
     mode === "edit" ? true : false,
   );
+  const [birthDateMode, setBirthDateMode] = useState<"approximate" | "exact">(
+    "approximate",
+  );
   const { addPetAsync, isLoading } = useAddPet();
+  const { colors: apiColors } = usePetColors();
+  const { vaccines: apiVaccines } = usePetVaccines();
 
   const form = useForm<PetFormData>({
     resolver: zodResolver(petFormSchema),
     defaultValues: {
       name: pet?.name || "",
-      species: pet?.species || PET_SPECIES.DOG,
-      status: pet?.status || PET_STATUS.IN_SHELTER,
+      specie: (pet?.specie as PetFormData["specie"]) || PET_SPECIES.DOG,
+      status: (pet?.status as PetFormData["status"]) || PET_STATUS.IN_SHELTER,
       breed: pet?.breed || "",
-      age: pet?.age,
-      sex: pet?.sex,
-      size: pet?.size,
+      birthDate: pet?.birthDate || "",
+      ageYears: undefined,
+      ageMonths: undefined,
+      sex: pet?.sex as PetFormData["sex"],
+      size: pet?.size as PetFormData["size"],
       colors: pet?.colors || [],
-      vaccines: pet?.vaccines || [],
+      vaccines: [],
       description: pet?.description || "",
-      photoUrl: pet?.photoUrl || "",
     },
   });
-
-  // Function to determine if a color is light or dark for text contrast
-  const isLightColor = (hexColor: string): boolean => {
-    // Remove # if present
-    const hex = hexColor.replace("#", "");
-
-    // Convert hex to RGB
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-
-    // Calculate luminance using relative luminance formula
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-    // Return true if light (luminance > 0.5)
-    return luminance > 0.5;
-  };
-
-  // Get color options with proper styling
-  const getColorOptions = () => {
-    return Object.entries(PET_COLORS).map(([color, hex]) => {
-      const isLight = isLightColor(hex);
-      const textColor = isLight ? "#000000" : "#FFFFFF";
-
-      return {
-        value: color,
-        label: capitalize(
-          PET_COLOR_LABELS[color as keyof typeof PET_COLOR_LABELS],
-        ),
-        icon: () => (
-          <div
-            className="h-4 w-4 rounded-full"
-            style={{ backgroundColor: hex }}
-          />
-        ),
-        style: {
-          // Use solid color with proper text contrast
-          badgeColor: hex,
-          // Force the text color based on background
-          color: textColor,
-          // Add border for better definition
-          border: isLight
-            ? "1px solid rgba(0, 0, 0, 0.1)"
-            : "1px solid rgba(255, 255, 255, 0.2)",
-          // Add subtle shadow for depth
-          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
-        },
-      };
-    });
-  };
-
-  const species = form.watch("species");
 
   // Sync form values when dialog is (re)opened in EDIT mode
   useEffect(() => {
     if (open && mode === "edit" && pet) {
+      const hasExactDate = !!pet.birthDate;
+      setBirthDateMode(hasExactDate ? "exact" : "approximate");
+      const approx = hasExactDate
+        ? birthDateToApproximate(pet.birthDate!)
+        : { years: undefined, months: undefined };
       form.reset({
         name: pet.name ?? "",
-        species: pet.species,
-        status: pet.status,
+        specie: (pet.specie as PetFormData["specie"]) || PET_SPECIES.DOG,
+        status: (pet.status as PetFormData["status"]) || PET_STATUS.IN_SHELTER,
         breed: pet.breed ?? "",
-        age: pet.age,
-        sex: pet.sex,
-        size: pet.size,
+        birthDate: pet.birthDate ?? "",
+        ageYears: approx.years,
+        ageMonths: approx.months,
+        sex: pet.sex as PetFormData["sex"],
+        size: pet.size as PetFormData["size"],
         colors: pet.colors ?? [],
-        vaccines: pet.vaccines ?? [],
+        vaccines: [],
         description: pet.description ?? "",
-        photoUrl: pet.photoUrl ?? "",
       });
     }
   }, [open, mode, pet, form]);
@@ -197,17 +185,27 @@ export const PetForm = ({
     if (!open && mode === "add") {
       form.reset();
       setIsCompleteMode(false);
+      setBirthDateMode("approximate");
     }
   }, [open, mode, form]);
 
-  // Get vaccine options based on the selected species
-  const vaccineOptions = useMemo(() => {
-    const speciesVaccines = VACCINES[species];
-    return Object.entries(speciesVaccines).map(([value, labelKey]) => ({
-      value,
-      label: t(labelKey),
+  const selectedSpecie = form.watch("specie");
+
+  // Get color options from API
+  const colorOptions = useMemo(() => {
+    return apiColors.map((color) => ({
+      value: color,
+      label: t(`app.pets.color_labels.${color}`, {
+        defaultValue: capitalize(color),
+      }),
     }));
-  }, [species, t]);
+  }, [apiColors, t]);
+
+  const vaccineOptions = useMemo(() => {
+    return apiVaccines
+      .filter((v) => v.specie === selectedSpecie)
+      .map((v) => ({ value: v.code, label: v.name }));
+  }, [apiVaccines, selectedSpecie]);
 
   // Get options for form selects
   const speciesOptions = Object.entries(PET_SPECIES_LABELS).map(
@@ -237,75 +235,67 @@ export const PetForm = ({
 
   const onSubmit = async (data: PetFormData) => {
     try {
+      let resolvedBirthDate = data.birthDate;
+      if (isCompleteMode && birthDateMode === "approximate") {
+        const years = data.ageYears ?? 0;
+        const months = data.ageMonths ?? 0;
+        resolvedBirthDate = approximateToBirthDate(years, months);
+      }
+
+      const resolvedData = {
+        ...data,
+        birthDate: resolvedBirthDate,
+        ageYears: undefined,
+        ageMonths: undefined,
+      };
+
       if (mode === "edit" && onSave) {
-        // Edit mode - call onSave with updated data
         const updatedPet: Pet = {
           ...pet!,
-          ...data,
-          vaccines: data.vaccines as Array<
-            keyof (typeof VACCINES)[keyof typeof PET_SPECIES]
-          >,
+          ...resolvedData,
+          birthDate: resolvedData.birthDate || null,
+          description: resolvedData.description || null,
+          colors: resolvedData.colors || [],
         };
         onSave(updatedPet);
         onOpenChange(false);
       } else {
-        // Add mode - use existing addPetAsync logic
-        // If in quick mode, only send essential fields
         const submitData = isCompleteMode
-          ? data
+          ? resolvedData
           : {
               name: data.name,
-              species: data.species,
+              specie: data.specie,
               status: data.status,
+              ...(data.breed ? { breed: data.breed } : {}),
             };
 
         await addPetAsync(submitData);
 
-        // Show success message
         console.log(t("app.pets.notifications.added_successfully"));
 
-        // Close modal and reset form
         onOpenChange(false);
         form.reset();
         setIsCompleteMode(false);
+        setBirthDateMode("approximate");
       }
     } catch {
-      // Error is handled by the mutation, but we can show a message here too
       console.error(t("app.pets.notifications.error_processing"));
-    }
-  };
-
-  const handleFileChange = (file: File) => {
-    if (file) {
-      // Create a preview URL for the image
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (isCompleteMode) {
-          form.setValue("photoUrl", e.target?.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemoveFile = () => {
-    if (isCompleteMode) {
-      form.setValue("photoUrl", "");
     }
   };
 
   const handleModeChange = (checked: boolean) => {
     setIsCompleteMode(checked);
     if (!checked) {
-      // Reset non-essential fields when switching to quick mode
       form.setValue("breed", "");
-      form.setValue("age", undefined);
+      form.setValue("birthDate", "");
+      form.setValue("ageYears", undefined);
+      form.setValue("ageMonths", undefined);
       form.setValue("sex", undefined);
       form.setValue("size", undefined);
       form.setValue("colors", []);
       form.setValue("vaccines", []);
       form.setValue("description", "");
-      form.setValue("photoUrl", "");
+      setBirthDateMode("approximate");
     }
   };
 
@@ -363,7 +353,7 @@ export const PetForm = ({
 
               <FormField
                 control={form.control}
-                name="species"
+                name="specie"
                 render={({ field }) => (
                   <FormItem className="min-w-0 space-y-1">
                     <FormLabel className="text-sm">
@@ -372,7 +362,6 @@ export const PetForm = ({
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
-                        form.setValue("vaccines", []);
                       }}
                       defaultValue={field.value}
                     >
@@ -455,34 +444,127 @@ export const PetForm = ({
             {isCompleteMode && (
               <>
                 <div className="space-y-3">
-                  <FormField
-                    control={form.control}
-                    name="age"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel className="text-sm">
-                          {t("app.pets.form.age")}
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder={t("app.pets.form.age_placeholder")}
-                            className="h-9 w-full sm:max-w-[49%]"
-                            max={40}
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(
-                                e.target.value
-                                  ? Number(e.target.value)
-                                  : undefined,
-                              )
-                            }
-                          />
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
+                  <div className="space-y-2">
+                    <p className="text-sm leading-none font-medium">
+                      {t("app.pets.form.age_label")}
+                    </p>
+                    <div className="flex gap-1">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setBirthDateMode("approximate");
+                          const currentDate =
+                            form.getValues("birthDate") || pet?.birthDate;
+                          if (currentDate) {
+                            const { years, months } =
+                              birthDateToApproximate(currentDate);
+                            form.setValue("ageYears", years);
+                            form.setValue("ageMonths", months);
+                          }
+                          form.setValue("birthDate", "");
+                        }}
+                        className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${birthDateMode === "approximate" ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground border-input hover:bg-accent"}`}
+                      >
+                        {t("app.pets.form.age_approximate")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setBirthDateMode("exact");
+                          form.setValue("ageYears", undefined);
+                          form.setValue("ageMonths", undefined);
+                          if (!form.getValues("birthDate") && pet?.birthDate) {
+                            form.setValue("birthDate", pet.birthDate);
+                          }
+                        }}
+                        className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-colors ${birthDateMode === "exact" ? "bg-primary text-primary-foreground border-primary" : "bg-background text-foreground border-input hover:bg-accent"}`}
+                      >
+                        {t("app.pets.form.age_exact")}
+                      </button>
+                    </div>
+
+                    {birthDateMode === "approximate" ? (
+                      <div className="flex gap-3">
+                        <FormField
+                          control={form.control}
+                          name="ageYears"
+                          render={({ field }) => (
+                            <FormItem className="flex-1 space-y-1">
+                              <FormLabel className="text-sm">
+                                {t("app.pets.form.age_years")}
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  max={30}
+                                  className="h-9"
+                                  placeholder="0"
+                                  {...field}
+                                  value={field.value ?? ""}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      e.target.value === ""
+                                        ? undefined
+                                        : Number(e.target.value),
+                                    )
+                                  }
+                                />
+                              </FormControl>
+                              <FormMessage className="text-xs" />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="ageMonths"
+                          render={({ field }) => (
+                            <FormItem className="flex-1 space-y-1">
+                              <FormLabel className="text-sm">
+                                {t("app.pets.form.age_months")}
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  max={11}
+                                  className="h-9"
+                                  placeholder="0"
+                                  {...field}
+                                  value={field.value ?? ""}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      e.target.value === ""
+                                        ? undefined
+                                        : Number(e.target.value),
+                                    )
+                                  }
+                                />
+                              </FormControl>
+                              <FormMessage className="text-xs" />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    ) : (
+                      <FormField
+                        control={form.control}
+                        name="birthDate"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1">
+                            <FormControl>
+                              <Input
+                                type="date"
+                                className="h-9 w-full sm:max-w-[49%]"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-xs" />
+                          </FormItem>
+                        )}
+                      />
                     )}
-                  />
+                  </div>
 
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <FormField
@@ -571,7 +653,7 @@ export const PetForm = ({
                         <MultiSelect
                           searchable
                           hideBadgeIcon
-                          options={getColorOptions()}
+                          options={colorOptions}
                           defaultValue={field.value || []}
                           onValueChange={field.onChange}
                           placeholder={t("app.pets.form.select_colors")}
@@ -593,13 +675,13 @@ export const PetForm = ({
                       </FormLabel>
                       <FormControl>
                         <MultiSelect
-                          disabled={!form.getValues("species") || isLoading}
-                          options={vaccineOptions || []}
+                          searchable
+                          hideBadgeIcon
+                          options={vaccineOptions}
                           defaultValue={field.value || []}
                           onValueChange={field.onChange}
                           placeholder={t("app.pets.form.select_vaccines")}
-                          maxCount={4}
-                          searchable
+                          maxCount={5}
                         />
                       </FormControl>
                       <FormMessage />
@@ -622,26 +704,6 @@ export const PetForm = ({
                           )}
                           rows={4}
                           {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="photoUrl"
-                  render={() => (
-                    <FormItem className="min-w-0">
-                      <FormLabel className="w-fit">
-                        {t("app.pets.form.image")}
-                      </FormLabel>
-                      <FormControl>
-                        <FileUploader
-                          onFileChange={handleFileChange}
-                          onRemoveFile={handleRemoveFile}
-                          types={["image"]}
                         />
                       </FormControl>
                       <FormMessage />

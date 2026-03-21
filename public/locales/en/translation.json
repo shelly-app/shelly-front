@@ -238,7 +238,9 @@
     }
   },
   "app": {
+    "no_shelter": "You are not a member of any shelter. Contact an administrator to be added.",
     "pets": {
+      "back": "Back to pets",
       "title": "Pets",
       "loading": "Loading pets...",
       "error": "Error loading pets",
@@ -255,10 +257,10 @@
         "CAT": "Cat"
       },
       "status_labels": {
-        "IN_TRANSIT": "In transit",
         "IN_SHELTER": "In shelter",
         "ADOPTED": "Adopted",
-        "IN_VET": "In vet"
+        "IN_FOSTER": "In foster",
+        "DECEASED": "Deceased"
       },
       "sex_labels": {
         "MALE": "Male",
@@ -302,13 +304,25 @@
           "fiv": "FIV"
         }
       },
+      "color_labels": {
+        "black": "Black",
+        "white": "White",
+        "brown": "Brown",
+        "golden": "Golden"
+      },
       "form": {
         "name_placeholder": "Pet's name",
         "select_species": "Select species",
         "select_status": "Select status",
         "breed_placeholder": "Pet's breed",
+        "birth_date": "Birth date",
         "age": "Age (years)",
         "age_placeholder": "Age in years",
+        "age_label": "Age",
+        "age_approximate": "Approximate",
+        "age_exact": "Exact date",
+        "age_years": "Years",
+        "age_months": "Months",
         "sex": "Sex",
         "select_sex": "Select sex",
         "size": "Size",
@@ -343,6 +357,10 @@
         "edit": "Edit",
         "archive": "Archive",
         "age": "Age",
+        "age_years_one": "1 year",
+        "age_years_other": "{{count}} years",
+        "age_months_one": "1 month",
+        "age_months_other": "{{count}} months",
         "sex": "Sex",
         "size": "Size",
         "colors": "Colors",
@@ -356,6 +374,7 @@
         "no_future_events": "No future events",
         "years": "{{count}} year",
         "years_plural": "{{count}} years",
+        "shelter_info": "Shelter Info",
         "archived": {
           "title": "Pet Archived",
           "description": "{{name}} has been archived and is no longer available in the system.",
@@ -439,7 +458,10 @@
       }
     },
     "profile": {
+      "loading": "Loading profile...",
       "edit_profile": "Edit profile",
+      "email": "Email",
+      "role": "Role",
       "location": "Location",
       "phone": "Phone",
       "not_provided": "Not provided",
@@ -511,7 +533,8 @@
     "profile": "Profile",
     "sign_out": "Sign out",
     "user": "User",
-    "admin": "Administrator"
+    "admin": "Administrator",
+    "select_shelter": "Select shelter"
   },
   "pet_colors": {
     "cinnamon": "Cinnamon",

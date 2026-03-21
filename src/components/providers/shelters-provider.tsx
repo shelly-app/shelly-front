@@ -1,84 +1,44 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
-import type { Shelter } from "@/types/api";
-import { useQuery } from "@tanstack/react-query";
+import type { UserShelter } from "@/types/api";
+import { useUser } from "@/hooks/use-user";
 
 type SheltersContextProps = {
-  shelters: Shelter[];
-  currentShelter: Shelter | null;
-  setCurrentShelter: React.Dispatch<React.SetStateAction<Shelter | null>>;
+  shelters: UserShelter[];
+  currentShelter: UserShelter | null;
+  setCurrentShelter: React.Dispatch<React.SetStateAction<UserShelter | null>>;
   isLoading: boolean;
 };
-
-// Shelters should be retrieved from a context or a global state.
-const MOCK_SHELTERS: Shelter[] = [
-  {
-    id: 1,
-    name: "Adopta un Camperito",
-    address: "Calle Falsa 123",
-    phone: "1243312421",
-    email: "example@example.com",
-    website: "example.com",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    archivedAt: null,
-  },
-  {
-    id: 2,
-    name: "Zaguastes",
-    address: "Calle Falsa 321",
-    phone: "998876667",
-    email: "example1@example.com",
-    website: "example1.com",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    archivedAt: null,
-  },
-];
 
 const SheltersContext = createContext<SheltersContextProps | null>(null);
 
 const SheltersProvider = ({ children }: { children: ReactNode }) => {
-  const [currentShelter, setCurrentShelter] = useState<Shelter | null>(null);
+  const [currentShelter, setCurrentShelter] = useState<UserShelter | null>(
+    null,
+  );
+  const { data: user, isLoading } = useUser();
+  const shelters = user?.shelters ?? [];
 
-  const {
-    // data: shelters = [],
-    isLoading,
-    // TODO: Handle errors properly
-    // isError,
-  } = useQuery({
-    queryKey: ["shelters"],
-    queryFn: async () => {
-      // const response = await fetch('/api/shelters');
-      // // TODO: Handle errors properly
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-
-      // const data = await response.json();
-
-      // setCurrentShelter(data[0] || null);
-
-      // return data as Shelter[];
-      setCurrentShelter(MOCK_SHELTERS[0] || null);
-      return MOCK_SHELTERS;
-    },
-  });
+  useEffect(() => {
+    if (shelters.length > 0 && !currentShelter) {
+      setCurrentShelter(shelters[0]);
+    }
+  }, [shelters, currentShelter]);
 
   const value = useMemo(
     () => ({
-      shelters: MOCK_SHELTERS,
+      shelters,
       currentShelter,
       setCurrentShelter,
       isLoading,
     }),
-    // [shelters, currentShelter, isLoading],
-    [currentShelter, isLoading],
+    [shelters, currentShelter, setCurrentShelter, isLoading],
   );
 
   return (
