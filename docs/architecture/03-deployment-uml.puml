@@ -1,0 +1,55 @@
+@startuml 03-deployment-uml
+title Diagrama de despliegue (UML 2 - nodes & artifacts)
+
+skinparam dpi 150
+skinparam shadowing false
+skinparam node {
+  BackgroundColor #FEF9C3
+  BorderColor #A16207
+  FontStyle bold
+}
+skinparam artifact {
+  BackgroundColor #E0E7FF
+  BorderColor #4338CA
+}
+skinparam database {
+  BackgroundColor #BFDBFE
+  BorderColor #1D4ED8
+}
+skinparam cloud {
+  BackgroundColor #FDE68A
+  BorderColor #B45309
+}
+
+node "Dispositivo del usuario" <<device>> {
+  artifact "Navegador" as Browser
+  artifact "SPA React\n(build de Vite)" as SPA
+}
+
+node "CDN / Static Hosting\n(S3 + CloudFront · Vercel · Netlify)" <<device>> {
+  artifact "index.html + assets estáticos\n(artefacto de shelly-front)" as Static
+}
+
+cloud "AWS · Auth as a Service" {
+  node "Cognito" <<executionEnvironment>> {
+    artifact "User Pool + Hosted UI" as Cog
+  }
+}
+
+node "Servidor Node\n(PaaS · EC2 · Container)" <<executionEnvironment>> {
+  artifact "shelly-back\nNode 22 · Express 5\n(/api/*, /api/docs)\nPuerto 3000" as API
+}
+
+node "Base de datos gestionada" <<device>> {
+  database "PostgreSQL 18\n(RDS · docker-compose)" as DB
+}
+
+Browser --> Static : <<HTTPS>>\n1) GET /
+Static --> Browser : bundle JS / CSS
+Browser ..> Cog : <<OIDC>>\n2) redirect Hosted UI
+Cog ..> Browser : id_token (JWT)
+Browser --> API : <<HTTPS>>\n3) REST + Bearer JWT\nVITE_APP_API_URL
+API ..> Cog : <<JWKS>>\nverify firma
+API --> DB : <<TCP/TLS>>\nSQL vía pg Pool
+
+@enduml

@@ -1,0 +1,77 @@
+@startuml 02-components-uml
+title Diagrama de componentes (UML 2 - lollipop / socket)
+
+skinparam dpi 150
+skinparam componentStyle uml2
+skinparam shadowing false
+
+top to bottom direction
+skinparam component {
+  BackgroundColor #E0E7FF
+  BorderColor #4338CA
+}
+skinparam package {
+  BackgroundColor #FEF9C3
+  BorderColor #A16207
+  FontStyle bold
+}
+skinparam interface {
+  BackgroundColor #FFFFFF
+  BorderColor #1F2937
+}
+
+package "shelly-front" {
+  component "AppRouter\n<<react-router-dom v7>>" as Router
+  component "Providers\n(QueryClient · OIDC · Shelters)" as Prov
+  component "Features\n(pets · shelters · members\nrequests · auth · landing)" as Feats
+  component "api-client\n(Axios + interceptor)" as ApiC
+
+  Router --> Prov
+  Prov --> Feats
+  Feats --> ApiC
+}
+
+package "shelly-back" {
+  component "Express App" as App
+  component "authMiddleware\n(aws-jwt-verify)" as Auth
+  component "requirePermission\n(RBAC)" as Perm
+  component "users module" as MU
+  component "shelters module" as MS
+  component "pets module" as MP
+  component "shelters/pets" as MSP
+  component "shelters/members" as MSM
+  component "openapi (Scalar)" as Docs
+
+  App --> Auth
+  Auth --> Perm
+  App --> MU
+  App --> MS
+  App --> MP
+  App --> MSP
+  App --> MSM
+  App --> Docs
+}
+
+interface "REST /api" as IRest
+interface "OIDC / JWT" as IOidc
+interface "SQL (TCP)" as ISql
+
+ApiC -down-( IRest
+IRest )-down- App
+
+Prov ..( IOidc
+Auth ..( IOidc
+
+MU --( ISql
+MS --( ISql
+MP --( ISql
+MSP --( ISql
+MSM --( ISql
+
+cloud "AWS Cognito\n(User Pool)" as Cog
+database "PostgreSQL 18" as PG
+
+IOidc )-- Cog
+ISql )-- PG
+
+@enduml

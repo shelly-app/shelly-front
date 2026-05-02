@@ -1,0 +1,261 @@
+@startuml 04-class-uml
+title Diagrama de clases del dominio (UML 2 - OO)
+
+skinparam dpi 150
+skinparam shadowing false
+skinparam classAttributeIconSize 12
+skinparam class {
+  BackgroundColor #FEF9C3
+  BorderColor #A16207
+  HeaderBackgroundColor #FACC15
+  FontStyle bold
+  AttributeFontColor #111111
+  StereotypeFontColor #6B7280
+}
+skinparam abstractClass {
+  BackgroundColor #FDE68A
+  BorderColor #B45309
+}
+skinparam enum {
+  BackgroundColor #DBEAFE
+  BorderColor #1D4ED8
+  HeaderBackgroundColor #93C5FD
+}
+
+top to bottom direction
+hide circle
+
+' ============================================================
+' Clase base abstracta
+' ============================================================
+abstract class BaseEntity {
+  # id : Long
+  # createdAt : DateTime
+  # updatedAt : DateTime?
+  # deletedAt : DateTime?
+  --
+  + isDeleted() : Boolean
+  + softDelete() : void
+  + touch() : void
+}
+
+' ============================================================
+' Identidad
+' ============================================================
+class User {
+  - email : String
+  - name : String
+  - cognitoSub : String
+  --
+  + updateName(name : String) : void
+  + getMemberships() : List<ShelterMember>
+  + canEdit(target : User) : Boolean
+  + hasPermission(shelter : Shelter, slug : String) : Boolean
+}
+
+' ============================================================
+' Organización y permisos
+' ============================================================
+class Shelter {
+  - name : String
+  - address : String?
+  - city : String
+  - state : String
+  - zip : String
+  - country : String
+  --
+  + addMember(user : User, role : Role) : ShelterMember
+  + removeMember(user : User) : void
+  + getMembers() : List<ShelterMember>
+  + housePet(pet : Pet) : void
+  + transferPet(pet : Pet, target : Shelter) : Boolean
+  + getPets() : List<Pet>
+}
+
+class ShelterMember <<association class>> {
+  - joinedAt : DateTime
+  --
+  + assignRole(role : Role) : void
+  + getPermissions() : Set<Permission>
+  + can(slug : String) : Boolean
+}
+
+class Role {
+  - name : String
+  --
+  + addPermission(permission : Permission) : void
+  + removePermission(permission : Permission) : void
+  + hasPermission(slug : String) : Boolean
+  + getPermissions() : Set<Permission>
+}
+
+class Permission {
+  - slug : String
+  - name : String
+}
+
+' ============================================================
+' Mascotas y trazabilidad
+' ============================================================
+class Pet {
+  - name : String
+  - birthDate : Date?
+  - breed : String?
+  - description : String?
+  - specie : Specie
+  - sex : Sex
+  - size : Size
+  - colors : Set<Color>
+  - status : Status
+  --
+  + changeStatus(newStatus : Status, by : User) : Event
+  + rename(name : String, by : User) : Event
+  + resize(size : Size, by : User) : Event
+  + administerVaccine(vaccine : Vaccine, by : User, at : DateTime?) : Vaccination
+  + recordEvent(name : String, description : String?, by : User) : Event
+  + getVaccinations() : List<Vaccination>
+  + getEvents() : List<Event>
+  + age() : Duration?
+}
+
+class Vaccine <<value object>> {
+  - code : String
+  - name : String
+}
+
+class Vaccination {
+  - administeredAt : DateTime
+  --
+  + getVaccine() : Vaccine
+  + getPet() : Pet
+}
+
+' ============================================================
+' Jerarquía de Event (Strategy / Polymorphism)
+' ============================================================
+abstract class Event {
+  # name : String
+  # description : String?
+  # createdAt : DateTime
+  --
+  + getPet() : Pet
+  + getRecordedBy() : User
+  + {abstract} type() : EventType
+}
+
+class StatusChangeEvent {
+  - from : Status
+  - to : Status
+  --
+  + type() : EventType
+}
+
+class NameChangeEvent {
+  - from : String
+  - to : String
+  --
+  + type() : EventType
+}
+
+class SizeChangeEvent {
+  - from : Size
+  - to : Size
+  --
+  + type() : EventType
+}
+
+class VaccinationEvent {
+  - vaccine : Vaccine
+  --
+  + type() : EventType
+}
+
+class UserEvent {
+  + type() : EventType
+}
+
+' ============================================================
+' Enumeraciones
+' ============================================================
+enum Specie {
+  DOG
+  CAT
+}
+enum Sex {
+  MALE
+  FEMALE
+}
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+}
+enum Color {
+  BLACK
+  WHITE
+  BROWN
+  GOLDEN
+}
+enum Status {
+  IN_SHELTER
+  ADOPTED
+  IN_FOSTER
+  DECEASED
+}
+enum EventType {
+  STATUS_CHANGE
+  NAME_CHANGE
+  SIZE_CHANGE
+  VACCINATION
+  USER_EVENT
+}
+
+' ============================================================
+' Generalizaciones
+' ============================================================
+BaseEntity <|-- User
+BaseEntity <|-- Shelter
+BaseEntity <|-- Role
+BaseEntity <|-- Permission
+BaseEntity <|-- Pet
+BaseEntity <|-- Event
+
+Event <|-- StatusChangeEvent
+Event <|-- NameChangeEvent
+Event <|-- SizeChangeEvent
+Event <|-- VaccinationEvent
+Event <|-- UserEvent
+
+' ============================================================
+' Asociaciones
+' ============================================================
+' M:N User <-> Shelter como association class con rol
+User    "1" -- "0..*" ShelterMember
+Shelter "1" -- "0..*" ShelterMember
+ShelterMember "0..*" --> "1" Role : <<assigned>>
+
+' Role y Permission: M:N simple (sin atributos)
+Role "0..*" -- "0..*" Permission : <<grants>>
+
+' Shelter agrega Pets (las mascotas pueden transferirse)
+Shelter "1" o-- "0..*" Pet : <<houses>>
+
+' Pet compone su historial (cascade delete)
+Pet "1" *-- "0..*" Vaccination
+Pet "1" *-- "0..*" Event
+
+' Vaccination referencia un Vaccine de catálogo
+Vaccine "1" -- "0..*" Vaccination
+
+' Cada Event es registrado por un User
+User "1" -- "0..*" Event : <<records>>
+
+' Pet usa enums de tipo
+Pet ..> Specie : <<uses>>
+Pet ..> Sex
+Pet ..> Size
+Pet ..> Color
+Pet ..> Status
+Event ..> EventType : <<uses>>
+
+@enduml

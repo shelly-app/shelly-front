@@ -1,0 +1,57 @@
+@startuml 01-layered-uml
+title Arquitectura en capas (UML 2 - layered architecture)
+
+skinparam dpi 150
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor #FEF9C3
+  BorderColor #A16207
+  HeaderBackgroundColor #FACC15
+  FontStyle bold
+  AttributeFontStyle plain
+  AttributeFontColor #111111
+}
+
+top to bottom direction
+
+class "Capa 1 · Presentación / HTTP" as C1 <<layer>> {
+  shelly-front : routes/ · components/ · features/*/pages
+  shelly-back  : api/app · routes.ts · middleware (auth, requirePermission)
+}
+
+class "Capa 2 · Aplicación" as C2 <<layer>> {
+  shelly-front : hooks (TanStack Query) · providers · router · ProtectedRoute
+  shelly-back  : handlers.ts · error-handler · openapi (Scalar)
+}
+
+class "Capa 3 · Dominio" as C3 <<layer>> {
+  shelly-front : features/*/types · features/*/utils · constants
+  shelly-back  : services.ts (reglas de negocio) · schemas.ts (Zod)
+}
+
+class "Capa 4 · Infraestructura / Datos" as C4 <<layer>> {
+  shelly-front : api-client (Axios + interceptor) · config/auth (oidc-client-ts) · i18n
+  shelly-back  : repository.ts · db/schema/* (Drizzle) · db/index (pg Pool)
+}
+
+class "PostgreSQL 18" as DB <<database>> #BFDBFE
+class "AWS Cognito" as COG <<external>> #FDE68A
+
+C1 ..> C2 : <<access>>
+C2 ..> C3 : <<access>>
+C2 ..> C4 : <<access>>
+C3 ..> C4 : <<access>>
+
+C4 ..> DB : <<JDBC/SQL>>
+C4 ..> COG : <<OIDC>>
+C1 ..> COG : <<JWT verify>>
+
+note right of C1
+  La integración HTTPS + Bearer JWT
+  ocurre entre la capa 4 del front
+  (api-client) y la capa 1 del back
+  (Express + middleware).
+end note
+
+@enduml
