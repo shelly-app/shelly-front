@@ -1,28 +1,37 @@
-import { Entity } from "@/types/api";
-import {
-  PetSpecies,
-  PetStatus,
-  PetSex,
-  PetSize,
-  VACCINES,
-  PET_SPECIES,
-} from "@/features/pets/constants";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Pet = Entity<{
-  photoUrl: string;
+export type Pet = {
+  id: number;
   name: string;
-  species: PetSpecies;
+  birthDate: string | null;
   breed: string;
-  status: PetStatus;
-  age?: number;
-  sex?: PetSex;
-  size?: PetSize;
-  colors?: string[];
-  description?: string;
-  vaccines?: Array<
-    | keyof (typeof VACCINES)[typeof PET_SPECIES.DOG]
-    | keyof (typeof VACCINES)[typeof PET_SPECIES.CAT]
-  >;
-}>;
+  specie: string;
+  sex: string;
+  size: string | null;
+  status: string;
+  description: string | null;
+  colors: string[];
+  shelter: { name: string; city: string };
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type DetailedPet = Pet & {
+  vaccinations: {
+    vaccine: string;
+    vaccineCode: string;
+    administeredAt: string;
+  }[];
+  statusHistory: { status: string; changedAt: string }[];
+  events: {
+    id: number;
+    type:
+      | "status_change"
+      | "vaccination"
+      | "user_event"
+      | "name_change"
+      | "size_change";
+    name: string;
+    description: string | null;
+    metadata: { from?: string | null; to?: string | null } | null;
+    createdAt: string;
+  }[];
+};

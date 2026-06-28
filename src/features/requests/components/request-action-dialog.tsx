@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { AdoptionRequest } from "@/features/requests/types/request";
+import { useUpdateRequestStatus } from "@/features/requests/hooks/use-update-request-status";
 import { useTranslation } from "react-i18next";
 
 export type RequestAction = "approve" | "reject" | "contact" | null;
@@ -25,85 +27,84 @@ export const RequestActionDialog = ({
   onClose,
 }: RequestActionDialogProps) => {
   const { t } = useTranslation();
+  const [message, setMessage] = useState("");
+  const { updateStatusAsync, isLoading, isError, reset } =
+    useUpdateRequestStatus();
+
+  useEffect(() => {
+    if (action) {
+      setMessage("");
+      reset();
+    }
+  }, [action, reset]);
+
+  const handleConfirm = async (status: "approved" | "rejected") => {
+    try {
+      await updateStatusAsync({
+        requestId: request.id,
+        status,
+        rejectionReason: status === "rejected" ? message : undefined,
+      });
+      onClose();
+    } catch {
+      // Error surfaced inline via `isError`; keep the dialog open.
+    }
+  };
+
+  const decisionConfig = {
+    approve: { status: "approved", variant: "default" },
+    reject: { status: "rejected", variant: "destructive" },
+  } as const;
 
   return (
     <Dialog open={action !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
-        {action === "approve" && (
+        {(action === "approve" || action === "reject") && (
           <>
             <DialogHeader>
               <DialogTitle>
-                {t("app.requests.actions_dialog.approve.title")}
+                {t(`app.requests.actions_dialog.${action}.title`)}
               </DialogTitle>
               <DialogDescription>
-                {t("app.requests.actions_dialog.approve.description", {
+                {t(`app.requests.actions_dialog.${action}.description`, {
                   petName: request.petName,
                   requesterName: request.requesterName,
                 })}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <label className="text-sm font-medium" htmlFor="approve-msg">
-                {t("app.requests.actions_dialog.approve.message_label")}
+            <div className="grid gap-4 pb-4">
+              <label
+                className="text-sm font-medium"
+                htmlFor="request-action-msg"
+              >
+                {t(`app.requests.actions_dialog.${action}.message_label`)}
               </label>
               <Textarea
-                id="approve-msg"
+                id="request-action-msg"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder={t(
-                  "app.requests.actions_dialog.approve.message_placeholder",
+                  `app.requests.actions_dialog.${action}.message_placeholder`,
                 )}
               />
             </div>
+            {isError && (
+              <p className="text-destructive text-sm">
+                {t("app.requests.actions_dialog.error")}
+              </p>
+            )}
             <DialogFooter>
-              <Button variant="outline" onClick={onClose}>
+              <Button variant="outline" onClick={onClose} disabled={isLoading}>
                 {t("app.requests.actions_dialog.cancel")}
               </Button>
               <Button
-                onClick={() => {
-                  // TODO: approve mutation
-                  onClose();
-                }}
+                variant={decisionConfig[action].variant}
+                onClick={() => handleConfirm(decisionConfig[action].status)}
+                disabled={isLoading}
               >
-                {t("app.requests.actions_dialog.approve.confirm")}
-              </Button>
-            </DialogFooter>
-          </>
-        )}
-
-        {action === "reject" && (
-          <>
-            <DialogHeader>
-              <DialogTitle>
-                {t("app.requests.actions_dialog.reject.title")}
-              </DialogTitle>
-              <DialogDescription>
-                {t("app.requests.actions_dialog.reject.description", {
-                  requesterName: request.requesterName,
-                })}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <label className="text-sm font-medium" htmlFor="reject-msg">
-                {t("app.requests.actions_dialog.reject.message_label")}
-              </label>
-              <Textarea
-                id="reject-msg"
-                placeholder={t(
-                  "app.requests.actions_dialog.reject.message_placeholder",
-                )}
-              />
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={onClose}>
-                {t("app.requests.actions_dialog.cancel")}
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={() => {
-                  // TODO: reject mutation
-                  onClose();
-                }}
-              >
-                {t("app.requests.actions_dialog.reject.confirm")}
+                {isLoading
+                  ? t("app.requests.actions_dialog.processing")
+                  : t(`app.requests.actions_dialog.${action}.confirm`)}
               </Button>
             </DialogFooter>
           </>
@@ -121,7 +122,7 @@ export const RequestActionDialog = ({
                 })}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-2 py-4 text-sm">
+            <div className="grid gap-2 pb-4 text-sm">
               <p>
                 {t("app.requests.actions_dialog.contact.name")}:{" "}
                 {request.requesterName}
@@ -135,38 +136,21 @@ export const RequestActionDialog = ({
                   {request.requesterEmail}
                 </a>
               </p>
-              <p>
-                {t("app.requests.actions_dialog.contact.phone")}:{" "}
-                <a
-                  className="text-primary underline"
-                  href={`tel:${request.requesterPhone}`}
-                >
-                  {request.requesterPhone}
-                </a>
-              </p>
-            </div>
-            <div className="grid gap-4 py-2">
-              <label className="text-sm font-medium" htmlFor="contact-msg">
-                {t("app.requests.actions_dialog.contact.message_label")}
-              </label>
-              <Textarea
-                id="contact-msg"
-                placeholder={t(
-                  "app.requests.actions_dialog.contact.message_placeholder",
-                )}
-              />
+              {request.requesterPhone && (
+                <p>
+                  {t("app.requests.actions_dialog.contact.phone")}:{" "}
+                  <a
+                    className="text-primary underline"
+                    href={`tel:${request.requesterPhone}`}
+                  >
+                    {request.requesterPhone}
+                  </a>
+                </p>
+              )}
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={onClose}>
+              <Button onClick={onClose}>
                 {t("app.requests.actions_dialog.close")}
-              </Button>
-              <Button
-                onClick={() => {
-                  // TODO: send contact message
-                  onClose();
-                }}
-              >
-                {t("app.requests.actions_dialog.contact.send")}
               </Button>
             </DialogFooter>
           </>

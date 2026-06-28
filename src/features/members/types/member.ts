@@ -1,10 +1,7 @@
-import { BaseEntity } from "@/types/api";
-
-export interface Member extends BaseEntity {
-  id: number;
-  fullName: string;
-  profilePhoto?: string;
-  location: string;
-  phoneNumber?: string;
-  joinedAt: number; // Unix timestamp
-}
+export type Member = {
+  userId: number;
+  name: string;
+  email: string;
+  role: string;
+  joinedAt: string;
+};

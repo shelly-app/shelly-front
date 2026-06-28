@@ -26,20 +26,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn, getFullName, getNameInitials } from "@/lib/utils";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn, getNameInitials } from "@/lib/utils";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "react-oidc-context";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Image } from "@/components/ui/image";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "@/components/language-selector";
+import { useShelters } from "./providers/shelters-provider";
+import { useUser } from "@/hooks/use-user";
+import { useRoleLabel } from "@/hooks/use-role-label";
 
 const AppSidebar = () => {
   const { t } = useTranslation();
+  const roleLabel = useRoleLabel();
   const signOutAction = useSignOutAction();
   const navigate = useNavigate();
 
@@ -87,23 +98,17 @@ const AppSidebar = () => {
   );
   // Should access this from a state that pulls count periodically.
   const [newPetsCount] = useState(0);
-  // We should use the User model from our db.
-  // const { user } = useUser();
-  const { user } = useAuth();
+  const { shelters, currentShelter, setCurrentShelter } = useShelters();
+  const { data: user } = useUser();
 
   const userProfile = useMemo(() => {
     if (!user) return null;
     return {
-      firstName: user.profile?.given_name,
-      lastName: user.profile?.family_name,
-      fullName: getFullName(
-        user.profile?.given_name,
-        user.profile?.family_name,
-      ),
-      picture: user.profile?.picture,
-      role: "ADMIN",
+      fullName: user.name,
+      email: user.email,
+      role: currentShelter?.role,
     };
-  }, [user]);
+  }, [user, currentShelter]);
 
   return (
     <Sidebar collapsible="icon" variant="sidebar">
@@ -163,6 +168,37 @@ const AppSidebar = () => {
         </nav>
       </SidebarContent>
       <div className={cn("px-6 py-3", isCollapsed && "px-2")}>
+        {shelters.length > 0 ? (
+          <Select
+            value={currentShelter?.id?.toString()}
+            onValueChange={(value) => {
+              const shelter = shelters.find((s) => s?.id?.toString() === value);
+              if (shelter) {
+                setCurrentShelter(shelter);
+              }
+            }}
+          >
+            <SelectTrigger
+              className="w-full"
+              size={isCollapsed ? "sm" : "default"}
+            >
+              <SelectValue placeholder={t("sidebar.select_shelter")} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {shelters.map((shelter) => (
+                  <SelectItem key={shelter.id} value={shelter.id.toString()}>
+                    {shelter.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        ) : (
+          "No eres miembro de ningún refugio."
+        )}
+      </div>
+      <div className={cn("px-6 py-3", isCollapsed && "px-2")}>
         <LanguageSelector isCollapsed={isCollapsed} />
       </div>
       <hr className="my-2" />
@@ -186,10 +222,6 @@ const AppSidebar = () => {
                       isCollapsed && "absolute top-0 left-0 size-8",
                     )}
                   >
-                    <AvatarImage
-                      src={userProfile?.picture}
-                      alt={userProfile?.fullName}
-                    />
                     <AvatarFallback>
                       {getNameInitials(userProfile?.fullName)}
                     </AvatarFallback>
@@ -205,7 +237,7 @@ const AppSidebar = () => {
                           {userProfile?.fullName}
                         </Text>
                         <Text size="xs" variant="secondary">
-                          {t("sidebar.admin")}
+                          {roleLabel(userProfile?.role)}
                         </Text>
                       </div>
                       <ChevronUp className="ml-auto" strokeWidth={1.5} />

@@ -1,15 +1,11 @@
-import { BaseEntity } from "@/types/api";
-
-export interface Shelter extends BaseEntity {
+export type Shelter = {
   id: number;
   name: string;
-  description?: string;
-  address: string;
+  address: string | null;
   city: string;
+  state: string;
+  zip: string;
   country: string;
-  phone: string;
-  email: string;
-  website?: string;
-  logoUrl?: string;
-  petCount: number;
-}
+  createdAt: string;
+  updatedAt: string;
+};

@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/api-client";
+
+export type ContactType = "shelter" | "sponsor";
 
 export interface ContactFormData {
   name: string;
@@ -14,46 +17,63 @@ export interface ContactFormData {
   budget?: string;
 }
 
-// Mock API function
-const submitContactForm = async (
-  data: ContactFormData,
-): Promise<{ success: boolean; message: string }> => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
-  // Simulate random success/failure for testing
-  const isSuccess = Math.random() > 0.1; // 90% success rate
-
-  if (isSuccess) {
-    console.log("Form data submitted:", data);
-    return {
-      success: true,
-      message: "Mensaje enviado con éxito",
-    };
-  } else {
-    throw new Error("Error al enviar el mensaje. Por favor, intentá de nuevo.");
-  }
+type ContactSubmissionPayload = {
+  type: ContactType;
+  name: string;
+  email: string;
+  message: string;
+  phone?: string;
+  organization?: string;
+  shelterName?: string;
+  shelterLocation?: string;
+  shelterType?: string;
+  sponsorshipType?: string;
+  budget?: string;
 };
 
-// Custom hook for contact form
+const emptyFormData: ContactFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  organization: "",
+  message: "",
+  shelterName: "",
+  shelterLocation: "",
+  shelterType: "",
+  contacthipType: "",
+  budget: "",
+};
+
+const trimToUndefined = (value?: string) => {
+  const trimmed = value?.trim();
+  return trimmed ? trimmed : undefined;
+};
+
+const toPayload = (
+  type: ContactType,
+  data: ContactFormData,
+): ContactSubmissionPayload => ({
+  type,
+  name: data.name.trim(),
+  email: data.email.trim(),
+  message: data.message.trim(),
+  phone: trimToUndefined(data.phone),
+  organization: trimToUndefined(data.organization),
+  shelterName: trimToUndefined(data.shelterName),
+  shelterLocation: trimToUndefined(data.shelterLocation),
+  shelterType: trimToUndefined(data.shelterType),
+  sponsorshipType: trimToUndefined(data.contacthipType),
+  budget: trimToUndefined(data.budget),
+});
+
 export const useContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
-    email: "",
-    phone: "",
-    organization: "",
-    message: "",
-    shelterName: "",
-    shelterLocation: "",
-    shelterType: "",
-    contacthipType: "",
-    budget: "",
-  });
+  const [formData, setFormData] = useState<ContactFormData>(emptyFormData);
 
   const contactMutation = useMutation({
-    mutationFn: submitContactForm,
+    mutationFn: (payload: ContactSubmissionPayload) =>
+      api.post("/contact", payload),
     onSuccess: () => {
       setIsSubmitted(true);
       setProgress(0);
@@ -76,18 +96,7 @@ export const useContactForm = () => {
       setTimeout(() => {
         setIsSubmitted(false);
         setProgress(0);
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          organization: "",
-          message: "",
-          shelterName: "",
-          shelterLocation: "",
-          shelterType: "",
-          contacthipType: "",
-          budget: "",
-        });
+        setFormData(emptyFormData);
       }, duration);
     },
     onError: (error: Error) => {
@@ -99,9 +108,9 @@ export const useContactForm = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (type: ContactType) => (e: React.FormEvent) => {
     e.preventDefault();
-    contactMutation.mutate(formData);
+    contactMutation.mutate(toPayload(type, formData));
   };
 
   return {
@@ -109,6 +118,7 @@ export const useContactForm = () => {
     isSubmitted,
     progress,
     isPending: contactMutation.isPending,
+    isError: contactMutation.isError,
     handleInputChange,
     handleSubmit,
   };

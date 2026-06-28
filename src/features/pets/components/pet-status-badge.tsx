@@ -1,23 +1,27 @@
 import { Badge } from "@/components/ui/badge";
-import { PET_STATUS_LABELS, PetStatus } from "@/features/pets/constants";
+import { PET_STATUS_LABELS } from "@/features/pets/constants";
+import { useTranslation } from "react-i18next";
 
 interface PetStatusBadgeProps {
-  status: PetStatus;
+  status: string;
   className?: string;
 }
 
-const statusConfig = {
-  IN_SHELTER: "shelter",
-  IN_TRANSIT: "transit",
-  ADOPTED: "adopted",
-  IN_VET: "vet",
+const statusConfig: Record<string, string> = {
+  in_shelter: "shelter",
+  adopted: "adopted",
+  in_foster: "transit",
+  deceased: "secondary",
 };
 
 export const PetStatusBadge = ({ status, className }: PetStatusBadgeProps) => {
-  console.log(status, PET_STATUS_LABELS[status]);
+  const { t } = useTranslation();
   return (
-    <Badge variant={statusConfig[status] as any} className={className}>
-      {PET_STATUS_LABELS[status]}
+    <Badge
+      variant={(statusConfig[status] ?? "secondary") as any}
+      className={className}
+    >
+      {t(PET_STATUS_LABELS[status as keyof typeof PET_STATUS_LABELS] ?? status)}
     </Badge>
   );
 };

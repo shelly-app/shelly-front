@@ -2,10 +2,15 @@ import Axios, { InternalAxiosRequestConfig } from "axios";
 
 // import { useNotifications } from '@/components/ui/notifications';
 import { paths } from "@/config/paths";
+import { userManager } from "@/config/auth";
 
-const authRequestInterceptor = (config: InternalAxiosRequestConfig) => {
+const authRequestInterceptor = async (config: InternalAxiosRequestConfig) => {
+  const user = await userManager.getUser();
   if (config.headers) {
     config.headers.Accept = "application/json";
+    if (user?.id_token) {
+      config.headers.Authorization = `Bearer ${user.id_token}`;
+    }
   }
 
   config.withCredentials = true;

@@ -1,18 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query";
+import { api } from "@/lib/api-client";
 import type { Shelter } from "@/features/shelters/types/shelter";
-import { MOCK_SHELTERS } from "@/features/shelters/constants";
 
-const fetchShelterDetails = async (
-  shelterId: number,
-): Promise<Shelter | null> => {
-  await new Promise((res) => setTimeout(res, 300));
-  return MOCK_SHELTERS.find((s) => s.id === shelterId) || null;
-};
-
-/**
- * Hook to fetch details for a specific shelter.
- */
 export const useShelterDetails = (shelterId: number) => {
   const {
     data: shelter = null,
@@ -20,9 +10,9 @@ export const useShelterDetails = (shelterId: number) => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<Shelter>({
     queryKey: ["shelter-details", shelterId],
-    queryFn: () => fetchShelterDetails(shelterId),
+    queryFn: () => api.get<never, Shelter>(`/shelters/${shelterId}`),
     enabled: !!shelterId,
     ...queryConfig.queries,
   });

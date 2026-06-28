@@ -21,23 +21,14 @@ export type Meta = {
   totalPages: number;
 };
 
-export type User = Entity<{
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: "ADMIN" | "USER";
-  bio: string;
-}>;
-
-export type AuthResponse = {
-  jwt: string;
-  user: User;
+export type UserShelter = {
+  id: number;
+  name: string;
+  role: string;
 };
 
-export type Shelter = Entity<{
+export type User = {
   name: string;
-  address: string;
-  phone: string;
   email: string;
-  website: string;
-}>;
+  shelters: UserShelter[];
+};

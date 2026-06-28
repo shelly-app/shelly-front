@@ -1,13 +1,13 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, MapPin, Phone, Calendar, Camera } from "lucide-react";
+import { Edit, Mail, Calendar, Shield } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,53 +26,52 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
+import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
 
-import { formatDate, getNameInitials } from "@/lib/utils";
-import { MOCK_MEMBERS } from "@/features/members/constants";
-import type { Member } from "@/features/members/types/member";
-
-// Skeleton component shown while fetching data
-const ProfileSkeleton = () => (
-  <div className="container mx-auto max-w-2xl space-y-6 py-6">
-    <div className="flex flex-col items-center gap-6">
-      <Skeleton className="h-32 w-32 rounded-full" />
-      <Skeleton className="h-8 w-48" />
-    </div>
-    <Skeleton className="h-64 w-full" />
-  </div>
-);
+import { getNameInitials } from "@/lib/utils";
+import { useMembers } from "@/features/members/hooks/use-members";
+import { useUser } from "@/hooks/use-user";
+import { useRoleLabel } from "@/hooks/use-role-label";
+import { intlFormat, parseISO } from "date-fns";
 
 export const MemberProfilePage = () => {
   const { memberId } = useParams();
   const { t } = useTranslation();
-
-  const [member, setMember] = useState<Member | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const roleLabel = useRoleLabel();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // Check if this is the current user's profile
-  // In a real app, you'd compare member.userId with the authenticated user's ID
-  // For now, we'll use "me" as a special route or compare with member id 1 as the current user
+  const { data: user, isLoading: isUserLoading } = useUser();
+  const { members, isLoading: isMembersLoading, isError } = useMembers();
+
+  const member = useMemo(() => {
+    if (memberId === "me" && user && !members.length) {
+      return {
+        name: user.name,
+        email: user.email,
+        role: user.shelters[0]?.role ?? "—",
+        joinedAt: new Date().toISOString(),
+        userId: 0,
+      };
+    }
+    if (!members.length) return null;
+    if (memberId === "me") {
+      return members.find((m) => m.email === user?.email) ?? null;
+    }
+    return members.find((m) => m.userId === Number(memberId)) ?? null;
+  }, [members, memberId, user]);
+
   const isOwnProfile = useMemo(() => {
     if (memberId === "me") return true;
-    // For demo purposes, assume the logged-in user is member id 1
-    return memberId === "1";
-  }, [memberId]);
+    if (!member || !user) return false;
+    return member.email === user.email;
+  }, [memberId, member, user]);
 
-  // Form schema for editing profile
   const profileSchema = z.object({
-    fullName: z
+    name: z
       .string()
       .min(2, { message: t("app.profile.validation.name_required") }),
-    location: z
-      .string()
-      .min(2, { message: t("app.profile.validation.location_required") }),
-    phoneNumber: z.string().optional(),
   });
 
   type ProfileFormData = z.infer<typeof profileSchema>;
@@ -80,94 +79,27 @@ export const MemberProfilePage = () => {
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      fullName: "",
-      location: "",
-      phoneNumber: "",
+      name: "",
     },
   });
 
-  // Simulate fetching member data
-  useEffect(() => {
-    const fetchMember = async () => {
-      setIsLoading(true);
-      setIsError(false);
-
-      // Simulate API delay
-      await new Promise((res) => setTimeout(res, 500));
-
-      try {
-        let foundMember: Member | undefined;
-
-        if (memberId === "me") {
-          // For "me" route, get current user's profile
-          // In a real app, this would fetch the authenticated user's member profile
-          foundMember = MOCK_MEMBERS[0]; // Assume first member is current user
-        } else {
-          foundMember = MOCK_MEMBERS.find((m) => m.id === Number(memberId));
-        }
-
-        if (foundMember) {
-          setMember(foundMember);
-          form.reset({
-            fullName: foundMember.fullName,
-            location: foundMember.location,
-            phoneNumber: foundMember.phoneNumber || "",
-          });
-        } else {
-          setIsError(true);
-        }
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchMember();
-  }, [memberId, form]);
-
   const handleEditProfile = (data: ProfileFormData) => {
-    if (!member) return;
-
-    // Update the member data (in real app, this would be an API call)
-    const updatedMember: Member = {
-      ...member,
-      fullName: data.fullName,
-      location: data.location,
-      phoneNumber: data.phoneNumber,
-      profilePhoto: previewImage || member.profilePhoto,
-    };
-
-    setMember(updatedMember);
+    // TODO: call PATCH /users/:id API
+    console.log("Update profile:", data);
     setIsEditDialogOpen(false);
-    setPreviewImage(null);
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleOpenEditDialog = () => {
     if (member) {
       form.reset({
-        fullName: member.fullName,
-        location: member.location,
-        phoneNumber: member.phoneNumber || "",
+        name: member.name,
       });
-      setPreviewImage(null);
     }
     setIsEditDialogOpen(true);
   };
 
-  if (isLoading) {
-    return <ProfileSkeleton />;
+  if (isUserLoading || isMembersLoading) {
+    return <SectionLoader text={t("app.profile.loading")} />;
   }
 
   if (isError || !member) {
@@ -181,16 +113,13 @@ export const MemberProfilePage = () => {
         <CardHeader className="flex flex-col items-center gap-4 pb-2">
           <div className="relative">
             <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
-              <AvatarImage src={member.profilePhoto} alt={member.fullName} />
               <AvatarFallback className="text-3xl font-medium">
-                {getNameInitials(member.fullName)}
+                {getNameInitials(member.name)}
               </AvatarFallback>
             </Avatar>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <CardTitle className="text-2xl font-bold">
-              {member.fullName}
-            </CardTitle>
+            <CardTitle className="text-2xl font-bold">{member.name}</CardTitle>
             {isOwnProfile && (
               <Button
                 variant="outline"
@@ -206,32 +135,32 @@ export const MemberProfilePage = () => {
         </CardHeader>
         <CardContent className="pt-4">
           <div className="space-y-4">
-            {/* Location */}
+            {/* Email */}
             <div className="flex items-center gap-3">
               <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                <MapPin className="text-primary h-5 w-5" />
+                <Mail className="text-primary h-5 w-5" />
               </div>
               <div className="flex items-baseline gap-2">
                 <Text size="xs" variant="secondary">
-                  {t("app.profile.location")}
+                  {t("app.profile.email")}
                 </Text>
                 <Text size="sm" weight="medium" variant="primary">
-                  {member.location}
+                  {member.email}
                 </Text>
               </div>
             </div>
 
-            {/* Phone Number */}
+            {/* Role */}
             <div className="flex items-center gap-3">
               <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                <Phone className="text-primary h-5 w-5" />
+                <Shield className="text-primary h-5 w-5" />
               </div>
               <div className="flex items-baseline gap-2">
                 <Text size="xs" variant="secondary">
-                  {t("app.profile.phone")}
+                  {t("app.profile.role")}
                 </Text>
                 <Text size="sm" weight="medium" variant="primary">
-                  {member.phoneNumber || t("app.profile.not_provided")}
+                  {roleLabel(member.role)}
                 </Text>
               </div>
             </div>
@@ -246,7 +175,7 @@ export const MemberProfilePage = () => {
                   {t("app.profile.member_since")}
                 </Text>
                 <Text size="sm" weight="medium" variant="primary">
-                  {formatDate(member.joinedAt)}
+                  {intlFormat(parseISO(member.joinedAt), { locale: "es-AR" })}
                 </Text>
               </div>
             </div>
@@ -269,41 +198,10 @@ export const MemberProfilePage = () => {
               onSubmit={form.handleSubmit(handleEditProfile)}
               className="space-y-4"
             >
-              {/* Profile Photo */}
-              <div className="flex flex-col items-center gap-3">
-                <div className="relative">
-                  <Avatar className="h-24 w-24">
-                    <AvatarImage
-                      src={previewImage || member.profilePhoto}
-                      alt={member.fullName}
-                    />
-                    <AvatarFallback className="text-2xl">
-                      {getNameInitials(member.fullName)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <label
-                    htmlFor="profile-photo"
-                    className="bg-primary hover:bg-primary/90 absolute -right-1 -bottom-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white transition-colors"
-                  >
-                    <Camera className="h-4 w-4" />
-                    <input
-                      id="profile-photo"
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleImageChange}
-                    />
-                  </label>
-                </div>
-                <Text size="xs" variant="secondary">
-                  {t("app.profile.edit_dialog.change_photo")}
-                </Text>
-              </div>
-
-              {/* Full Name */}
+              {/* Name */}
               <FormField
                 control={form.control}
-                name="fullName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
@@ -322,56 +220,11 @@ export const MemberProfilePage = () => {
                 )}
               />
 
-              {/* Location */}
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      {t("app.profile.edit_dialog.location")}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t(
-                          "app.profile.edit_dialog.location_placeholder",
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Phone Number */}
-              <FormField
-                control={form.control}
-                name="phoneNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("app.profile.edit_dialog.phone")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t(
-                          "app.profile.edit_dialog.phone_placeholder",
-                        )}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <DialogFooter className="gap-2 pt-4">
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => {
-                    setIsEditDialogOpen(false);
-                    setPreviewImage(null);
-                  }}
+                  onClick={() => setIsEditDialogOpen(false)}
                 >
                   {t("app.profile.edit_dialog.cancel")}
                 </Button>
