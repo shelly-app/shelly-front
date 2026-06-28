@@ -39,22 +39,39 @@ jobs:
         run: pnpm build
 
       # Content-hashed assets (dist/assets/**) never change for a given URL,
-      # so they can be cached forever. Uploaded first so they exist before
-      # index.html (which references them) goes live.
+      # so browsers and CloudFront can cache them forever. Uploaded first so
+      # they exist before index.html (which references them) goes live.
       - name: Upload hashed assets (immutable, 1 year)
         run: |
           aws s3 sync dist/assets "s3://${{ secrets.S3_BUCKET }}/assets" \
             --delete \
             --cache-control "public, max-age=31536000, immutable"
 
-      # Everything else (index.html, locales/*.json, favicons, etc.) is served
-      # from a stable URL, so it must always be revalidated to pick up new builds.
-      - name: Upload remaining files (always revalidate)
+      # index.html and the (non-hashed) locale JSON must always reflect the
+      # latest deploy, so the browser revalidates every load (max-age=0). But
+      # s-maxage lets CloudFront serve them from the edge instead of hitting the
+      # S3 origin on every request; the `/*` invalidation below busts that edge
+      # cache on each deploy, so freshness is guaranteed.
+      - name: Upload HTML + locales (edge-cached, browser revalidates)
+        run: |
+          aws s3 sync dist "s3://${{ secrets.S3_BUCKET }}" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.json" \
+            --cache-control "public, max-age=0, s-maxage=31536000, must-revalidate"
+
+      # Favicons, manifest and other static public files change rarely, so give
+      # them a real browser cache (1 day) to stop the per-page-load round-trips,
+      # plus long edge caching. Deploys still bust the edge via invalidation.
+      - name: Upload static public files (cached)
         run: |
           aws s3 sync dist "s3://${{ secrets.S3_BUCKET }}" \
             --delete \
             --exclude "assets/*" \
-            --cache-control "public, max-age=0, must-revalidate"
+            --exclude "*.html" \
+            --exclude "*.json" \
+            --cache-control "public, max-age=86400, s-maxage=31536000"
 
       - name: Invalidate CloudFront
         run: |
