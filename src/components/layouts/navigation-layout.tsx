@@ -11,7 +11,7 @@ export const NavigationLayout = ({
   className?: string;
 }) => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-full min-h-screen flex-col">
       <Navbar />
       <main className={cn("flex-1", className)}>{children}</main>
       <Footer />

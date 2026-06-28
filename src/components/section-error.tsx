@@ -5,7 +5,7 @@ const SectionError = ({ text }: { text: string }) => (
         <p className="text-destructive mb-4">{text}</p>
         <button
           onClick={() => window.location.reload()}
-          className="rounded bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
+          className="pointer rounded bg-amber-500 px-4 py-2 text-white hover:bg-amber-600"
         >
           Reintentar
         </button>
