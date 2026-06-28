@@ -1,12 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, MapPin, Mail, Phone, Globe, PawPrint } from "lucide-react";
+import { ArrowLeft, MapPin, PawPrint } from "lucide-react";
 
 import SectionError from "@/components/section-error";
 import SectionLoader from "@/components/section-loader";
 import { NavigationLayout } from "@/components/layouts/navigation-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -76,7 +76,6 @@ export const ShelterDetailsPage = () => {
           <CardHeader>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
               <Avatar className="h-20 w-20 shrink-0">
-                <AvatarImage src={shelter.logoUrl} alt={shelter.name} />
                 <AvatarFallback className="text-xl font-medium">
                   {getNameInitials(shelter.name)}
                 </AvatarFallback>
@@ -93,16 +92,11 @@ export const ShelterDetailsPage = () => {
                     })}
                   </Badge>
                 </div>
-                {shelter.description && (
-                  <Text variant="secondary" className="text-sm">
-                    {shelter.description}
-                  </Text>
-                )}
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {/* Location */}
               <div className="flex items-center gap-3">
                 <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
@@ -113,68 +107,15 @@ export const ShelterDetailsPage = () => {
                     {t("shelters.details.location")}
                   </Text>
                   <Text size="sm" weight="medium" className="truncate">
-                    {shelter.city}, {shelter.country}
+                    {shelter.city}, {shelter.state}, {shelter.country}
                   </Text>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-center gap-3">
-                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                  <Mail className="text-primary h-5 w-5" />
-                </div>
-                <div className="flex flex-col">
-                  <Text size="xs" variant="secondary">
-                    {t("shelters.details.email")}
-                  </Text>
-                  <a
-                    href={`mailto:${shelter.email}`}
-                    className="text-primary block truncate text-sm font-medium hover:underline"
-                  >
-                    {shelter.email}
-                  </a>
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div className="flex items-center gap-3">
-                <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                  <Phone className="text-primary h-5 w-5" />
-                </div>
-                <div className="flex flex-col">
-                  <Text size="xs" variant="secondary">
-                    {t("shelters.details.phone")}
-                  </Text>
-                  <a
-                    href={`tel:${shelter.phone}`}
-                    className="block truncate text-sm font-medium hover:underline"
-                  >
-                    {shelter.phone}
-                  </a>
-                </div>
-              </div>
-
-              {/* Website */}
-              {shelter.website && (
-                <div className="flex items-center gap-3">
-                  <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                    <Globe className="text-primary h-5 w-5" />
-                  </div>
-                  <div className="flex flex-col">
+                  {shelter.address && (
                     <Text size="xs" variant="secondary">
-                      {t("shelters.details.website")}
+                      {shelter.address}
                     </Text>
-                    <a
-                      href={shelter.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary block truncate text-sm font-medium hover:underline"
-                    >
-                      {shelter.website.replace(/^https?:\/\//, "")}
-                    </a>
-                  </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </CardContent>
         </Card>

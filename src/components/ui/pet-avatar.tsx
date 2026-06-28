@@ -2,13 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pet } from "@/features/pets/types/pet";
 import { PET_SPECIES } from "@/features/pets/constants";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface PetAvatarProps {
   pet: Pet;
   size?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
+export const PetAvatar = ({ pet, size = "lg", className }: PetAvatarProps) => {
   const [placeholderImage, setPlaceholderImage] = useState<string | undefined>(
     undefined,
   );
@@ -18,9 +20,9 @@ export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
       try {
         let imageModule;
 
-        if (pet.species === PET_SPECIES.CAT) {
+        if (pet.specie === PET_SPECIES.CAT) {
           imageModule = await import("@/assets/images/cat.webp");
-        } else if (pet.species === PET_SPECIES.DOG) {
+        } else if (pet.specie === PET_SPECIES.DOG) {
           imageModule = await import("@/assets/images/dog.webp");
         }
 
@@ -33,7 +35,7 @@ export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
     };
 
     loadPlaceholderImage();
-  }, [pet.species]);
+  }, [pet.specie]);
 
   const sizeClasses = {
     sm: "h-8 w-8",
@@ -48,10 +50,10 @@ export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
   };
 
   return (
-    <Avatar className={sizeClasses[size]}>
-      <AvatarImage src={pet.photoUrl || placeholderImage} alt={pet.name} />
+    <Avatar className={cn(sizeClasses[size], className)}>
+      <AvatarImage src={placeholderImage} alt={pet.name} />
       <AvatarFallback className={fallbackSizeClasses[size]}>
-        {pet.species === PET_SPECIES.CAT ? "CT" : "DG"}
+        {pet.specie === PET_SPECIES.CAT ? "CT" : "DG"}
       </AvatarFallback>
     </Avatar>
   );

@@ -1,107 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query";
+import { api } from "@/lib/api-client";
+import { useShelters } from "@/components/providers/shelters-provider";
 import type { AdoptionRequest } from "@/features/requests/types/request";
-import { REQUEST_STATUS } from "@/features/requests/constants";
+import type { RequestStatus } from "@/features/requests/constants";
 
-const mockRequestsData: AdoptionRequest[] = [
-  {
-    id: 1,
-    petId: 1,
-    petName: "Luna",
-    petPhotoUrl: "https://placedog.net/100",
-    requesterName: "Juan Pérez",
-    requesterEmail: "juan@example.com",
-    requesterPhone: "+5491112345678",
-    status: REQUEST_STATUS.PENDING,
-    message: "Me encantaría adoptar a Luna y ofrecerle un hogar amoroso.",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    approvedAt: null,
-    rejectedAt: null,
-    questionnaire: {
-      location: "CABA, Buenos Aires, Argentina",
-      familyComposition: "Soltero",
-      hasYard: false,
-    },
-  },
-  {
-    id: 2,
-    petId: 2,
-    petName: "Rocky",
-    petPhotoUrl: "https://placedog.net/150",
-    requesterName: "María García",
-    requesterEmail: "maria@example.com",
-    requesterPhone: "+5491112345678",
-    status: REQUEST_STATUS.APPROVED,
-    message: "Tengo experiencia con perros y un gran jardín para Rocky.",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    approvedAt: new Date().getTime(),
-    rejectedAt: null,
-    questionnaire: {
-      location: "San Antonio de Areco, Buenos Aires, Argentina",
-      familyComposition: "Casado, 2 hijos",
-      hasYard: true,
-    },
-  },
-  {
-    id: 3,
-    petId: 3,
-    petName: "Misha",
-    petPhotoUrl: "https://placedog.net/200",
-    requesterName: "Carlos López",
-    requesterEmail: "carlos@example.com",
-    requesterPhone: "+5491112345678",
-    status: REQUEST_STATUS.REJECTED,
-    message: "Busco un compañero para mi hija y Misha parece perfecta.",
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    approvedAt: null,
-    rejectedAt: new Date().getTime(),
-    rejectionReason:
-      "Nos contactamos para solicitar más información y nos comentó que no va a proseguir con la adopción.",
-    questionnaire: {
-      location: "Campana, Buenos Aires, Argentina",
-      familyComposition: "Soltero, 1 hija",
-      hasYard: false,
-    },
-  },
-  {
-    id: 4,
-    petId: 4,
-    petName: "Max",
-    petPhotoUrl: "https://placedog.net/250",
-    requesterName: "Ana Martínez",
-    requesterEmail: "ana@example.com",
-    requesterPhone: "+5491112345678",
-    status: REQUEST_STATUS.PENDING,
-    createdAt: new Date().getTime(),
-    updatedAt: new Date().getTime(),
-    approvedAt: null,
-    rejectedAt: null,
-    questionnaire: {
-      location: "Campana, Buenos Aires, Argentina",
-      familyComposition: "Soltero, 1 hija",
-      hasYard: false,
-    },
-  },
-];
+export const useRequests = (status?: RequestStatus) => {
+  const { currentShelter } = useShelters();
 
-const fetchRequests = async (): Promise<AdoptionRequest[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return mockRequestsData;
-};
-
-export const useRequests = () => {
   const {
-    data: requests = mockRequestsData,
+    data: requests = [],
     isLoading,
     isError,
     error,
     refetch,
-  } = useQuery({
-    queryKey: ["requests"],
-    queryFn: fetchRequests,
+  } = useQuery<AdoptionRequest[]>({
+    queryKey: ["requests", currentShelter?.id, status ?? null],
+    queryFn: () =>
+      api.get<never, AdoptionRequest[]>(
+        `/shelters/${currentShelter?.id}/adoption-requests`,
+        { params: status ? { status } : undefined },
+      ),
+    enabled: !!currentShelter?.id,
     ...queryConfig.queries,
   });
 

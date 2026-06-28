@@ -8,9 +8,11 @@ import { Input } from "@/components/ui/input";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
 import { useTranslation } from "react-i18next";
+import { useShelters } from "@/components/providers/shelters-provider";
 
 export const RequestsListPage = () => {
   const { requests, isLoading, isError } = useRequests();
+  const { currentShelter, isLoading: isShelterLoading } = useShelters();
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -35,6 +37,19 @@ export const RequestsListPage = () => {
         );
       });
   }, [requests, tabParam, search]);
+
+  if (isShelterLoading) {
+    return <SectionLoader text={t("app.requests.loading")} />;
+  }
+
+  if (!currentShelter) {
+    return (
+      <section className="container mx-auto space-y-6 pt-5 md:pt-0">
+        <h1 className="text-3xl font-bold">{t("app.requests.title")}</h1>
+        <p className="text-muted-foreground">{t("app.no_shelter")}</p>
+      </section>
+    );
+  }
 
   if (isLoading) {
     return <SectionLoader text={t("app.requests.loading")} />;

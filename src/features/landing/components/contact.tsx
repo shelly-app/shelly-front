@@ -18,6 +18,7 @@ export const Contact = () => {
     isSubmitted,
     progress,
     isPending,
+    isError,
     handleInputChange,
     handleSubmit,
   } = useContactForm();
@@ -93,7 +94,7 @@ export const Contact = () => {
                 </Paragraph>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit("shelter")} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="shelter-name">
@@ -215,6 +216,12 @@ export const Contact = () => {
                   />
                 </div>
 
+                {isError && (
+                  <p className="text-center text-sm text-red-600">
+                    {t("landing.contact.error")}
+                  </p>
+                )}
+
                 <Button
                   type="submit"
                   size="lg"
@@ -248,7 +255,7 @@ export const Contact = () => {
                 </Paragraph>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit("sponsor")} className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="sponsor-name">
@@ -370,6 +377,12 @@ export const Contact = () => {
                     required
                   />
                 </div>
+
+                {isError && (
+                  <p className="text-center text-sm text-red-600">
+                    {t("landing.contact.error")}
+                  </p>
+                )}
 
                 <Button
                   type="submit"

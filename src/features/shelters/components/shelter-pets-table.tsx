@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,65 +19,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { PetStatusBadge } from "@/features/pets/components";
-import { PET_SPECIES_LABELS, PetStatus } from "@/features/pets/constants";
+import { PET_SEX_LABELS, PET_SPECIES_LABELS } from "@/features/pets/constants";
+import { calculateAge } from "@/features/pets/utils/age";
 import { useTranslation } from "react-i18next";
 import { SearchIcon } from "lucide-react";
-import type { ShelterPet } from "@/features/shelters/constants/mock-shelter-pets";
+import type { DetailedPet } from "@/features/pets/types/pet";
 import type { Shelter } from "@/features/shelters/types/shelter";
 import { AdoptionRequestDialog } from "./adoption-request-dialog";
 
-const columns: ColumnDef<ShelterPet>[] = [
-  {
-    accessorKey: "name",
-    header: "app.pets.name",
-    cell: ({ row }) => {
-      const pet = row.original;
-      return (
-        <div className="flex items-center gap-4">
-          <PetAvatar pet={pet} size="md" />
-          <div className="group-hover:text-primary font-semibold transition-colors">
-            {row.getValue("name")}
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "species",
-    header: "app.pets.species",
-    cell: ({ row }) => (
-      <div className="capitalize">
-        {
-          PET_SPECIES_LABELS[
-            row.getValue("species") as keyof typeof PET_SPECIES_LABELS
-          ]
-        }
-      </div>
-    ),
-  },
-  {
-    accessorKey: "breed",
-    header: "app.pets.breed",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("breed")}</div>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: "app.pets.status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as PetStatus;
-      return (
-        <div>
-          <PetStatusBadge status={status} />
-        </div>
-      );
-    },
-  },
-];
-
 interface ShelterPetsTableProps {
-  data: ShelterPet[];
+  data: DetailedPet[];
   shelter: Shelter | null;
 }
 
@@ -85,9 +36,77 @@ export const ShelterPetsTable = ({ data, shelter }: ShelterPetsTableProps) => {
   const [petSearchFilter, setPetSearchFilter] = useState<ColumnFiltersState>(
     [],
   );
-  const [selectedPet, setSelectedPet] = useState<ShelterPet | null>(null);
+  const [selectedPet, setSelectedPet] = useState<DetailedPet | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { t } = useTranslation();
+
+  const columns = useMemo<ColumnDef<DetailedPet>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        header: "app.pets.name",
+        cell: ({ row }) => {
+          const pet = row.original;
+          return (
+            <div className="flex items-center gap-4">
+              <PetAvatar pet={pet} size="md" />
+              <div className="group-hover:text-primary font-semibold transition-colors">
+                {row.getValue("name")}
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "specie",
+        header: "app.pets.species",
+        cell: ({ row }) => (
+          <div className="capitalize">
+            {t(
+              PET_SPECIES_LABELS[
+                row.getValue("specie") as keyof typeof PET_SPECIES_LABELS
+              ] ?? row.getValue("specie"),
+            )}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "sex",
+        header: "app.pets.details.sex",
+        cell: ({ row }) => {
+          const sex = row.getValue("sex") as string | null;
+          return (
+            <div className="capitalize">
+              {sex
+                ? t(PET_SEX_LABELS[sex as keyof typeof PET_SEX_LABELS] ?? sex)
+                : "--"}
+            </div>
+          );
+        },
+      },
+      {
+        id: "age",
+        accessorFn: (pet) => pet.birthDate,
+        header: "app.pets.details.age",
+        cell: ({ row }) => (
+          <div>{calculateAge(row.original.birthDate, t) ?? "--"}</div>
+        ),
+      },
+      {
+        accessorKey: "status",
+        header: "app.pets.status",
+        cell: ({ row }) => {
+          const status = row.getValue("status") as string;
+          return (
+            <div>
+              <PetStatusBadge status={status} />
+            </div>
+          );
+        },
+      },
+    ],
+    [t],
+  );
 
   const table = useReactTable({
     data,
@@ -100,7 +119,7 @@ export const ShelterPetsTable = ({ data, shelter }: ShelterPetsTableProps) => {
     },
   });
 
-  const handleRowClick = (pet: ShelterPet) => {
+  const handleRowClick = (pet: DetailedPet) => {
     setSelectedPet(pet);
     setIsDialogOpen(true);
   };

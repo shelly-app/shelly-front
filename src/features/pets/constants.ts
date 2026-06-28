@@ -3,77 +3,57 @@ import i18n from "@/i18n";
 
 // Pet species options
 export const PET_SPECIES = {
-  DOG: "DOG",
-  CAT: "CAT",
+  DOG: "dog",
+  CAT: "cat",
 } as const;
 
 export const PET_SPECIES_LABELS = {
-  [PET_SPECIES.CAT]: i18n.t("app.pets.species_labels.CAT"),
-  [PET_SPECIES.DOG]: i18n.t("app.pets.species_labels.DOG"),
+  [PET_SPECIES.CAT]: "app.pets.species_labels.CAT",
+  [PET_SPECIES.DOG]: "app.pets.species_labels.DOG",
 } as const;
 
 export type PetSpecies = (typeof PET_SPECIES)[keyof typeof PET_SPECIES];
 
 export const PET_STATUS = {
-  IN_TRANSIT: "IN_TRANSIT",
-  IN_SHELTER: "IN_SHELTER",
-  ADOPTED: "ADOPTED",
-  IN_VET: "IN_VET",
+  IN_SHELTER: "in_shelter",
+  ADOPTED: "adopted",
+  IN_FOSTER: "in_foster",
+  DECEASED: "deceased",
 } as const;
 
 export const PET_STATUS_LABELS = {
-  IN_TRANSIT: i18n.t("app.pets.status_labels.IN_TRANSIT"),
-  IN_SHELTER: i18n.t("app.pets.status_labels.IN_SHELTER"),
-  ADOPTED: i18n.t("app.pets.status_labels.ADOPTED"),
-  IN_VET: i18n.t("app.pets.status_labels.IN_VET"),
+  in_shelter: "app.pets.status_labels.IN_SHELTER",
+  adopted: "app.pets.status_labels.ADOPTED",
+  in_foster: "app.pets.status_labels.IN_FOSTER",
+  deceased: "app.pets.status_labels.DECEASED",
 } as const;
 
 export type PetStatus = (typeof PET_STATUS)[keyof typeof PET_STATUS];
 
 // Pet sex options
 export const PET_SEXES = {
-  MALE: "MALE",
-  FEMALE: "FEMALE",
+  MALE: "male",
+  FEMALE: "female",
 } as const;
 
 export const PET_SEX_LABELS = {
-  [PET_SEXES.MALE]: i18n.t("app.pets.sex_labels.MALE"),
-  [PET_SEXES.FEMALE]: i18n.t("app.pets.sex_labels.FEMALE"),
+  [PET_SEXES.MALE]: "app.pets.sex_labels.MALE",
+  [PET_SEXES.FEMALE]: "app.pets.sex_labels.FEMALE",
 } as const;
 
 export type PetSex = (typeof PET_SEXES)[keyof typeof PET_SEXES];
 
 // Pet size options
 export const PET_SIZES = {
-  SMALL: "SMALL",
-  MEDIUM: "MEDIUM",
-  LARGE: "LARGE",
+  SMALL: "small",
+  MEDIUM: "medium",
+  LARGE: "large",
 } as const;
 
 export const PET_SIZE_LABELS = {
-  [PET_SIZES.SMALL]: i18n.t("app.pets.size_labels.SMALL"),
-  [PET_SIZES.MEDIUM]: i18n.t("app.pets.size_labels.MEDIUM"),
-  [PET_SIZES.LARGE]: i18n.t("app.pets.size_labels.LARGE"),
-} as const;
-
-export type Vaccine = keyof (typeof VACCINES)[keyof typeof PET_SPECIES];
-
-export const VACCINES = {
-  [PET_SPECIES.DOG]: {
-    sextuple1: i18n.t("app.pets.vaccines.dog.sextuple1"),
-    sextuple2: i18n.t("app.pets.vaccines.dog.sextuple2"),
-    sextuple3: i18n.t("app.pets.vaccines.dog.sextuple3"),
-    rabia: i18n.t("app.pets.vaccines.dog.rabia"),
-  },
-  [PET_SPECIES.CAT]: {
-    triple1: i18n.t("app.pets.vaccines.cat.triple1"),
-    triple2: i18n.t("app.pets.vaccines.cat.triple2"),
-    triple3: i18n.t("app.pets.vaccines.cat.triple3"),
-    rabia: i18n.t("app.pets.vaccines.cat.rabia"),
-    leptospirosis: i18n.t("app.pets.vaccines.cat.leptospirosis"),
-    felv: i18n.t("app.pets.vaccines.cat.felv"),
-    fiv: i18n.t("app.pets.vaccines.cat.fiv"),
-  },
+  [PET_SIZES.SMALL]: "app.pets.size_labels.SMALL",
+  [PET_SIZES.MEDIUM]: "app.pets.size_labels.MEDIUM",
+  [PET_SIZES.LARGE]: "app.pets.size_labels.LARGE",
 } as const;
 
 export type PetSize = (typeof PET_SIZES)[keyof typeof PET_SIZES];
@@ -109,7 +89,12 @@ export const createSpeciesSchema = () =>
 
 export const createStatusSchema = () =>
   z.enum(
-    [PET_STATUS.IN_TRANSIT, PET_STATUS.IN_SHELTER, PET_STATUS.ADOPTED] as const,
+    [
+      PET_STATUS.IN_SHELTER,
+      PET_STATUS.ADOPTED,
+      PET_STATUS.IN_FOSTER,
+      PET_STATUS.DECEASED,
+    ] as const,
     {
       required_error: i18n.t("app.pets.validation.status_required"),
     },
@@ -122,39 +107,3 @@ export const createSizeSchema = () =>
   z
     .enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE] as const)
     .optional();
-
-export const PET_COLORS = {
-  black: "#000000",
-  white: "#FFFFFF",
-  brown: "#8B4513",
-  gray: "#808080",
-  beige: "#F5F5DC",
-  gold: "#FFD700",
-  red: "#DC143C",
-  coffee: "#A0522D",
-  cream: "#FFFDD0",
-  sand: "#F4A460",
-  chocolate: "#8B4513",
-  orange: "#FF8C00",
-  cinnamon: "#D2691E",
-  fawn: "#E5B80B",
-} as const;
-
-export const PET_COLOR_LABELS = {
-  black: i18n.t("app.pets.colors.black"),
-  white: i18n.t("app.pets.colors.white"),
-  brown: i18n.t("app.pets.colors.brown"),
-  gray: i18n.t("app.pets.colors.gray"),
-  beige: i18n.t("app.pets.colors.beige"),
-  gold: i18n.t("app.pets.colors.gold"),
-  red: i18n.t("app.pets.colors.red"),
-  coffee: i18n.t("app.pets.colors.coffee"),
-  cream: i18n.t("app.pets.colors.cream"),
-  sand: i18n.t("app.pets.colors.sand"),
-  chocolate: i18n.t("app.pets.colors.chocolate"),
-  orange: i18n.t("app.pets.colors.orange"),
-  cinnamon: i18n.t("app.pets.colors.cinnamon"),
-  fawn: i18n.t("app.pets.colors.fawn"),
-};
-
-export type PetColor = keyof typeof PET_COLORS;

@@ -1,18 +1,20 @@
-import { BaseEntity } from "@/types/api";
+import type { RequestStatus } from "@/features/requests/constants";
 
-export interface AdoptionRequest extends BaseEntity {
+export interface AdoptionRequest {
   id: number;
   petId: number;
   petName: string;
   petPhotoUrl?: string;
   requesterName: string;
   requesterEmail: string;
-  requesterPhone?: string;
-  status: "pending" | "approved" | "rejected";
-  message?: string;
-  rejectionReason?: string;
-  rejectedAt: number | null;
-  approvedAt: number | null;
+  requesterPhone?: string | null;
+  status: RequestStatus;
+  message?: string | null;
+  rejectionReason?: string | null;
+  approvedAt: string | null;
+  rejectedAt: string | null;
+  createdAt: string;
+  updatedAt: string | null;
 
   questionnaire: {
     location: string;

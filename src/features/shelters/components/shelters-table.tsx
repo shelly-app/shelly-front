@@ -17,12 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { Shelter } from "@/features/shelters/types/shelter";
 import { SearchShelter } from "./search-shelter";
 import { useTranslation } from "react-i18next";
-import { MapPin, Mail, Phone, Globe, PawPrint } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { getNameInitials } from "@/lib/utils";
 import { paths } from "@/config/paths";
 
@@ -35,18 +34,12 @@ const columns: ColumnDef<Shelter>[] = [
       return (
         <div className="flex items-center gap-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={shelter.logoUrl} alt={shelter.name} />
             <AvatarFallback className="text-sm font-medium">
               {getNameInitials(shelter.name)}
             </AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <span className="font-semibold">{shelter.name}</span>
-            {shelter.description && (
-              <span className="text-muted-foreground line-clamp-1 max-w-xs text-xs text-ellipsis">
-                {shelter.description}
-              </span>
-            )}
           </div>
         </div>
       );
@@ -64,74 +57,6 @@ const columns: ColumnDef<Shelter>[] = [
             {shelter.city}, {shelter.country}
           </span>
         </div>
-      );
-    },
-  },
-  {
-    accessorKey: "petCount",
-    header: "shelters.table.pets",
-    cell: ({ row }) => {
-      const petCount = row.getValue("petCount") as number;
-      return (
-        <Badge variant="secondary" className="gap-1">
-          <PawPrint className="h-3 w-3" />
-          {petCount}
-        </Badge>
-      );
-    },
-  },
-  {
-    accessorKey: "contact",
-    header: "shelters.table.contact",
-    cell: ({ row }) => {
-      const shelter = row.original;
-      return (
-        <div className="flex flex-col gap-1 text-sm">
-          <div className="flex items-center gap-2">
-            <Mail className="text-muted-foreground h-3 w-3" />
-            <a
-              href={`mailto:${shelter.email}`}
-              className="text-primary hover:underline"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {shelter.email}
-            </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <Phone className="text-muted-foreground h-3 w-3" />
-            <a
-              href={`tel:${shelter.phone}`}
-              className="hover:underline"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {shelter.phone}
-            </a>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "website",
-    header: "shelters.table.website",
-    cell: ({ row }) => {
-      const shelter = row.original;
-      if (!shelter.website) {
-        return <span className="text-muted-foreground">—</span>;
-      }
-      return (
-        <a
-          href={shelter.website}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary flex items-center gap-1 hover:underline"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">
-            {shelter.website.replace(/^https?:\/\//, "")}
-          </span>
-        </a>
       );
     },
   },

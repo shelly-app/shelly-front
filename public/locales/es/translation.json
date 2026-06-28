@@ -93,7 +93,8 @@
           "message_placeholder": "Contanos sobre tu interés en patrocinar Shelly, cómo te gustaría colaborar, y cualquier pregunta que tengas..."
         }
       },
-      "sending": "Enviando..."
+      "sending": "Enviando...",
+      "error": "No pudimos enviar tu mensaje. Por favor, intentá de nuevo."
     },
     "hero": {
       "title": "Gestioná tu refugio de mascotas con facilidad",
@@ -238,7 +239,9 @@
     }
   },
   "app": {
+    "no_shelter": "No eres miembro de ningún refugio. Contactá a un administrador para ser agregado.",
     "pets": {
+      "back": "Volver a mascotas",
       "title": "Mascotas",
       "loading": "Cargando mascotas...",
       "error": "Error al cargar las mascotas",
@@ -255,10 +258,10 @@
         "CAT": "Gato"
       },
       "status_labels": {
-        "IN_TRANSIT": "En tránsito",
         "IN_SHELTER": "En refugio",
         "ADOPTED": "Adoptado",
-        "IN_VET": "En veterinaria"
+        "IN_FOSTER": "En hogar transitorio",
+        "DECEASED": "Fallecido"
       },
       "sex_labels": {
         "MALE": "Macho",
@@ -268,6 +271,20 @@
         "SMALL": "Pequeño",
         "MEDIUM": "Mediano",
         "LARGE": "Grande"
+      },
+      "events": {
+        "status_change": {
+          "title": "Cambio de estado",
+          "description": "Estado cambiado de {{from}} a {{to}}"
+        },
+        "name_change": {
+          "title": "Cambio de nombre",
+          "description": "Nombre cambiado de \"{{from}}\" a \"{{to}}\""
+        },
+        "size_change": {
+          "title": "Cambio de tamaño",
+          "description": "Tamaño cambiado de {{from}} a {{to}}"
+        }
       },
       "colors": {
         "black": "Negro",
@@ -302,13 +319,33 @@
           "fiv": "FIV"
         }
       },
+      "color_labels": {
+        "black": "Negro",
+        "white": "Blanco",
+        "brown": "Marrón",
+        "golden": "Dorado",
+        "gray": "Gris",
+        "cream": "Crema",
+        "tan": "Tostado",
+        "fawn": "Cervato",
+        "orange": "Naranja",
+        "red": "Rojo",
+        "brindle": "Atigrado",
+        "tricolor": "Tricolor"
+      },
       "form": {
         "name_placeholder": "Nombre de la mascota",
         "select_species": "Selecciona la especie",
         "select_status": "Selecciona el estado",
         "breed_placeholder": "Raza de la mascota",
+        "birth_date": "Fecha de nacimiento",
         "age": "Edad (años)",
         "age_placeholder": "Edad en años",
+        "age_label": "Edad",
+        "age_approximate": "Aproximada",
+        "age_exact": "Fecha exacta",
+        "age_years": "Años",
+        "age_months": "Meses",
         "sex": "Sexo",
         "select_sex": "Selecciona el sexo",
         "size": "Tamaño",
@@ -333,7 +370,8 @@
       "validation": {
         "name_required": "El nombre es requerido",
         "species_required": "La especie es requerida",
-        "status_required": "El estado es requerido"
+        "status_required": "El estado es requerido",
+        "sex_required": "El sexo es requerido"
       },
       "notifications": {
         "added_successfully": "Mascota agregada exitosamente",
@@ -343,6 +381,10 @@
         "edit": "Editar",
         "archive": "Archivar",
         "age": "Edad",
+        "age_years_one": "1 año",
+        "age_years_other": "{{count}} años",
+        "age_months_one": "1 mes",
+        "age_months_other": "{{count}} meses",
         "sex": "Sexo",
         "size": "Tamaño",
         "colors": "Colores",
@@ -356,6 +398,7 @@
         "no_future_events": "No hay eventos próximos",
         "years": "{{count}} año",
         "years_plural": "{{count}} años",
+        "shelter_info": "Info del Refugio",
         "archived": {
           "title": "Mascota archivada",
           "description": "{{name}} ha sido archivada y ya no está disponible en el sistema.",
@@ -375,7 +418,9 @@
         "description": "El usuario recibirá un correo electrónico con un enlace para crear su cuenta y unirse al refugio.",
         "email_placeholder": "Correo electrónico del miembro",
         "send": "Enviar invitación",
-        "cancel": "Cancelar"
+        "sending": "Enviando...",
+        "cancel": "Cancelar",
+        "error": "No pudimos enviar la invitación. Por favor, intentá de nuevo."
       },
       "validation": {
         "invalid_email": "Email inválido"
@@ -423,7 +468,9 @@
           "send": "Enviar mensaje"
         },
         "cancel": "Cancelar",
-        "close": "Cerrar"
+        "close": "Cerrar",
+        "processing": "Procesando...",
+        "error": "Algo salió mal. Por favor, intentá de nuevo."
       },
       "requested_by": "Solicitado por",
       "requester_email": "Correo electrónico del solicitante",
@@ -444,7 +491,10 @@
       "hasYard": "¿Tiene patio o jardín?"
     },
     "profile": {
+      "loading": "Cargando perfil...",
       "edit_profile": "Editar perfil",
+      "email": "Email",
+      "role": "Rol",
       "location": "Ubicación",
       "phone": "Teléfono",
       "not_provided": "No proporcionado",
@@ -516,7 +566,11 @@
     "profile": "Perfil",
     "sign_out": "Cerrar sesión",
     "user": "Usuario",
-    "admin": "Administrador"
+    "select_shelter": "Seleccionar refugio"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "volunteer": "Voluntario"
   },
   "pet_colors": {
     "cinnamon": "Canela",
@@ -583,12 +637,17 @@
       "title": "Solicitud de Adopción",
       "description": "Completá el formulario para enviar tu solicitud de adopción. El refugio se pondrá en contacto contigo.",
       "form": {
+        "name": "Nombre",
+        "name_placeholder": "Tu nombre completo",
         "email": "Correo electrónico",
         "email_placeholder": "tu@email.com",
         "phone": "Teléfono",
         "phone_placeholder": "+54 11 1234-5678",
         "location": "Ubicación",
         "location_placeholder": "Ciudad, País",
+        "family_composition": "Composición familiar",
+        "family_composition_placeholder": "Ej: Soltero/a, Casado/a con 2 hijos",
+        "has_yard": "¿Tenés patio o jardín?",
         "message": "Mensaje",
         "message_placeholder": "Contanos sobre vos, tu hogar y por qué te gustaría adoptar a esta mascota...",
         "cancel": "Cancelar",
@@ -596,6 +655,7 @@
         "sending": "Enviando..."
       },
       "validation": {
+        "name": "Ingresá tu nombre",
         "email": "Ingresá un correo electrónico válido",
         "phone": "Ingresá un número de teléfono válido",
         "location": "Ingresá tu ubicación",
@@ -605,7 +665,8 @@
         "title": "¡Solicitud enviada!",
         "description": "Tu solicitud de adopción para {{petName}} fue enviada a {{shelterName}}. Te contactarán pronto.",
         "close": "Cerrar"
-      }
+      },
+      "error": "No pudimos enviar tu solicitud. Por favor, intentá de nuevo."
     }
   }
 }
