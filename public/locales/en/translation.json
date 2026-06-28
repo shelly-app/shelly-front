@@ -93,7 +93,8 @@
           "message_placeholder": "Tell us about your interest in sponsoring Shelly, how you would like to collaborate, and any questions you have..."
         }
       },
-      "sending": "Sending..."
+      "sending": "Sending...",
+      "error": "We couldn't send your message. Please try again."
     },
     "hero": {
       "title": "Manage your pet shelter with ease",
@@ -271,6 +272,20 @@
         "MEDIUM": "Medium",
         "LARGE": "Large"
       },
+      "events": {
+        "status_change": {
+          "title": "Status change",
+          "description": "Status changed from {{from}} to {{to}}"
+        },
+        "name_change": {
+          "title": "Name change",
+          "description": "Name changed from \"{{from}}\" to \"{{to}}\""
+        },
+        "size_change": {
+          "title": "Size change",
+          "description": "Size changed from {{from}} to {{to}}"
+        }
+      },
       "colors": {
         "black": "Black",
         "white": "White",
@@ -308,7 +323,15 @@
         "black": "Black",
         "white": "White",
         "brown": "Brown",
-        "golden": "Golden"
+        "golden": "Golden",
+        "gray": "Gray",
+        "cream": "Cream",
+        "tan": "Tan",
+        "fawn": "Fawn",
+        "orange": "Orange",
+        "red": "Red",
+        "brindle": "Brindle",
+        "tricolor": "Tricolor"
       },
       "form": {
         "name_placeholder": "Pet's name",
@@ -347,7 +370,8 @@
       "validation": {
         "name_required": "Name is required",
         "species_required": "Species is required",
-        "status_required": "Status is required"
+        "status_required": "Status is required",
+        "sex_required": "Sex is required"
       },
       "notifications": {
         "added_successfully": "Pet added successfully",
@@ -394,7 +418,9 @@
         "description": "The user will receive an email with a link to create their account and join the shelter.",
         "email_placeholder": "Member's email",
         "send": "Send invitation",
-        "cancel": "Cancel"
+        "sending": "Sending...",
+        "cancel": "Cancel",
+        "error": "We couldn't send the invitation. Please try again."
       },
       "validation": {
         "invalid_email": "Invalid email"
@@ -442,7 +468,9 @@
           "send": "Send message"
         },
         "cancel": "Cancel",
-        "close": "Close"
+        "close": "Close",
+        "processing": "Processing...",
+        "error": "Something went wrong. Please try again."
       },
       "requested_by": "Requested by",
       "requester_email": "Requester email",
@@ -533,8 +561,11 @@
     "profile": "Profile",
     "sign_out": "Sign out",
     "user": "User",
-    "admin": "Administrator",
     "select_shelter": "Select shelter"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "volunteer": "Volunteer"
   },
   "pet_colors": {
     "cinnamon": "Cinnamon",
@@ -601,12 +632,17 @@
       "title": "Adoption Request",
       "description": "Fill out the form to send your adoption request. The shelter will contact you.",
       "form": {
+        "name": "Name",
+        "name_placeholder": "Your full name",
         "email": "Email",
         "email_placeholder": "you@email.com",
         "phone": "Phone",
         "phone_placeholder": "+1 123-456-7890",
         "location": "Location",
         "location_placeholder": "City, Country",
+        "family_composition": "Family composition",
+        "family_composition_placeholder": "E.g. Single, Married with 2 kids",
+        "has_yard": "Do you have a yard or garden?",
         "message": "Message",
         "message_placeholder": "Tell us about yourself, your home, and why you'd like to adopt this pet...",
         "cancel": "Cancel",
@@ -614,6 +650,7 @@
         "sending": "Sending..."
       },
       "validation": {
+        "name": "Please enter your name",
         "email": "Please enter a valid email address",
         "phone": "Please enter a valid phone number",
         "location": "Please enter your location",
@@ -623,7 +660,8 @@
         "title": "Request sent!",
         "description": "Your adoption request for {{petName}} was sent to {{shelterName}}. They will contact you soon.",
         "close": "Close"
-      }
+      },
+      "error": "We couldn't send your request. Please try again."
     }
   }
 }

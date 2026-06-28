@@ -21,7 +21,8 @@ import { PetAvatar } from "@/components/ui/pet-avatar";
 import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { SearchPet, AddPet, PetStatusBadge } from "@/features/pets/components";
-import { PET_SPECIES_LABELS } from "@/features/pets/constants";
+import { PET_SEX_LABELS, PET_SPECIES_LABELS } from "@/features/pets/constants";
+import { calculateAge } from "@/features/pets/utils/age";
 import { useTranslation } from "react-i18next";
 
 interface MainPetsTableProps {
@@ -66,10 +67,25 @@ export const MainPetsTable = ({ data }: MainPetsTableProps) => {
         ),
       },
       {
-        accessorKey: "breed",
-        header: "app.pets.breed",
+        accessorKey: "sex",
+        header: "app.pets.details.sex",
+        cell: ({ row }) => {
+          const sex = row.getValue("sex") as string | null;
+          return (
+            <div className="capitalize">
+              {sex
+                ? t(PET_SEX_LABELS[sex as keyof typeof PET_SEX_LABELS] ?? sex)
+                : "--"}
+            </div>
+          );
+        },
+      },
+      {
+        id: "age",
+        accessorFn: (pet) => pet.birthDate,
+        header: "app.pets.details.age",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("breed")}</div>
+          <div>{calculateAge(row.original.birthDate, t) ?? "--"}</div>
         ),
       },
       {

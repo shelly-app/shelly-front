@@ -31,14 +31,24 @@ import { paths } from "@/config/paths";
 import { getNameInitials } from "@/lib/utils";
 import { intlFormat, parseISO } from "date-fns";
 import { useShelters } from "@/components/providers/shelters-provider";
+import { useInviteMember } from "@/features/members/hooks/use-invite-member";
+import { useRoleLabel } from "@/hooks/use-role-label";
+import { Text } from "@/components/ui/text";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
   const { currentShelter, isLoading: isShelterLoading } = useShelters();
+  const {
+    inviteAsync,
+    isLoading: isInviting,
+    isError: isInviteError,
+    reset: resetInvite,
+  } = useInviteMember();
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const { t } = useTranslation();
+  const roleLabel = useRoleLabel();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -129,8 +139,18 @@ export const MembersListPage = () => {
               <CardTitle className="text-center text-base">
                 {member.name}
               </CardTitle>
-              <CardDescription className="text-center text-sm">
-                {member.role} &bull; {member.email}
+              <CardDescription className="flex w-full min-w-0 flex-col items-center gap-1">
+                <Text variant="secondary" size="sm">
+                  {roleLabel(member.role)}
+                </Text>
+                <Text
+                  variant="primary"
+                  size="sm"
+                  title={member.email}
+                  className="block w-full truncate text-center"
+                >
+                  {member.email}
+                </Text>
               </CardDescription>
             </CardHeader>
             <CardContent className="text-muted-foreground flex w-full justify-center text-xs">
@@ -150,6 +170,7 @@ export const MembersListPage = () => {
         onOpenChange={(open) => {
           if (!open) {
             reset();
+            resetInvite();
           }
           setDialogOpen(open);
         }}
@@ -162,19 +183,22 @@ export const MembersListPage = () => {
             {t("app.members.invite.description")}
           </DialogDescription>
           <form
-            onSubmit={handleSubmit((data) => {
+            onSubmit={handleSubmit(async (data) => {
               setHasSubmitted(true);
-              // TODO: trigger invite API
-              void data.email;
-              setDialogOpen(false);
-              reset(undefined, {
-                keepErrors: false,
-                keepIsSubmitted: false,
-                keepSubmitCount: false,
-              });
+              try {
+                await inviteAsync({ email: data.email });
+                setDialogOpen(false);
+                reset(undefined, {
+                  keepErrors: false,
+                  keepIsSubmitted: false,
+                  keepSubmitCount: false,
+                });
+              } catch {
+                // Error surfaced inline via `isInviteError`.
+              }
             })}
           >
-            <div className="grid gap-2 py-4">
+            <div className="pb-8">
               <Input
                 placeholder={t("app.members.invite.email_placeholder")}
                 {...register("email")}
@@ -184,11 +208,17 @@ export const MembersListPage = () => {
                   {errors.email.message}
                 </p>
               )}
+              {isInviteError && hasSubmitted && (
+                <p className="text-destructive text-sm">
+                  {t("app.members.invite.error")}
+                </p>
+              )}
             </div>
             <DialogFooter>
               <Button
                 type="button"
                 variant="outline"
+                disabled={isInviting}
                 onClick={() => {
                   setDialogOpen(false);
                   reset(undefined, {
@@ -196,12 +226,18 @@ export const MembersListPage = () => {
                     keepIsSubmitted: false,
                     keepSubmitCount: false,
                   });
+                  resetInvite();
                 }}
               >
                 {t("app.members.invite.cancel")}
               </Button>
-              <Button type="submit" disabled={isSubmitting || !isValid}>
-                {t("app.members.invite.send")}
+              <Button
+                type="submit"
+                disabled={isSubmitting || isInviting || !isValid}
+              >
+                {isInviting
+                  ? t("app.members.invite.sending")
+                  : t("app.members.invite.send")}
               </Button>
             </DialogFooter>
           </form>

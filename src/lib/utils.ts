@@ -30,7 +30,7 @@ export const getFullName = (firstName?: string, lastName?: string) => {
   return fullName;
 };
 
-export const formatDate = (date: number | null) => {
+export const formatDate = (date: number | string | null | undefined) => {
   if (!date) return "";
 
   return new Date(date).toLocaleDateString("es-AR", {
@@ -42,4 +42,13 @@ export const formatDate = (date: number | null) => {
 
 export const capitalize = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+/**
+ * Normalizes a date-ish string (ISO datetime, Postgres timestamp, or plain
+ * date) into the `YYYY-MM-DD` value required by a native `<input type="date">`.
+ * Returns an empty string when there is no usable date.
+ */
+export const toDateInputValue = (date: string | null | undefined) => {
+  return (date ?? "").slice(0, 10);
 };

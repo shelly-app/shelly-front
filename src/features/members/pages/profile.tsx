@@ -33,11 +33,13 @@ import SectionError from "@/components/section-error";
 import { getNameInitials } from "@/lib/utils";
 import { useMembers } from "@/features/members/hooks/use-members";
 import { useUser } from "@/hooks/use-user";
+import { useRoleLabel } from "@/hooks/use-role-label";
 import { intlFormat, parseISO } from "date-fns";
 
 export const MemberProfilePage = () => {
   const { memberId } = useParams();
   const { t } = useTranslation();
+  const roleLabel = useRoleLabel();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const { data: user, isLoading: isUserLoading } = useUser();
@@ -158,7 +160,7 @@ export const MemberProfilePage = () => {
                   {t("app.profile.role")}
                 </Text>
                 <Text size="sm" weight="medium" variant="primary">
-                  {member.role}
+                  {roleLabel(member.role)}
                 </Text>
               </div>
             </div>

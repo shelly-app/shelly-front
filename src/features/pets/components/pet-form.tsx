@@ -43,11 +43,12 @@ import {
   PET_SIZES,
 } from "@/features/pets/constants";
 import { useAddPet } from "@/features/pets/hooks";
+import { colorStyles } from "@/features/pets/components/color-badge";
 import { usePetColors } from "@/features/pets/hooks/use-pet-colors";
 import { usePetVaccines } from "@/features/pets/hooks/use-pet-vaccines";
-import { Pet } from "@/features/pets/types/pet";
+import { DetailedPet, Pet } from "@/features/pets/types/pet";
 import { useTranslation } from "react-i18next";
-import { capitalize } from "@/lib/utils";
+import { capitalize, toDateInputValue } from "@/lib/utils";
 
 const getPetFormSchema = (t: (key: string) => string) =>
   z.object({
@@ -70,7 +71,9 @@ const getPetFormSchema = (t: (key: string) => string) =>
     birthDate: z.string().optional(),
     ageYears: z.coerce.number().int().min(0).max(30).optional(),
     ageMonths: z.coerce.number().int().min(0).max(11).optional(),
-    sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE]).optional(),
+    sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE], {
+      required_error: t("app.pets.validation.sex_required"),
+    }),
     size: z
       .enum([PET_SIZES.SMALL, PET_SIZES.MEDIUM, PET_SIZES.LARGE])
       .optional(),
@@ -112,10 +115,10 @@ type PetFormData = z.infer<ReturnType<typeof getPetFormSchema>>;
 
 interface PetFormProps {
   mode: "add" | "edit";
-  pet?: Pet;
+  pet?: DetailedPet;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave?: (updatedPet: Pet) => void;
+  onSave?: (updatedPet: Pet, vaccines: string[]) => void;
 }
 
 export const PetForm = ({
@@ -148,7 +151,7 @@ export const PetForm = ({
       ageYears: undefined,
       ageMonths: undefined,
       sex: pet?.sex as PetFormData["sex"],
-      size: pet?.size as PetFormData["size"],
+      size: (pet?.size ?? undefined) as PetFormData["size"],
       colors: pet?.colors || [],
       vaccines: [],
       description: pet?.description || "",
@@ -172,9 +175,9 @@ export const PetForm = ({
         ageYears: approx.years,
         ageMonths: approx.months,
         sex: pet.sex as PetFormData["sex"],
-        size: pet.size as PetFormData["size"],
+        size: (pet.size ?? undefined) as PetFormData["size"],
         colors: pet.colors ?? [],
-        vaccines: [],
+        vaccines: pet.vaccinations?.map((v) => v.vaccineCode) ?? [],
         description: pet.description ?? "",
       });
     }
@@ -193,12 +196,22 @@ export const PetForm = ({
 
   // Get color options from API
   const colorOptions = useMemo(() => {
-    return apiColors.map((color) => ({
-      value: color,
-      label: t(`app.pets.color_labels.${color}`, {
-        defaultValue: capitalize(color),
-      }),
-    }));
+    return apiColors.map((color) => {
+      const styles = colorStyles[color];
+      return {
+        value: color,
+        label: t(`app.pets.color_labels.${color}`, {
+          defaultValue: capitalize(color),
+        }),
+        style: styles
+          ? {
+              badgeColor: styles.bg,
+              color: styles.text,
+              border: `1px solid ${styles.border ?? styles.bg}`,
+            }
+          : undefined,
+      };
+    });
   }, [apiColors, t]);
 
   const vaccineOptions = useMemo(() => {
@@ -257,7 +270,7 @@ export const PetForm = ({
           description: resolvedData.description || null,
           colors: resolvedData.colors || [],
         };
-        onSave(updatedPet);
+        onSave(updatedPet, resolvedData.vaccines ?? []);
         onOpenChange(false);
       } else {
         const submitData = isCompleteMode
@@ -266,7 +279,7 @@ export const PetForm = ({
               name: data.name,
               specie: data.specie,
               status: data.status,
-              ...(data.breed ? { breed: data.breed } : {}),
+              sex: data.sex,
             };
 
         await addPetAsync(submitData);
@@ -290,7 +303,6 @@ export const PetForm = ({
       form.setValue("birthDate", "");
       form.setValue("ageYears", undefined);
       form.setValue("ageMonths", undefined);
-      form.setValue("sex", undefined);
       form.setValue("size", undefined);
       form.setValue("colors", []);
       form.setValue("vaccines", []);
@@ -337,7 +349,7 @@ export const PetForm = ({
 
             {/* Basic fields - always visible */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-              <FormItem className="min-w-0 space-y-1">
+              <FormItem className="relative min-w-0 space-y-1">
                 <FormLabel className="text-sm">
                   {t("app.pets.name")} *
                 </FormLabel>
@@ -348,14 +360,14 @@ export const PetForm = ({
                     {...form.register("name")}
                   />
                 </FormControl>
-                <FormMessage className="text-xs" />
+                <FormMessage className="absolute top-full left-0 text-xs" />
               </FormItem>
 
               <FormField
                 control={form.control}
                 name="specie"
                 render={({ field }) => (
-                  <FormItem className="min-w-0 space-y-1">
+                  <FormItem className="relative min-w-0 space-y-1">
                     <FormLabel className="text-sm">
                       {t("app.pets.species")} *
                     </FormLabel>
@@ -384,7 +396,7 @@ export const PetForm = ({
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="absolute top-full left-0 text-xs" />
                   </FormItem>
                 )}
               />
@@ -395,7 +407,7 @@ export const PetForm = ({
                 control={form.control}
                 name="status"
                 render={({ field }) => (
-                  <FormItem className="min-w-0 space-y-1">
+                  <FormItem className="relative min-w-0 space-y-1">
                     <FormLabel className="text-sm">
                       {t("app.pets.status")} *
                     </FormLabel>
@@ -422,22 +434,47 @@ export const PetForm = ({
                         ))}
                       </SelectContent>
                     </Select>
-                    <FormMessage className="text-xs" />
+                    <FormMessage className="absolute top-full left-0 text-xs" />
                   </FormItem>
                 )}
               />
 
-              <FormItem className="min-w-0 space-y-1">
-                <FormLabel className="text-sm">{t("app.pets.breed")}</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={t("app.pets.form.breed_placeholder")}
-                    className="h-9"
-                    {...form.register("breed")}
-                  />
-                </FormControl>
-                <FormMessage className="text-xs" />
-              </FormItem>
+              <FormField
+                control={form.control}
+                name="sex"
+                render={({ field }) => (
+                  <FormItem className="relative min-w-0 space-y-1">
+                    <FormLabel className="text-sm">
+                      {t("app.pets.form.sex")} *
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-9 w-full cursor-pointer">
+                          <SelectValue
+                            placeholder={t("app.pets.form.select_sex")}
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {sexOptions.map((option) => (
+                          <SelectItem
+                            key={option.value}
+                            value={option.value}
+                            className="cursor-pointer"
+                          >
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="absolute top-full left-0 text-xs" />
+                  </FormItem>
+                )}
+              />
             </div>
 
             {/* Complete mode fields */}
@@ -489,7 +526,7 @@ export const PetForm = ({
                           control={form.control}
                           name="ageYears"
                           render={({ field }) => (
-                            <FormItem className="flex-1 space-y-1">
+                            <FormItem className="relative flex-1 space-y-1">
                               <FormLabel className="text-sm">
                                 {t("app.pets.form.age_years")}
                               </FormLabel>
@@ -511,7 +548,7 @@ export const PetForm = ({
                                   }
                                 />
                               </FormControl>
-                              <FormMessage className="text-xs" />
+                              <FormMessage className="absolute top-full left-0 text-xs" />
                             </FormItem>
                           )}
                         />
@@ -519,7 +556,7 @@ export const PetForm = ({
                           control={form.control}
                           name="ageMonths"
                           render={({ field }) => (
-                            <FormItem className="flex-1 space-y-1">
+                            <FormItem className="relative flex-1 space-y-1">
                               <FormLabel className="text-sm">
                                 {t("app.pets.form.age_months")}
                               </FormLabel>
@@ -541,7 +578,7 @@ export const PetForm = ({
                                   }
                                 />
                               </FormControl>
-                              <FormMessage className="text-xs" />
+                              <FormMessage className="absolute top-full left-0 text-xs" />
                             </FormItem>
                           )}
                         />
@@ -551,15 +588,16 @@ export const PetForm = ({
                         control={form.control}
                         name="birthDate"
                         render={({ field }) => (
-                          <FormItem className="space-y-1">
+                          <FormItem className="relative space-y-1">
                             <FormControl>
                               <Input
                                 type="date"
-                                className="h-9 w-full sm:max-w-[49%]"
+                                className="h-9 w-full sm:max-w-[49%] [&::-webkit-calendar-picker-indicator]:ml-auto"
                                 {...field}
+                                value={toDateInputValue(field.value)}
                               />
                             </FormControl>
-                            <FormMessage className="text-xs" />
+                            <FormMessage className="absolute top-full left-0 text-xs" />
                           </FormItem>
                         )}
                       />
@@ -567,47 +605,25 @@ export const PetForm = ({
                   </div>
 
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="sex"
-                      render={({ field }) => (
-                        <FormItem className="min-w-0 space-y-1">
-                          <FormLabel className="text-sm">
-                            {t("app.pets.form.sex")}
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="h-9 w-full cursor-pointer">
-                                <SelectValue
-                                  placeholder={t("app.pets.form.select_sex")}
-                                />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {sexOptions.map((option) => (
-                                <SelectItem
-                                  key={option.value}
-                                  value={option.value}
-                                  className="cursor-pointer"
-                                >
-                                  {option.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage className="text-xs" />
-                        </FormItem>
-                      )}
-                    />
+                    <FormItem className="relative min-w-0 space-y-1">
+                      <FormLabel className="text-sm">
+                        {t("app.pets.breed")}
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={t("app.pets.form.breed_placeholder")}
+                          className="h-9"
+                          {...form.register("breed")}
+                        />
+                      </FormControl>
+                      <FormMessage className="absolute top-full left-0 text-xs" />
+                    </FormItem>
 
                     <FormField
                       control={form.control}
                       name="size"
                       render={({ field }) => (
-                        <FormItem className="min-w-0 space-y-1">
+                        <FormItem className="relative min-w-0 space-y-1">
                           <FormLabel className="text-sm">
                             {t("app.pets.form.size")}
                           </FormLabel>
@@ -634,7 +650,7 @@ export const PetForm = ({
                               ))}
                             </SelectContent>
                           </Select>
-                          <FormMessage className="text-xs" />
+                          <FormMessage className="absolute top-full left-0 text-xs" />
                         </FormItem>
                       )}
                     />
@@ -749,7 +765,7 @@ export const AddPet = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="lg">
+        <Button size="lg" className="w-full sm:w-auto">
           <PlusIcon className="mr-2 h-4 w-4" />
           {t("app.pets.add_pet")}
         </Button>

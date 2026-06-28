@@ -2,12 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { queryConfig } from "@/lib/react-query";
 import { api } from "@/lib/api-client";
 
-type PetStatusOption = { id: number; status: string };
-
 export const usePetStatuses = () => {
-  const { data: statuses = [], ...rest } = useQuery<PetStatusOption[]>({
+  const { data: statuses = [], ...rest } = useQuery<string[]>({
     queryKey: ["pet-statuses"],
-    queryFn: () => api.get<never, PetStatusOption[]>("/pets/status"),
+    queryFn: () => api.get<never, string[]>("/pets/status"),
     ...queryConfig.queries,
   });
 

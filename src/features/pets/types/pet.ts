@@ -5,7 +5,7 @@ export type Pet = {
   breed: string;
   specie: string;
   sex: string;
-  size: string;
+  size: string | null;
   status: string;
   description: string | null;
   colors: string[];
@@ -15,12 +15,23 @@ export type Pet = {
 };
 
 export type DetailedPet = Pet & {
-  vaccinations: { vaccine: string; administeredAt: string }[];
+  vaccinations: {
+    vaccine: string;
+    vaccineCode: string;
+    administeredAt: string;
+  }[];
   statusHistory: { status: string; changedAt: string }[];
   events: {
     id: number;
+    type:
+      | "status_change"
+      | "vaccination"
+      | "user_event"
+      | "name_change"
+      | "size_change";
     name: string;
     description: string | null;
+    metadata: { from?: string | null; to?: string | null } | null;
     createdAt: string;
   }[];
 };

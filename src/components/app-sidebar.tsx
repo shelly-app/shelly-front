@@ -46,9 +46,11 @@ import { useTranslation } from "react-i18next";
 import LanguageSelector from "@/components/language-selector";
 import { useShelters } from "./providers/shelters-provider";
 import { useUser } from "@/hooks/use-user";
+import { useRoleLabel } from "@/hooks/use-role-label";
 
 const AppSidebar = () => {
   const { t } = useTranslation();
+  const roleLabel = useRoleLabel();
   const signOutAction = useSignOutAction();
   const navigate = useNavigate();
 
@@ -235,7 +237,7 @@ const AppSidebar = () => {
                           {userProfile?.fullName}
                         </Text>
                         <Text size="xs" variant="secondary">
-                          {userProfile?.role}
+                          {roleLabel(userProfile?.role)}
                         </Text>
                       </div>
                       <ChevronUp className="ml-auto" strokeWidth={1.5} />

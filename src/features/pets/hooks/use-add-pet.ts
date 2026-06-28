@@ -13,6 +13,7 @@ export type AddPetData = {
   size?: string;
   colors?: string[];
   description?: string;
+  vaccines?: string[];
 };
 
 export const useAddPet = () => {

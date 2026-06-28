@@ -2,13 +2,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pet } from "@/features/pets/types/pet";
 import { PET_SPECIES } from "@/features/pets/constants";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface PetAvatarProps {
   pet: Pet;
   size?: "sm" | "md" | "lg";
+  className?: string;
 }
 
-export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
+export const PetAvatar = ({ pet, size = "lg", className }: PetAvatarProps) => {
   const [placeholderImage, setPlaceholderImage] = useState<string | undefined>(
     undefined,
   );
@@ -48,7 +50,7 @@ export const PetAvatar = ({ pet, size = "lg" }: PetAvatarProps) => {
   };
 
   return (
-    <Avatar className={sizeClasses[size]}>
+    <Avatar className={cn(sizeClasses[size], className)}>
       <AvatarImage src={placeholderImage} alt={pet.name} />
       <AvatarFallback className={fallbackSizeClasses[size]}>
         {pet.specie === PET_SPECIES.CAT ? "CT" : "DG"}

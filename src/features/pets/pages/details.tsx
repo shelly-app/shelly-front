@@ -14,11 +14,12 @@ import {
   BookOpenText,
   CalendarDays,
 } from "lucide-react";
-import { Pet } from "@/features/pets/types/pet";
+import { DetailedPet, Pet } from "@/features/pets/types/pet";
 import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
+  PET_STATUS_LABELS,
 } from "@/features/pets/constants";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -62,23 +63,72 @@ export const PetDetailsPage = () => {
   const { updatePetAsync } = useUpdatePet(Number(petId));
   const { deletePetAsync } = useDeletePet(Number(petId));
 
-  const handleEditPet = async (updatedPet: Pet) => {
+  const handleEditPet = async (updatedPet: Pet, vaccines: string[]) => {
     await updatePetAsync({
       name: updatedPet.name,
       specie: updatedPet.specie,
       status: updatedPet.status,
       breed: updatedPet.breed,
-      birthDate: updatedPet.birthDate,
+      birthDate: updatedPet.birthDate ?? undefined,
       sex: updatedPet.sex,
-      size: updatedPet.size,
+      size: updatedPet.size || undefined,
       colors: updatedPet.colors,
       description: updatedPet.description,
+      vaccines,
     });
   };
 
   const handleArchivePet = async () => {
     await deletePetAsync();
     navigate(paths.app.pets.path);
+  };
+
+  const translateValue = (
+    labels: Record<string, string>,
+    value?: string | null,
+  ) => (value ? t(labels[value] ?? value) : "");
+
+  const getEventContent = (event: DetailedPet["events"][number]) => {
+    const from = event.metadata?.from;
+    const to = event.metadata?.to;
+    // Legacy change events created before structured metadata existed only have
+    // an untranslated free-text description, so show the translated title alone.
+    const hasMetadata = from != null || to != null;
+
+    switch (event.type) {
+      case "status_change":
+        return {
+          title: t("app.pets.events.status_change.title"),
+          description: hasMetadata
+            ? t("app.pets.events.status_change.description", {
+                from: translateValue(PET_STATUS_LABELS, from),
+                to: translateValue(PET_STATUS_LABELS, to),
+              })
+            : null,
+        };
+      case "size_change":
+        return {
+          title: t("app.pets.events.size_change.title"),
+          description: hasMetadata
+            ? t("app.pets.events.size_change.description", {
+                from: translateValue(PET_SIZE_LABELS, from),
+                to: translateValue(PET_SIZE_LABELS, to),
+              })
+            : null,
+        };
+      case "name_change":
+        return {
+          title: t("app.pets.events.name_change.title"),
+          description: hasMetadata
+            ? t("app.pets.events.name_change.description", {
+                from: from ?? "",
+                to: to ?? "",
+              })
+            : null,
+        };
+      default:
+        return { title: event.name, description: event.description };
+    }
   };
 
   if (isLoading) {
@@ -117,10 +167,10 @@ export const PetDetailsPage = () => {
         {/* Header Section */}
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Pet Image */}
-          <div className="flex h-[300px] flex-1 items-center justify-center lg:aspect-square lg:h-auto">
-            <Card className="flex h-full items-center justify-center overflow-hidden py-0 shadow-lg">
-              <CardContent className="flex h-full max-h-[500px] items-center justify-center p-4">
-                <PetAvatar pet={pet} size="lg" />
+          <div className="flex flex-1 items-center justify-center lg:aspect-square">
+            <Card className="flex aspect-square max-h-[500px] w-full items-center justify-center overflow-hidden py-0 shadow-lg lg:aspect-auto lg:h-full">
+              <CardContent className="flex h-full w-full items-center justify-center p-4">
+                <PetAvatar pet={pet} size="lg" className="h-full w-full" />
               </CardContent>
             </Card>
           </div>
@@ -278,7 +328,7 @@ export const PetDetailsPage = () => {
                 {t("app.pets.details.vaccines")}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-h-80 overflow-y-auto">
               {pet.vaccinations && pet.vaccinations.length > 0 ? (
                 <ol className="border-border relative space-y-4 border-l">
                   {pet.vaccinations.map((v, i) => (
@@ -288,7 +338,7 @@ export const PetDetailsPage = () => {
                         {v.vaccine}
                       </p>
                       <time className="text-muted-foreground text-xs">
-                        {new Date(v.administeredAt).toLocaleDateString()}
+                        {new Date(v.administeredAt).toLocaleDateString("es-AR")}
                       </time>
                     </li>
                   ))}
@@ -309,25 +359,30 @@ export const PetDetailsPage = () => {
                 {t("app.pets.details.recent_events")}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-h-80 overflow-y-auto">
               {pet.events && pet.events.length > 0 ? (
                 <ol className="border-border relative space-y-4 border-l">
-                  {pet.events.map((event) => (
-                    <li key={event.id} className="ml-4">
-                      <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
-                      <p className="text-sm leading-tight font-medium">
-                        {event.name}
-                      </p>
-                      <time className="text-muted-foreground text-xs">
-                        {new Date(event.createdAt).toLocaleDateString()}
-                      </time>
-                      {event.description && (
-                        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-                          {event.description}
+                  {pet.events.map((event) => {
+                    const { title, description } = getEventContent(event);
+                    return (
+                      <li key={event.id} className="ml-4">
+                        <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
+                        <p className="text-sm leading-tight font-medium">
+                          {title}
                         </p>
-                      )}
-                    </li>
-                  ))}
+                        <time className="text-muted-foreground text-xs">
+                          {new Date(event.createdAt).toLocaleDateString(
+                            "es-AR",
+                          )}
+                        </time>
+                        {description && (
+                          <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                            {description}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ol>
               ) : (
                 <p className="text-muted-foreground text-sm">
@@ -345,7 +400,7 @@ export const PetDetailsPage = () => {
                 {t("app.pets.details.shelter_info")}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="max-h-80 overflow-y-auto">
               <div className="space-y-2">
                 <p className="text-sm font-medium">{pet.shelter.name}</p>
                 <p className="text-muted-foreground text-sm">

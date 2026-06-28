@@ -14,7 +14,7 @@ interface ColorBadgeProps {
 }
 
 // bg color and contrasting text color for each known pet color
-const colorStyles: Record<
+export const colorStyles: Record<
   string,
   { bg: string; text: string; border?: string }
 > = {
@@ -22,6 +22,14 @@ const colorStyles: Record<
   white: { bg: "#ffffff", text: "#1a1a1a", border: "#d1d5db" },
   brown: { bg: "#7c4a1e", text: "#ffffff" },
   golden: { bg: "#d4a017", text: "#1a1a1a" },
+  gray: { bg: "#808080", text: "#ffffff" },
+  cream: { bg: "#f3e6c4", text: "#1a1a1a", border: "#e3d2a6" },
+  tan: { bg: "#d2b48c", text: "#1a1a1a" },
+  fawn: { bg: "#e5c9a0", text: "#1a1a1a", border: "#d8b888" },
+  orange: { bg: "#e2792f", text: "#ffffff" },
+  red: { bg: "#b23a23", text: "#ffffff" },
+  brindle: { bg: "#5b4636", text: "#ffffff" },
+  tricolor: { bg: "#3f3f46", text: "#ffffff" },
 };
 
 export const ColorBadge: React.FC<ColorBadgeProps> = ({
