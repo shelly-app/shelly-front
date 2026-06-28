@@ -21,6 +21,7 @@ jobs:
       VITE_APP_COGNITO_REDIRECT_URI: ${{ secrets.VITE_APP_COGNITO_REDIRECT_URI }}
       VITE_APP_COGNITO_RESPONSE_TYPE: ${{ secrets.VITE_APP_COGNITO_RESPONSE_TYPE }}
       VITE_APP_COGNITO_SCOPE: ${{ secrets.VITE_APP_COGNITO_SCOPE }}
+      VITE_APP_API_URL: ${{ secrets.VITE_APP_API_URL }}
     steps:
       - uses: actions/checkout@v3
 
