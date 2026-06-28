@@ -26,16 +26,11 @@ api.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (error) => {
-    // const message = error.response?.data?.message || error.message;
-    // useNotifications.getState().addNotification({
-    //   type: 'error',
-    //   title: 'Error',
-    //   message,
-    // });
-
+  async (error) => {
     if (error.response?.status === 401) {
-      const searchParams = new URLSearchParams();
+      await userManager.removeUser().catch(() => {});
+
+      const searchParams = new URLSearchParams(window.location.search);
       const redirectTo =
         searchParams.get("redirectTo") || window.location.pathname;
       window.location.href = paths.auth.signIn.getHref(redirectTo);
