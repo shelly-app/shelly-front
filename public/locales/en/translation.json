@@ -479,6 +479,9 @@
       "no": "No",
       "message": "Message",
       "rejection_reason": "Rejection reason",
+      "rejection_reasons": {
+        "pet_adopted": "This pet has already been adopted."
+      },
       "questionnaire": {
         "location": "Location",
         "familyComposition": "Family composition",

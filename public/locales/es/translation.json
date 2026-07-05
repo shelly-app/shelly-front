@@ -479,6 +479,9 @@
       "no": "No",
       "message": "Mensaje",
       "rejection_reason": "Motivo del rechazo",
+      "rejection_reasons": {
+        "pet_adopted": "Esta mascota ya fue adoptada."
+      },
       "questionnaire": {
         "location": "Ubicación",
         "familyComposition": "Composición familiar",

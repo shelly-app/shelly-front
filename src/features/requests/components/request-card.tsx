@@ -32,10 +32,20 @@ interface RequestCardProps {
   request: AdoptionRequest;
 }
 
+// System-generated rejection reasons are stored as i18n keys under this
+// namespace; shelter-typed reasons are free-form text and shown verbatim.
+const REJECTION_REASON_KEY_PREFIX = "app.requests.rejection_reasons.";
+
 export const RequestCard = ({ request }: RequestCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState<RequestAction>(null);
   const { t } = useTranslation();
+
+  const rejectionReason = request.rejectionReason?.startsWith(
+    REJECTION_REASON_KEY_PREFIX,
+  )
+    ? t(request.rejectionReason)
+    : request.rejectionReason;
 
   return (
     <>
@@ -174,12 +184,12 @@ export const RequestCard = ({ request }: RequestCardProps) => {
               </p>
             )}
 
-            {request.rejectionReason && (
+            {rejectionReason && (
               <>
                 <hr className="my-2" />
                 <p>
                   <strong>{t("app.requests.rejection_reason")}:&nbsp;</strong>
-                  {request.rejectionReason}
+                  {rejectionReason}
                 </p>
               </>
             )}
