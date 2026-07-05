@@ -97,5 +97,13 @@
     "vite": "^6.3.1",
     "vite-plugin-image-optimizer": "^1.1.8"
   },
-  "packageManager": "pnpm@11.10.0"
+  "packageManager": "pnpm@11.10.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "esbuild",
+      "sharp"
+    ]
+  }
 }
