@@ -100,7 +100,7 @@ export const Navbar = () => {
       {/* Mobile Menu Overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden",
+          "fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
           isMenuOpen ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={closeMenu}
@@ -109,7 +109,7 @@ export const Navbar = () => {
       {/* Mobile Menu Drawer */}
       <div
         className={cn(
-          "fixed top-[80px] right-0 z-40 h-[calc(100vh-80px)] w-[280px] transform bg-amber-300/95 p-6 shadow-xl transition-transform duration-300 ease-in-out md:hidden",
+          "fixed top-[80px] right-0 z-40 h-[calc(100vh-80px)] w-[280px] transform bg-amber-300/95 p-6 shadow-xl transition-transform duration-300 ease-in-out lg:hidden",
           isMenuOpen ? "translate-x-0" : "translate-x-full",
           isScrolled && "top-[69px] h-[calc(100vh-69px)]",
         )}
