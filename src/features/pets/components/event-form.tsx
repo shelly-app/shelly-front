@@ -80,7 +80,7 @@ export const EventForm = ({ petId, open, onOpenChange }: EventFormProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-full max-w-lg overflow-y-auto p-4 sm:max-h-[90dvh] sm:p-6">
+      <DialogContent className="max-h-full max-w-lg overflow-y-auto p-4 sm:max-h-[90dvh] sm:max-w-full sm:p-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg">
             {t("app.pets.event_form.title")}

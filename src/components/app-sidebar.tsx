@@ -35,7 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getNameInitials } from "@/lib/utils";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
@@ -107,6 +107,7 @@ const AppSidebar = () => {
       fullName: user.name,
       email: user.email,
       role: currentShelter?.role,
+      avatarUrl: user.avatarUrl,
     };
   }, [user, currentShelter]);
 
@@ -222,6 +223,10 @@ const AppSidebar = () => {
                       isCollapsed && "absolute top-0 left-0 size-8",
                     )}
                   >
+                    <AvatarImage
+                      src={userProfile?.avatarUrl ?? undefined}
+                      alt={userProfile?.fullName}
+                    />
                     <AvatarFallback>
                       {getNameInitials(userProfile?.fullName)}
                     </AvatarFallback>

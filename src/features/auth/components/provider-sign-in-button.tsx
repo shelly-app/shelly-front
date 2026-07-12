@@ -11,7 +11,7 @@ const SVG_ICONS = {
 };
 
 const signInButtonVariants = cva(
-  "flex cursor-pointer items-center gap-3 px-4 py-2 border rounded-lg font-medium shadow-sm hover:shadow-md transition duration-200",
+  "flex justify-center cursor-pointer items-center gap-3 px-4 py-2 border rounded-lg font-medium shadow-sm hover:shadow-md transition duration-200",
   {
     variants: {
       variant: {

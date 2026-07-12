@@ -5,7 +5,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useMembers } from "@/features/members/hooks/use-members";
 import type { Member } from "@/features/members/types/member";
 import { Input } from "@/components/ui/input";
@@ -132,6 +132,10 @@ export const MembersListPage = () => {
           >
             <CardHeader className="flex w-full flex-col items-center gap-2 p-4">
               <Avatar className="h-20 w-20">
+                <AvatarImage
+                  src={member.avatarUrl ?? undefined}
+                  alt={member.name}
+                />
                 <AvatarFallback className="text-lg font-medium">
                   {getNameInitials(member.name)}
                 </AvatarFallback>
