@@ -174,8 +174,12 @@ export const PetDetailsPage = () => {
           {/* Pet Image */}
           <div className="flex flex-1 items-center justify-center lg:aspect-square">
             <Card className="flex aspect-square max-h-[500px] w-full items-center justify-center overflow-hidden py-0 shadow-lg lg:aspect-auto lg:h-full">
-              <CardContent className="flex h-full w-full items-center justify-center p-4">
-                <PetAvatar pet={pet} size="lg" className="h-full w-full" />
+              <CardContent className="flex h-full w-full items-center justify-center">
+                <PetAvatar
+                  pet={pet}
+                  size="lg"
+                  className="h-full w-full rounded-none"
+                />
               </CardContent>
             </Card>
           </div>
