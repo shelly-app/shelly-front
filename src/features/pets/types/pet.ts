@@ -9,6 +9,7 @@ export type Pet = {
   status: string;
   description: string | null;
   colors: string[];
+  photoUrl: string | null;
   shelter: { name: string; city: string };
   createdAt?: string;
   updatedAt?: string;

@@ -22,6 +22,9 @@ export const useUpdateRequestStatus = () => {
         ),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["requests"] });
+        queryClient.invalidateQueries({
+          queryKey: ["pets", currentShelter?.id],
+        });
       },
     },
   );

@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
+import { FileUploader } from "@/components/file-uploader";
 import {
   Dialog,
   DialogContent,
@@ -43,6 +44,8 @@ import {
   PET_SIZES,
 } from "@/features/pets/constants";
 import { useAddPet } from "@/features/pets/hooks";
+import { useImageUpload } from "@/hooks/use-image-upload";
+import { useShelters } from "@/components/providers/shelters-provider";
 import { colorStyles } from "@/features/pets/components/color-badge";
 import { usePetColors } from "@/features/pets/hooks/use-pet-colors";
 import { usePetVaccines } from "@/features/pets/hooks/use-pet-vaccines";
@@ -118,7 +121,8 @@ interface PetFormProps {
   pet?: DetailedPet;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave?: (updatedPet: Pet, vaccines: string[]) => void;
+  // photoKey: undefined = unchanged, "" = remove existing, otherwise a new key.
+  onSave?: (updatedPet: Pet, vaccines: string[], photoKey?: string) => void;
 }
 
 export const PetForm = ({
@@ -137,8 +141,17 @@ export const PetForm = ({
     "approximate",
   );
   const { addPetAsync, isLoading } = useAddPet();
+  const { currentShelter } = useShelters();
+  const { upload: uploadPhoto, isUploading } = useImageUpload(
+    `/shelters/${currentShelter?.id}/pets/photo-upload-url`,
+  );
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoRemoved, setPhotoRemoved] = useState(false);
   const { colors: apiColors } = usePetColors();
   const { vaccines: apiVaccines } = usePetVaccines();
+
+  const showExistingPhoto =
+    mode === "edit" && !!pet?.photoUrl && !photoRemoved && !photoFile;
 
   const form = useForm<PetFormData>({
     resolver: zodResolver(petFormSchema),
@@ -161,6 +174,8 @@ export const PetForm = ({
   // Sync form values when dialog is (re)opened in EDIT mode
   useEffect(() => {
     if (open && mode === "edit" && pet) {
+      setPhotoFile(null);
+      setPhotoRemoved(false);
       const hasExactDate = !!pet.birthDate;
       setBirthDateMode(hasExactDate ? "exact" : "approximate");
       const approx = hasExactDate
@@ -189,6 +204,8 @@ export const PetForm = ({
       form.reset();
       setIsCompleteMode(false);
       setBirthDateMode("approximate");
+      setPhotoFile(null);
+      setPhotoRemoved(false);
     }
   }, [open, mode, form]);
 
@@ -262,6 +279,15 @@ export const PetForm = ({
         ageMonths: undefined,
       };
 
+      // Resolve the photo change: upload a new file, clear an existing one, or
+      // leave it untouched (undefined).
+      let photoKey: string | undefined;
+      if (photoFile) {
+        photoKey = await uploadPhoto(photoFile);
+      } else if (photoRemoved) {
+        photoKey = "";
+      }
+
       if (mode === "edit" && onSave) {
         const updatedPet: Pet = {
           ...pet!,
@@ -270,7 +296,7 @@ export const PetForm = ({
           description: resolvedData.description || null,
           colors: resolvedData.colors || [],
         };
-        onSave(updatedPet, resolvedData.vaccines ?? []);
+        onSave(updatedPet, resolvedData.vaccines ?? [], photoKey);
         onOpenChange(false);
       } else {
         const submitData = isCompleteMode
@@ -282,7 +308,10 @@ export const PetForm = ({
               sex: data.sex,
             };
 
-        await addPetAsync(submitData);
+        await addPetAsync({
+          ...submitData,
+          ...(photoKey ? { photoKey } : {}),
+        });
 
         console.log(t("app.pets.notifications.added_successfully"));
 
@@ -475,6 +504,38 @@ export const PetForm = ({
                   </FormItem>
                 )}
               />
+            </div>
+
+            {/* Photo */}
+            <div className="space-y-2">
+              <p className="text-sm leading-none font-medium">
+                {t("app.pets.form.photo")}
+              </p>
+              {showExistingPhoto ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src={pet?.photoUrl ?? undefined}
+                    alt={pet?.name}
+                    className="h-20 w-20 rounded-md object-cover"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setPhotoRemoved(true)}
+                    className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
+                  >
+                    <XIcon className="mr-1 h-3 w-3" />
+                    {t("app.pets.form.remove_photo")}
+                  </Button>
+                </div>
+              ) : (
+                <FileUploader
+                  types={["image"]}
+                  onFileChange={setPhotoFile}
+                  onRemoveFile={() => setPhotoFile(null)}
+                />
+              )}
             </div>
 
             {/* Complete mode fields */}
@@ -734,12 +795,12 @@ export const PetForm = ({
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                disabled={isLoading}
+                disabled={isLoading || isUploading}
               >
                 {t("app.pets.form.cancel")}
               </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading
+              <Button type="submit" disabled={isLoading || isUploading}>
+                {isLoading || isUploading
                   ? mode === "edit"
                     ? t("app.pets.form.saving")
                     : t("app.pets.form.adding")

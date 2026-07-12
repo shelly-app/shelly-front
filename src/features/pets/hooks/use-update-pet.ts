@@ -14,6 +14,7 @@ export type UpdatePetData = {
   colors?: string[];
   description?: string | null;
   vaccines?: string[];
+  photoKey?: string;
 };
 
 export const useUpdatePet = (petId: number) => {

@@ -51,7 +51,7 @@ export const PetAvatar = ({ pet, size = "lg", className }: PetAvatarProps) => {
 
   return (
     <Avatar className={cn(sizeClasses[size], className)}>
-      <AvatarImage src={placeholderImage} alt={pet.name} />
+      <AvatarImage src={pet.photoUrl ?? placeholderImage} alt={pet.name} />
       <AvatarFallback className={fallbackSizeClasses[size]}>
         {pet.specie === PET_SPECIES.CAT ? "CT" : "DG"}
       </AvatarFallback>

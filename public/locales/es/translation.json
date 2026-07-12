@@ -365,7 +365,9 @@
         "adding": "Agregando...",
         "complete_mode": "Modo Completo",
         "edit_description": "Actualiza los detalles de la mascota a continuación. Todos los cambios se guardarán cuando hagas clic en 'Guardar cambios'.",
-        "add_description": "Completa la información de la nueva mascota. Puedes usar el modo rápido para información básica o el modo completo para todos los detalles."
+        "add_description": "Completa la información de la nueva mascota. Puedes usar el modo rápido para información básica o el modo completo para todos los detalles.",
+        "photo": "Foto",
+        "remove_photo": "Eliminar foto"
       },
       "validation": {
         "name_required": "El nombre es requerido",
@@ -513,6 +515,8 @@
         "title": "Editar perfil",
         "description": "Actualiza tu información personal. Los cambios se guardarán automáticamente.",
         "change_photo": "Haz clic para cambiar la foto",
+        "photo": "Foto de perfil",
+        "remove_photo": "Eliminar foto",
         "full_name": "Nombre completo",
         "full_name_placeholder": "Tu nombre completo",
         "location": "Ubicación",

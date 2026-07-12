@@ -63,7 +63,11 @@ export const PetDetailsPage = () => {
   const { updatePetAsync } = useUpdatePet(Number(petId));
   const { deletePetAsync } = useDeletePet(Number(petId));
 
-  const handleEditPet = async (updatedPet: Pet, vaccines: string[]) => {
+  const handleEditPet = async (
+    updatedPet: Pet,
+    vaccines: string[],
+    photoKey?: string,
+  ) => {
     await updatePetAsync({
       name: updatedPet.name,
       specie: updatedPet.specie,
@@ -75,6 +79,7 @@ export const PetDetailsPage = () => {
       colors: updatedPet.colors,
       description: updatedPet.description,
       vaccines,
+      ...(photoKey !== undefined ? { photoKey } : {}),
     });
   };
 

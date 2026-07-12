@@ -16,7 +16,7 @@ export const usePets = () => {
   } = useQuery<Pet[]>({
     queryKey: ["pets", currentShelter?.id],
     queryFn: () =>
-      api.get<never, Pet[]>(`/shelters/${currentShelter?.id}/pets`),
+      api.get<never, Pet[]>(`/shelters/${currentShelter?.id}/pets/all`),
     enabled: !!currentShelter?.id,
     ...queryConfig.queries,
   });

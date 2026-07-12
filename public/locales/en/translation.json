@@ -365,7 +365,9 @@
         "adding": "Adding...",
         "complete_mode": "Complete Mode",
         "edit_description": "Update the pet's details below. All changes will be saved when you click 'Save changes'.",
-        "add_description": "Complete the new pet's information. You can use the quick mode for basic information or the complete mode for all details."
+        "add_description": "Complete the new pet's information. You can use the quick mode for basic information or the complete mode for all details.",
+        "photo": "Photo",
+        "remove_photo": "Remove photo"
       },
       "validation": {
         "name_required": "Name is required",
@@ -508,6 +510,8 @@
         "title": "Edit profile",
         "description": "Update your personal information. Changes will be saved automatically.",
         "change_photo": "Click to change photo",
+        "photo": "Profile picture",
+        "remove_photo": "Remove photo",
         "full_name": "Full name",
         "full_name_placeholder": "Your full name",
         "location": "Location",

@@ -4,12 +4,13 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Edit, Mail, Calendar, Shield } from "lucide-react";
+import { Edit, Mail, Calendar, Shield, XIcon } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FileUploader } from "@/components/file-uploader";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +33,9 @@ import SectionError from "@/components/section-error";
 
 import { getNameInitials } from "@/lib/utils";
 import { useMembers } from "@/features/members/hooks/use-members";
+import { useUpdateProfile } from "@/features/members/hooks/use-update-profile";
 import { useUser } from "@/hooks/use-user";
+import { useImageUpload } from "@/hooks/use-image-upload";
 import { useRoleLabel } from "@/hooks/use-role-label";
 import { intlFormat, parseISO } from "date-fns";
 
@@ -41,9 +44,14 @@ export const MemberProfilePage = () => {
   const { t } = useTranslation();
   const roleLabel = useRoleLabel();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarRemoved, setAvatarRemoved] = useState(false);
 
   const { data: user, isLoading: isUserLoading } = useUser();
   const { members, isLoading: isMembersLoading, isError } = useMembers();
+  const { upload: uploadAvatar, isUploading } = useImageUpload(
+    "/users/me/avatar-upload-url",
+  );
 
   const member = useMemo(() => {
     if (memberId === "me" && user && !members.length) {
@@ -68,6 +76,13 @@ export const MemberProfilePage = () => {
     return member.email === user.email;
   }, [memberId, member, user]);
 
+  const { updateProfileAsync, isLoading: isUpdating } = useUpdateProfile(
+    member?.userId ?? 0,
+  );
+
+  const showExistingAvatar =
+    !!member?.avatarUrl && !avatarRemoved && !avatarFile;
+
   const profileSchema = z.object({
     name: z
       .string()
@@ -83,9 +98,19 @@ export const MemberProfilePage = () => {
     },
   });
 
-  const handleEditProfile = (data: ProfileFormData) => {
-    // TODO: call PATCH /users/:id API
-    console.log("Update profile:", data);
+  const handleEditProfile = async (data: ProfileFormData) => {
+    let avatarKey: string | undefined;
+    if (avatarFile) {
+      avatarKey = await uploadAvatar(avatarFile);
+    } else if (avatarRemoved) {
+      avatarKey = "";
+    }
+
+    await updateProfileAsync({
+      name: data.name,
+      ...(avatarKey !== undefined ? { avatarKey } : {}),
+    });
+
     setIsEditDialogOpen(false);
   };
 
@@ -95,6 +120,8 @@ export const MemberProfilePage = () => {
         name: member.name,
       });
     }
+    setAvatarFile(null);
+    setAvatarRemoved(false);
     setIsEditDialogOpen(true);
   };
 
@@ -113,6 +140,10 @@ export const MemberProfilePage = () => {
         <CardHeader className="flex flex-col items-center gap-4 pb-2">
           <div className="relative">
             <Avatar className="h-32 w-32 border-4 border-white shadow-lg">
+              <AvatarImage
+                src={member.avatarUrl ?? undefined}
+                alt={member.name}
+              />
               <AvatarFallback className="text-3xl font-medium">
                 {getNameInitials(member.name)}
               </AvatarFallback>
@@ -198,6 +229,40 @@ export const MemberProfilePage = () => {
               onSubmit={form.handleSubmit(handleEditProfile)}
               className="space-y-4"
             >
+              {/* Avatar */}
+              <div className="space-y-2">
+                <FormLabel>{t("app.profile.edit_dialog.photo")}</FormLabel>
+                {showExistingAvatar ? (
+                  <div className="flex items-center gap-3">
+                    <Avatar className="h-16 w-16">
+                      <AvatarImage
+                        src={member.avatarUrl ?? undefined}
+                        alt={member.name}
+                      />
+                      <AvatarFallback>
+                        {getNameInitials(member.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setAvatarRemoved(true)}
+                      className="text-destructive hover:bg-destructive hover:text-destructive-foreground shrink-0"
+                    >
+                      <XIcon className="mr-1 h-3 w-3" />
+                      {t("app.profile.edit_dialog.remove_photo")}
+                    </Button>
+                  </div>
+                ) : (
+                  <FileUploader
+                    types={["image"]}
+                    onFileChange={setAvatarFile}
+                    onRemoveFile={() => setAvatarFile(null)}
+                  />
+                )}
+              </div>
+
               {/* Name */}
               <FormField
                 control={form.control}
@@ -225,10 +290,11 @@ export const MemberProfilePage = () => {
                   type="button"
                   variant="outline"
                   onClick={() => setIsEditDialogOpen(false)}
+                  disabled={isUploading || isUpdating}
                 >
                   {t("app.profile.edit_dialog.cancel")}
                 </Button>
-                <Button type="submit">
+                <Button type="submit" disabled={isUploading || isUpdating}>
                   {t("app.profile.edit_dialog.save")}
                 </Button>
               </DialogFooter>

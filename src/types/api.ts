@@ -30,5 +30,6 @@ export type UserShelter = {
 export type User = {
   name: string;
   email: string;
+  avatarUrl?: string | null;
   shelters: UserShelter[];
 };
