@@ -31,7 +31,7 @@ export const FileUploader = ({
     },
     accept: {
       "image/*": types.includes("image")
-        ? [".jpeg", ".jpg", ".png", ".webp"]
+        ? [".jpeg", ".jpg", ".png", ".webp", ".gif", ".avif"]
         : [],
       "application/pdf": types.includes("pdf") ? [".pdf"] : [],
       "video/*": types.includes("video")
