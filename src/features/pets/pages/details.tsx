@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
-import { PetStatusBadge, PetForm } from "@/features/pets/components";
+import { PetStatusBadge, PetForm, EventForm } from "@/features/pets/components";
 import {
   Clock,
   Palette,
@@ -13,6 +13,8 @@ import {
   HeartPlus,
   BookOpenText,
   CalendarDays,
+  CalendarClock,
+  Plus,
 } from "lucide-react";
 import { DetailedPet, Pet } from "@/features/pets/types/pet";
 import {
@@ -56,6 +58,7 @@ const PetDetailsSkeleton = () => (
 
 export const PetDetailsPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const [isEventDialogOpen, setIsEventDialogOpen] = useState<boolean>(false);
   const { petId } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -165,6 +168,21 @@ export const PetDetailsPage = () => {
   }
 
   const age = calculateAge(pet.birthDate, t);
+
+  const now = Date.now();
+  const allEvents = pet.events ?? [];
+  // A scheduled event whose date hasn't passed is "upcoming"; everything else
+  // (audit events and past scheduled events) belongs in the history timeline.
+  const upcomingEvents = allEvents
+    .filter((e) => e.scheduledFor && new Date(e.scheduledFor).getTime() >= now)
+    .sort(
+      (a, b) =>
+        new Date(a.scheduledFor!).getTime() -
+        new Date(b.scheduledFor!).getTime(),
+    );
+  const pastEvents = allEvents.filter(
+    (e) => !(e.scheduledFor && new Date(e.scheduledFor).getTime() >= now),
+  );
 
   return (
     <div className="min-h-screen py-6">
@@ -360,6 +378,55 @@ export const PetDetailsPage = () => {
             </CardContent>
           </Card>
 
+          {/* Upcoming Events */}
+          <Card className="shadow-lg">
+            <CardHeader>
+              <div className="flex items-center justify-between gap-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <CalendarClock className="text-primary h-5 w-5" />
+                  {t("app.pets.details.future_events")}
+                </CardTitle>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1 px-2! py-1 text-xs"
+                  onClick={() => setIsEventDialogOpen(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                  {t("app.pets.details.add_event")}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="max-h-80 overflow-y-auto">
+              {upcomingEvents.length > 0 ? (
+                <ol className="border-border relative space-y-4 border-l">
+                  {upcomingEvents.map((event) => (
+                    <li key={event.id} className="ml-4">
+                      <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
+                      <p className="text-sm leading-tight font-medium">
+                        {event.name}
+                      </p>
+                      <time className="text-muted-foreground text-xs">
+                        {new Date(event.scheduledFor!).toLocaleDateString(
+                          "es-AR",
+                        )}
+                      </time>
+                      {event.description && (
+                        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                          {event.description}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p className="text-muted-foreground text-sm">
+                  {t("app.pets.details.no_future_events")}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Events Timeline */}
           <Card className="shadow-lg">
             <CardHeader>
@@ -369,9 +436,9 @@ export const PetDetailsPage = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="max-h-80 overflow-y-auto">
-              {pet.events && pet.events.length > 0 ? (
+              {pastEvents.length > 0 ? (
                 <ol className="border-border relative space-y-4 border-l">
-                  {pet.events.map((event) => {
+                  {pastEvents.map((event) => {
                     const { title, description } = getEventContent(event);
                     return (
                       <li key={event.id} className="ml-4">
@@ -427,6 +494,13 @@ export const PetDetailsPage = () => {
           open={isEditDialogOpen}
           onOpenChange={setIsEditDialogOpen}
           onSave={handleEditPet}
+        />
+
+        {/* Add Future Event Dialog */}
+        <EventForm
+          petId={pet.id}
+          open={isEventDialogOpen}
+          onOpenChange={setIsEventDialogOpen}
         />
       </div>
     </div>

@@ -369,6 +369,24 @@
         "photo": "Photo",
         "remove_photo": "Remove photo"
       },
+      "event_form": {
+        "title": "Schedule an event",
+        "description": "Plan a future event for this pet, like a vet visit or a deworming.",
+        "name": "Event",
+        "name_placeholder": "e.g. Vet appointment",
+        "date": "Date",
+        "description_label": "Notes",
+        "description_placeholder": "Add any relevant details",
+        "cancel": "Cancel",
+        "add": "Schedule event",
+        "adding": "Scheduling...",
+        "error": "Error creating event. Please try again.",
+        "validation": {
+          "name_required": "Event name is required",
+          "date_required": "Date is required",
+          "date_future": "The date can't be in the past"
+        }
+      },
       "validation": {
         "name_required": "Name is required",
         "species_required": "Species is required",
@@ -398,6 +416,7 @@
         "no_recent_events": "No recent events",
         "future_events": "Future Events",
         "no_future_events": "No future events",
+        "add_event": "Add event",
         "years": "{{count}} year",
         "years_plural": "{{count}} years",
         "shelter_info": "Shelter Info",

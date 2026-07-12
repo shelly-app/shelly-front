@@ -369,6 +369,24 @@
         "photo": "Foto",
         "remove_photo": "Eliminar foto"
       },
+      "event_form": {
+        "title": "Programar un evento",
+        "description": "Planificá un evento futuro para esta mascota, como una visita al veterinario o una desparasitación.",
+        "name": "Evento",
+        "name_placeholder": "ej. Turno con el veterinario",
+        "date": "Fecha",
+        "description_label": "Notas",
+        "description_placeholder": "Agregá los detalles relevantes",
+        "cancel": "Cancelar",
+        "add": "Programar evento",
+        "adding": "Programando...",
+        "error": "Error al crear el evento. Intentá de nuevo.",
+        "validation": {
+          "name_required": "El nombre del evento es requerido",
+          "date_required": "La fecha es requerida",
+          "date_future": "La fecha no puede ser en el pasado"
+        }
+      },
       "validation": {
         "name_required": "El nombre es requerido",
         "species_required": "La especie es requerida",
@@ -398,6 +416,7 @@
         "no_recent_events": "No hay eventos recientes",
         "future_events": "Próximos Eventos",
         "no_future_events": "No hay eventos próximos",
+        "add_event": "Agregar evento",
         "years": "{{count}} año",
         "years_plural": "{{count}} años",
         "shelter_info": "Info del Refugio",

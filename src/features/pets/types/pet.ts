@@ -33,6 +33,7 @@ export type DetailedPet = Pet & {
     name: string;
     description: string | null;
     metadata: { from?: string | null; to?: string | null } | null;
+    scheduledFor: string | null;
     createdAt: string;
   }[];
 };

@@ -5,12 +5,14 @@ import { useShelters } from "@/components/providers/shelters-provider";
 type AddEventData = {
   name: string;
   description?: string;
+  scheduledFor?: string;
 };
 
 type EventResponse = {
   id: number;
   name: string;
   description: string | null;
+  scheduledFor: string | null;
   createdAt: string;
 };
 
@@ -22,7 +24,7 @@ export const useAddEvent = (petId: number) => {
     mutationFn: (data) =>
       api.post(`/shelters/${currentShelter?.id}/pets/${petId}/events`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["pets", String(petId)] });
+      queryClient.invalidateQueries({ queryKey: ["pets"] });
       queryClient.invalidateQueries({ queryKey: ["shelter-pets"] });
     },
   });
