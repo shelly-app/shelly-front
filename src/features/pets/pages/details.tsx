@@ -393,7 +393,6 @@ export const PetDetailsPage = () => {
                   onClick={() => setIsEventDialogOpen(true)}
                 >
                   <Plus className="h-4 w-4" />
-                  {t("app.pets.details.add_event")}
                 </Button>
               </div>
             </CardHeader>

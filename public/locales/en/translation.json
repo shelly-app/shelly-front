@@ -416,7 +416,6 @@
         "no_recent_events": "No recent events",
         "future_events": "Future Events",
         "no_future_events": "No future events",
-        "add_event": "Add event",
         "years": "{{count}} year",
         "years_plural": "{{count}} years",
         "shelter_info": "Shelter Info",
