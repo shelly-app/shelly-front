@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { PetStatusBadge, PetForm, EventForm } from "@/features/pets/components";
 import {
   Clock,
@@ -15,6 +16,8 @@ import {
   CalendarDays,
   CalendarClock,
   Plus,
+  Check,
+  X,
 } from "lucide-react";
 import { DetailedPet, Pet } from "@/features/pets/types/pet";
 import {
@@ -30,6 +33,11 @@ import { useTranslation } from "react-i18next";
 import { usePetDetails } from "@/features/pets/hooks/use-pet-details";
 import { useUpdatePet } from "@/features/pets/hooks/use-update-pet";
 import { useDeletePet } from "@/features/pets/hooks/use-delete-pet";
+import {
+  getScheduledTimestamp,
+  useEventRollover,
+  useUpdateEventOutcome,
+} from "@/features/pets/hooks";
 import { calculateAge } from "@/features/pets/utils/age";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { paths } from "@/config/paths";
@@ -57,16 +65,6 @@ const PetDetailsSkeleton = () => (
     </div>
   </div>
 );
-
-const getScheduledTimestamp = (event: DetailedPet["events"][number]) => {
-  if (!event.scheduledFor) return 0;
-
-  if (event.metadata?.hasTime) {
-    return new Date(event.scheduledFor).getTime();
-  }
-
-  return new Date(`${event.scheduledFor.slice(0, 10)}T23:59:59.999`).getTime();
-};
 
 const formatScheduledFor = (event: DetailedPet["events"][number]) => {
   if (!event.scheduledFor) return "";
@@ -123,8 +121,11 @@ export const PetDetailsPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { pet, isLoading } = usePetDetails(petId ?? "");
+  const now = useEventRollover(pet?.events);
   const { updatePetAsync } = useUpdatePet(Number(petId));
   const { deletePetAsync } = useDeletePet(Number(petId));
+  const { updateEventOutcome, isLoading: isUpdatingEventOutcome } =
+    useUpdateEventOutcome(Number(petId));
 
   const handleEditPet = async (
     updatedPet: Pet,
@@ -229,7 +230,6 @@ export const PetDetailsPage = () => {
 
   const age = calculateAge(pet.birthDate, t);
 
-  const now = Date.now();
   const allEvents = pet.events ?? [];
   // A scheduled event whose date hasn't passed is "upcoming"; everything else
   // (audit events and past scheduled events) belongs in the history timeline.
@@ -238,9 +238,19 @@ export const PetDetailsPage = () => {
       (event) => event.scheduledFor && getScheduledTimestamp(event) >= now,
     )
     .sort((a, b) => getScheduledTimestamp(a) - getScheduledTimestamp(b));
-  const pastEvents = allEvents.filter(
-    (event) => !(event.scheduledFor && getScheduledTimestamp(event) >= now),
-  );
+  const pastEvents = allEvents
+    .filter(
+      (event) => !(event.scheduledFor && getScheduledTimestamp(event) >= now),
+    )
+    .sort(
+      (a, b) =>
+        (b.scheduledFor
+          ? getScheduledTimestamp(b)
+          : new Date(b.createdAt).getTime()) -
+        (a.scheduledFor
+          ? getScheduledTimestamp(a)
+          : new Date(a.createdAt).getTime()),
+    );
 
   return (
     <div className="min-h-screen py-6">
@@ -500,13 +510,76 @@ export const PetDetailsPage = () => {
                           {title}
                         </p>
                         <time className="text-muted-foreground text-xs">
-                          {new Date(event.createdAt).toLocaleDateString(
-                            "es-AR",
-                          )}
+                          {event.scheduledFor
+                            ? formatScheduledFor(event)
+                            : new Date(event.createdAt).toLocaleDateString(
+                                "es-AR",
+                              )}
                         </time>
                         {description && (
                           <ExpandableEventDescription text={description} />
                         )}
+                        {event.type === "user_event" &&
+                          event.scheduledFor &&
+                          (event.metadata?.outcome ? (
+                            <Badge
+                              variant="outline"
+                              className={cn(
+                                "mt-2",
+                                event.metadata.outcome === "completed"
+                                  ? "border-emerald-600 text-emerald-700"
+                                  : "border-destructive text-destructive",
+                              )}
+                            >
+                              {event.metadata.outcome === "completed" ? (
+                                <Check />
+                              ) : (
+                                <X />
+                              )}
+                              {t(
+                                `app.pets.details.event_outcome.${event.metadata.outcome}`,
+                              )}
+                            </Badge>
+                          ) : (
+                            <div className="mt-2 flex flex-wrap gap-1.5">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="h-7 px-2! text-xs text-emerald-700"
+                                disabled={isUpdatingEventOutcome}
+                                onClick={() =>
+                                  updateEventOutcome({
+                                    eventId: event.id,
+                                    outcome: "completed",
+                                  })
+                                }
+                              >
+                                <Check />
+                                {t(
+                                  "app.pets.details.event_outcome.mark_completed",
+                                )}
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="text-destructive h-7 px-2! text-xs"
+                                disabled={isUpdatingEventOutcome}
+                                onClick={() =>
+                                  updateEventOutcome({
+                                    eventId: event.id,
+                                    outcome: "canceled",
+                                  })
+                                }
+                              >
+                                <X />
+                                {t(
+                                  "app.pets.details.event_outcome.mark_canceled",
+                                )}
+                              </Button>
+                            </div>
+                          ))}
                       </li>
                     );
                   })}

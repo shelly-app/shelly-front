@@ -36,6 +36,7 @@ export type DetailedPet = Pet & {
       from?: string | null;
       to?: string | null;
       hasTime?: boolean;
+      outcome?: "completed" | "canceled";
     } | null;
     scheduledFor: string | null;
     createdAt: string;

@@ -7,6 +7,11 @@ export { useDeletePet } from "./use-delete-pet";
 export { useAddVaccination } from "./use-add-vaccination";
 export { useAddEvent } from "./use-add-event";
 export { useDeleteEvent } from "./use-delete-event";
+export {
+  useUpdateEventOutcome,
+  type EventOutcome,
+} from "./use-update-event-outcome";
+export { getScheduledTimestamp, useEventRollover } from "./use-event-rollover";
 export { usePetStatuses } from "./use-pet-statuses";
 export { usePetSpecies } from "./use-pet-species";
 export { usePetColors } from "./use-pet-colors";

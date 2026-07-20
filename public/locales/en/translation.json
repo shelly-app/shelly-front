@@ -420,6 +420,12 @@
         "no_future_events": "No future events",
         "show_more": "Show more",
         "show_less": "Show less",
+        "event_outcome": {
+          "completed": "Completed",
+          "canceled": "Canceled",
+          "mark_completed": "Took place",
+          "mark_canceled": "Canceled"
+        },
         "years": "{{count}} year",
         "years_plural": "{{count}} years",
         "archived": {
