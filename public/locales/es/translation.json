@@ -375,6 +375,7 @@
         "name": "Evento",
         "name_placeholder": "ej. Turno con el veterinario",
         "date": "Fecha",
+        "time": "Hora",
         "description_label": "Notas",
         "description_placeholder": "Agregá los detalles relevantes",
         "cancel": "Cancelar",
@@ -384,7 +385,8 @@
         "validation": {
           "name_required": "El nombre del evento es requerido",
           "date_required": "La fecha es requerida",
-          "date_future": "La fecha no puede ser en el pasado"
+          "date_future": "La fecha no puede ser en el pasado",
+          "notes_max": "Las notas no pueden superar los 500 caracteres"
         }
       },
       "validation": {
@@ -416,9 +418,10 @@
         "no_recent_events": "No hay eventos recientes",
         "future_events": "Próximos Eventos",
         "no_future_events": "No hay eventos próximos",
+        "show_more": "Ver más",
+        "show_less": "Ver menos",
         "years": "{{count}} año",
         "years_plural": "{{count}} años",
-        "shelter_info": "Info del Refugio",
         "archived": {
           "title": "Mascota archivada",
           "description": "{{name}} ha sido archivada y ya no está disponible en el sistema.",

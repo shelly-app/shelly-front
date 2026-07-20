@@ -32,7 +32,11 @@ export type DetailedPet = Pet & {
       | "size_change";
     name: string;
     description: string | null;
-    metadata: { from?: string | null; to?: string | null } | null;
+    metadata: {
+      from?: string | null;
+      to?: string | null;
+      hasTime?: boolean;
+    } | null;
     scheduledFor: string | null;
     createdAt: string;
   }[];

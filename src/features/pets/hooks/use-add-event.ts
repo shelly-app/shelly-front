@@ -6,6 +6,7 @@ type AddEventData = {
   name: string;
   description?: string;
   scheduledFor?: string;
+  hasTime?: boolean;
 };
 
 type EventResponse = {

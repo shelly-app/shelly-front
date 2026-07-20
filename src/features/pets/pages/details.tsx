@@ -34,6 +34,8 @@ import { calculateAge } from "@/features/pets/utils/age";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { paths } from "@/config/paths";
 
+const EVENT_DESCRIPTION_PREVIEW_LENGTH = 120;
+
 // Skeleton component shown while fetching data
 const PetDetailsSkeleton = () => (
   <div className="min-h-screen py-6">
@@ -55,6 +57,64 @@ const PetDetailsSkeleton = () => (
     </div>
   </div>
 );
+
+const getScheduledTimestamp = (event: DetailedPet["events"][number]) => {
+  if (!event.scheduledFor) return 0;
+
+  if (event.metadata?.hasTime) {
+    return new Date(event.scheduledFor).getTime();
+  }
+
+  return new Date(`${event.scheduledFor.slice(0, 10)}T23:59:59.999`).getTime();
+};
+
+const formatScheduledFor = (event: DetailedPet["events"][number]) => {
+  if (!event.scheduledFor) return "";
+
+  if (event.metadata?.hasTime) {
+    return new Date(event.scheduledFor).toLocaleString("es-AR", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+  }
+
+  return new Date(event.scheduledFor).toLocaleDateString("es-AR", {
+    timeZone: "UTC",
+  });
+};
+
+const ExpandableEventDescription = ({ text }: { text: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { t } = useTranslation();
+  const canExpand = text.length > EVENT_DESCRIPTION_PREVIEW_LENGTH;
+  const visibleText =
+    canExpand && !isExpanded
+      ? `${text.slice(0, EVENT_DESCRIPTION_PREVIEW_LENGTH).trimEnd()}…`
+      : text;
+
+  return (
+    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+      {visibleText}
+      {canExpand && (
+        <>
+          {" "}
+          <button
+            type="button"
+            className="text-primary font-medium hover:underline"
+            aria-expanded={isExpanded}
+            onClick={() => setIsExpanded((expanded) => !expanded)}
+          >
+            {t(
+              isExpanded
+                ? "app.pets.details.show_less"
+                : "app.pets.details.show_more",
+            )}
+          </button>
+        </>
+      )}
+    </p>
+  );
+};
 
 export const PetDetailsPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
@@ -174,14 +234,12 @@ export const PetDetailsPage = () => {
   // A scheduled event whose date hasn't passed is "upcoming"; everything else
   // (audit events and past scheduled events) belongs in the history timeline.
   const upcomingEvents = allEvents
-    .filter((e) => e.scheduledFor && new Date(e.scheduledFor).getTime() >= now)
-    .sort(
-      (a, b) =>
-        new Date(a.scheduledFor!).getTime() -
-        new Date(b.scheduledFor!).getTime(),
-    );
+    .filter(
+      (event) => event.scheduledFor && getScheduledTimestamp(event) >= now,
+    )
+    .sort((a, b) => getScheduledTimestamp(a) - getScheduledTimestamp(b));
   const pastEvents = allEvents.filter(
-    (e) => !(e.scheduledFor && new Date(e.scheduledFor).getTime() >= now),
+    (event) => !(event.scheduledFor && getScheduledTimestamp(event) >= now),
   );
 
   return (
@@ -406,14 +464,10 @@ export const PetDetailsPage = () => {
                         {event.name}
                       </p>
                       <time className="text-muted-foreground text-xs">
-                        {new Date(event.scheduledFor!).toLocaleDateString(
-                          "es-AR",
-                        )}
+                        {formatScheduledFor(event)}
                       </time>
                       {event.description && (
-                        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-                          {event.description}
-                        </p>
+                        <ExpandableEventDescription text={event.description} />
                       )}
                     </li>
                   ))}
@@ -451,9 +505,7 @@ export const PetDetailsPage = () => {
                           )}
                         </time>
                         {description && (
-                          <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-                            {description}
-                          </p>
+                          <ExpandableEventDescription text={description} />
                         )}
                       </li>
                     );
@@ -464,24 +516,6 @@ export const PetDetailsPage = () => {
                   {t("app.pets.details.no_recent_events")}
                 </p>
               )}
-            </CardContent>
-          </Card>
-
-          {/* Shelter Info */}
-          <Card className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Clock className="text-primary h-5 w-5" />
-                {t("app.pets.details.shelter_info")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="max-h-80 overflow-y-auto">
-              <div className="space-y-2">
-                <p className="text-sm font-medium">{pet.shelter.name}</p>
-                <p className="text-muted-foreground text-sm">
-                  {pet.shelter.city}
-                </p>
-              </div>
             </CardContent>
           </Card>
         </div>

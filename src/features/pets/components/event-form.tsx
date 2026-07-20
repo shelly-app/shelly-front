@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddEvent } from "@/features/pets/hooks";
 
+const EVENT_NOTES_MAX_LENGTH = 300;
+
 const todayInputValue = (): string => {
   const now = new Date();
   const offsetMs = now.getTimezoneOffset() * 60 * 1000;
@@ -31,16 +33,39 @@ const todayInputValue = (): string => {
 };
 
 const getEventFormSchema = (t: (key: string) => string) =>
-  z.object({
-    name: z.string().min(1, t("app.pets.event_form.validation.name_required")),
-    scheduledFor: z
-      .string()
-      .min(1, t("app.pets.event_form.validation.date_required"))
-      .refine((value) => value >= todayInputValue(), {
-        message: t("app.pets.event_form.validation.date_future"),
-      }),
-    description: z.string().optional(),
-  });
+  z
+    .object({
+      name: z
+        .string()
+        .min(1, t("app.pets.event_form.validation.name_required")),
+      scheduledFor: z
+        .string()
+        .min(1, t("app.pets.event_form.validation.date_required"))
+        .refine((value) => value >= todayInputValue(), {
+          message: t("app.pets.event_form.validation.date_future"),
+        }),
+      scheduledTime: z.string().optional(),
+      description: z
+        .string()
+        .max(
+          EVENT_NOTES_MAX_LENGTH,
+          t("app.pets.event_form.validation.notes_max"),
+        )
+        .optional(),
+    })
+    .superRefine(({ scheduledFor, scheduledTime }, context) => {
+      if (
+        scheduledFor &&
+        scheduledTime &&
+        new Date(`${scheduledFor}T${scheduledTime}`).getTime() < Date.now()
+      ) {
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: t("app.pets.event_form.validation.date_future"),
+          path: ["scheduledTime"],
+        });
+      }
+    });
 
 type EventFormData = z.infer<ReturnType<typeof getEventFormSchema>>;
 
@@ -57,7 +82,12 @@ export const EventForm = ({ petId, open, onOpenChange }: EventFormProps) => {
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
-    defaultValues: { name: "", scheduledFor: "", description: "" },
+    defaultValues: {
+      name: "",
+      scheduledFor: "",
+      scheduledTime: "",
+      description: "",
+    },
   });
 
   useEffect(() => {
@@ -69,7 +99,10 @@ export const EventForm = ({ petId, open, onOpenChange }: EventFormProps) => {
       await addEventAsync({
         name: data.name,
         description: data.description || undefined,
-        scheduledFor: data.scheduledFor,
+        scheduledFor: data.scheduledTime
+          ? new Date(`${data.scheduledFor}T${data.scheduledTime}`).toISOString()
+          : data.scheduledFor,
+        hasTime: Boolean(data.scheduledTime),
       });
       onOpenChange(false);
       form.reset();
@@ -80,7 +113,7 @@ export const EventForm = ({ petId, open, onOpenChange }: EventFormProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-full max-w-lg overflow-y-auto p-4 sm:max-h-[90dvh] sm:max-w-full sm:p-6">
+      <DialogContent className="max-h-full max-w-full grid-rows-[auto_1fr] overflow-y-auto p-4 sm:max-h-[90dvh] sm:max-w-lg sm:p-6">
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-lg">
             {t("app.pets.event_form.title")}
@@ -93,64 +126,90 @@ export const EventForm = ({ petId, open, onOpenChange }: EventFormProps) => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 sm:space-y-6"
+            className="flex flex-col justify-between space-y-4 sm:space-y-6"
           >
-            <FormItem className="relative min-w-0 space-y-1">
-              <FormLabel className="text-sm">
-                {t("app.pets.event_form.name")} *
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={t("app.pets.event_form.name_placeholder")}
-                  className="h-9"
-                  {...form.register("name")}
+            <div className="flex flex-col gap-4">
+              <FormItem className="relative min-w-0 space-y-1">
+                <FormLabel className="text-sm">
+                  {t("app.pets.event_form.name")} *
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t("app.pets.event_form.name_placeholder")}
+                    className="h-9"
+                    {...form.register("name")}
+                  />
+                </FormControl>
+                <FormMessage className="absolute top-full left-0 text-xs" />
+              </FormItem>
+
+              <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-3">
+                <FormField
+                  control={form.control}
+                  name="scheduledFor"
+                  render={({ field }) => (
+                    <FormItem className="relative min-w-0 space-y-1">
+                      <FormLabel className="text-sm">
+                        {t("app.pets.event_form.date")} *
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="date"
+                          min={todayInputValue()}
+                          className="h-9 w-full [&::-webkit-calendar-picker-indicator]:ml-auto"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="absolute top-full left-0 text-xs" />
+                    </FormItem>
+                  )}
                 />
-              </FormControl>
-              <FormMessage className="absolute top-full left-0 text-xs" />
-            </FormItem>
 
-            <FormField
-              control={form.control}
-              name="scheduledFor"
-              render={({ field }) => (
-                <FormItem className="relative min-w-0 space-y-1">
-                  <FormLabel className="text-sm">
-                    {t("app.pets.event_form.date")} *
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      type="date"
-                      min={todayInputValue()}
-                      className="h-9 w-full [&::-webkit-calendar-picker-indicator]:ml-auto"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="absolute top-full left-0 text-xs" />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="scheduledTime"
+                  render={({ field }) => (
+                    <FormItem className="relative min-w-0 space-y-1">
+                      <FormLabel className="text-sm">
+                        {t("app.pets.event_form.time")}
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="time" className="h-9 w-full" {...field} />
+                      </FormControl>
+                      <FormMessage className="absolute top-full left-0 text-xs" />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem className="min-w-0">
-                  <FormLabel className="text-sm">
-                    {t("app.pets.event_form.description_label")}
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder={t(
-                        "app.pets.event_form.description_placeholder",
-                      )}
-                      rows={4}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="min-w-0">
+                    <FormLabel className="text-sm">
+                      {t("app.pets.event_form.description_label")}
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder={t(
+                          "app.pets.event_form.description_placeholder",
+                        )}
+                        maxLength={EVENT_NOTES_MAX_LENGTH}
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
+                    <div className="flex items-start justify-between gap-2">
+                      <FormMessage />
+                      <span className="text-muted-foreground ml-auto text-xs">
+                        {field.value?.length ?? 0}/{EVENT_NOTES_MAX_LENGTH}
+                      </span>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <DialogFooter>
               <Button

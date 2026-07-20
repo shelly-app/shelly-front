@@ -375,6 +375,7 @@
         "name": "Event",
         "name_placeholder": "e.g. Vet appointment",
         "date": "Date",
+        "time": "Time",
         "description_label": "Notes",
         "description_placeholder": "Add any relevant details",
         "cancel": "Cancel",
@@ -384,7 +385,8 @@
         "validation": {
           "name_required": "Event name is required",
           "date_required": "Date is required",
-          "date_future": "The date can't be in the past"
+          "date_future": "The date can't be in the past",
+          "notes_max": "Notes must be 500 characters or fewer"
         }
       },
       "validation": {
@@ -416,9 +418,10 @@
         "no_recent_events": "No recent events",
         "future_events": "Future Events",
         "no_future_events": "No future events",
+        "show_more": "Show more",
+        "show_less": "Show less",
         "years": "{{count}} year",
         "years_plural": "{{count}} years",
-        "shelter_info": "Shelter Info",
         "archived": {
           "title": "Pet Archived",
           "description": "{{name}} has been archived and is no longer available in the system.",
