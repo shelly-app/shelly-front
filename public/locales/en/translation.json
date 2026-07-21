@@ -389,6 +389,22 @@
           "notes_max": "Notes must be 500 characters or fewer"
         }
       },
+      "vaccination_form": {
+        "title": "Register vaccination",
+        "description": "Add a vaccination record for {{name}}.",
+        "vaccine": "Vaccine",
+        "vaccine_placeholder": "Select a vaccine",
+        "date": "Date administered",
+        "cancel": "Cancel",
+        "add": "Register vaccination",
+        "adding": "Registering...",
+        "error": "Error registering the vaccination. Please try again.",
+        "validation": {
+          "vaccine_required": "A vaccine is required",
+          "date_required": "The administration date is required",
+          "date_future": "The administration date can't be in the future"
+        }
+      },
       "validation": {
         "name_required": "Name is required",
         "species_required": "Species is required",

@@ -24,7 +24,9 @@ export const useAddVaccination = (petId: number) => {
         data,
       ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["pets", String(petId)] });
+      queryClient.invalidateQueries({
+        queryKey: ["pets", currentShelter?.id, String(petId)],
+      });
       queryClient.invalidateQueries({ queryKey: ["shelter-pets"] });
     },
   });

@@ -3,7 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ColorBadge } from "@/features/pets/components/color-badge";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PetStatusBadge, PetForm, EventForm } from "@/features/pets/components";
+import {
+  PetStatusBadge,
+  PetForm,
+  EventForm,
+  VaccinationForm,
+} from "@/features/pets/components";
 import {
   Clock,
   Palette,
@@ -117,6 +122,8 @@ const ExpandableEventDescription = ({ text }: { text: string }) => {
 export const PetDetailsPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isEventDialogOpen, setIsEventDialogOpen] = useState<boolean>(false);
+  const [isVaccinationDialogOpen, setIsVaccinationDialogOpen] =
+    useState<boolean>(false);
   const { petId } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -418,25 +425,44 @@ export const PetDetailsPage = () => {
           {/* Vaccines */}
           <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <HeartPlus className="text-primary h-5 w-5" />
-                {t("app.pets.details.vaccines")}
-              </CardTitle>
+              <div className="flex items-center justify-between gap-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <HeartPlus className="text-primary h-5 w-5" />
+                  {t("app.pets.details.vaccines")}
+                </CardTitle>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1 px-2! py-1 text-xs"
+                  aria-label={t("app.pets.vaccination_form.title")}
+                  onClick={() => setIsVaccinationDialogOpen(true)}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="max-h-80 overflow-y-auto">
               {pet.vaccinations && pet.vaccinations.length > 0 ? (
                 <ol className="border-border relative space-y-4 border-l">
-                  {pet.vaccinations.map((v, i) => (
-                    <li key={i} className="ml-4">
-                      <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
-                      <p className="text-sm leading-tight font-medium">
-                        {v.vaccine}
-                      </p>
-                      <time className="text-muted-foreground text-xs">
-                        {new Date(v.administeredAt).toLocaleDateString("es-AR")}
-                      </time>
-                    </li>
-                  ))}
+                  {[...pet.vaccinations]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.administeredAt).getTime() -
+                        new Date(a.administeredAt).getTime(),
+                    )
+                    .map((v, i) => (
+                      <li key={i} className="ml-4">
+                        <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
+                        <p className="text-sm leading-tight font-medium">
+                          {v.vaccine}
+                        </p>
+                        <time className="text-muted-foreground text-xs">
+                          {new Date(v.administeredAt).toLocaleDateString(
+                            "es-AR",
+                          )}
+                        </time>
+                      </li>
+                    ))}
                 </ol>
               ) : (
                 <p className="text-muted-foreground text-sm">
@@ -607,6 +633,15 @@ export const PetDetailsPage = () => {
           petId={pet.id}
           open={isEventDialogOpen}
           onOpenChange={setIsEventDialogOpen}
+        />
+
+        {/* Add Vaccination Dialog */}
+        <VaccinationForm
+          petId={pet.id}
+          petName={pet.name}
+          specie={pet.specie}
+          open={isVaccinationDialogOpen}
+          onOpenChange={setIsVaccinationDialogOpen}
         />
       </div>
     </div>

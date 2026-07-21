@@ -389,6 +389,22 @@
           "notes_max": "Las notas no pueden superar los 500 caracteres"
         }
       },
+      "vaccination_form": {
+        "title": "Registrar vacunación",
+        "description": "Agregá un registro de vacunación para {{name}}.",
+        "vaccine": "Vacuna",
+        "vaccine_placeholder": "Seleccioná una vacuna",
+        "date": "Fecha de aplicación",
+        "cancel": "Cancelar",
+        "add": "Registrar vacunación",
+        "adding": "Registrando...",
+        "error": "Error al registrar la vacunación. Intentá de nuevo.",
+        "validation": {
+          "vaccine_required": "La vacuna es requerida",
+          "date_required": "La fecha de aplicación es requerida",
+          "date_future": "La fecha de aplicación no puede ser futura"
+        }
+      },
       "validation": {
         "name_required": "El nombre es requerido",
         "species_required": "La especie es requerida",

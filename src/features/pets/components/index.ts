@@ -1,6 +1,7 @@
 export { AddPet } from "./pet-form";
 export { PetForm } from "./pet-form";
 export { EventForm } from "./event-form";
+export { VaccinationForm } from "./vaccination-form";
 export { SearchPet } from "./search-pet";
 export { MainPetsTable } from "./main-pets-table";
 export { PetStatusBadge } from "./pet-status-badge";
