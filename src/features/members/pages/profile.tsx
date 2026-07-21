@@ -76,6 +76,7 @@ export const MemberProfilePage = () => {
         role: (currentShelter?.role ??
           user.shelters[0]?.role ??
           "volunteer") as MemberRole,
+        pending: false,
         joinedAt: new Date().toISOString(),
         userId: 0,
       };

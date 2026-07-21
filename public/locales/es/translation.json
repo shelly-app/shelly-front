@@ -456,6 +456,7 @@
       "member_since": "Miembro desde {{date}}",
       "loading": "Cargando miembros...",
       "error": "Error al cargar los miembros",
+      "pending": "Pendiente",
       "invite": {
         "title": "Invitar nuevo miembro",
         "description": "El usuario recibirá un correo electrónico con un enlace para crear su cuenta y unirse al refugio.",
@@ -465,6 +466,15 @@
         "sending": "Enviando...",
         "cancel": "Cancelar",
         "error": "No pudimos enviar la invitación. Por favor, intentá de nuevo."
+      },
+      "remove": {
+        "action": "Eliminar a {{name}}",
+        "title": "Eliminar miembro",
+        "description": "¿Querés eliminar a {{name}} de este refugio? Perderá el acceso inmediatamente.",
+        "confirm": "Eliminar",
+        "removing": "Eliminando...",
+        "cancel": "Cancelar",
+        "error": "No pudimos eliminar a este miembro. Por favor, intentá de nuevo."
       },
       "validation": {
         "invalid_email": "Email inválido"

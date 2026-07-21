@@ -6,5 +6,6 @@ export type Member = {
   email: string;
   avatarUrl?: string | null;
   role: MemberRole;
+  pending: boolean;
   joinedAt: string;
 };

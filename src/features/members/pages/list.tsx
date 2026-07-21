@@ -10,6 +10,7 @@ import { useMembers } from "@/features/members/hooks/use-members";
 import type { Member } from "@/features/members/types/member";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -22,7 +23,7 @@ import { useState, useEffect } from "react";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Trash2Icon } from "lucide-react";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
 import { useTranslation } from "react-i18next";
@@ -42,6 +43,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { MEMBER_ROLES, type MemberRole } from "@/features/members/constants";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useRemoveMember } from "@/features/members/hooks/use-remove-member";
+import { useUser } from "@/hooks/use-user";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
@@ -52,12 +65,31 @@ export const MembersListPage = () => {
     isError: isInviteError,
     reset: resetInvite,
   } = useInviteMember();
+  const { data: user } = useUser();
+  const {
+    removeMemberAsync,
+    isLoading: isRemovingMember,
+    isError: isRemoveError,
+    reset: resetRemoveMember,
+  } = useRemoveMember();
   const [search, setSearch] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState<Member | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const { t } = useTranslation();
   const roleLabel = useRoleLabel();
   const navigate = useNavigate();
+
+  const handleRemoveMember = async () => {
+    if (!memberToRemove) return;
+
+    try {
+      await removeMemberAsync(memberToRemove.userId);
+      setMemberToRemove(null);
+    } catch {
+      // Error is surfaced inline via `isRemoveError`.
+    }
+  };
 
   useEffect(() => {
     if (dialogOpen === false) {
@@ -137,11 +169,31 @@ export const MembersListPage = () => {
         {visibleMembers.map((member: Member) => (
           <Card
             key={member.userId}
-            className="flex h-68 w-52 cursor-pointer flex-col items-center justify-between overflow-hidden shadow-md transition-shadow hover:shadow-lg"
+            className="relative flex h-68 w-52 cursor-pointer flex-col items-center justify-between overflow-hidden shadow-md transition-shadow hover:shadow-lg"
             onClick={() =>
               navigate(paths.app.members.profile.getHref(String(member.userId)))
             }
           >
+            {currentShelter.role === "admin" &&
+              user &&
+              member.email !== user.email && (
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="text-destructive absolute top-2 right-2 z-10 size-8"
+                  aria-label={t("app.members.remove.action", {
+                    name: member.name,
+                  })}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    resetRemoveMember();
+                    setMemberToRemove(member);
+                  }}
+                >
+                  <Trash2Icon />
+                </Button>
+              )}
             <CardHeader className="flex w-full flex-col items-center gap-2 p-4">
               <Avatar className="h-20 w-20">
                 <AvatarImage
@@ -159,6 +211,9 @@ export const MembersListPage = () => {
                 <Text variant="secondary" size="sm">
                   {roleLabel(member.role)}
                 </Text>
+                {member.pending && (
+                  <Badge variant="secondary">{t("app.members.pending")}</Badge>
+                )}
                 <Text
                   variant="primary"
                   size="sm"
@@ -290,6 +345,49 @@ export const MembersListPage = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog
+        open={memberToRemove !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setMemberToRemove(null);
+            resetRemoveMember();
+          }
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("app.members.remove.title")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("app.members.remove.description", {
+                name: memberToRemove?.name ?? "",
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {isRemoveError && (
+            <p className="text-destructive text-sm">
+              {t("app.members.remove.error")}
+            </p>
+          )}
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isRemovingMember}>
+              {t("app.members.remove.cancel")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 text-white"
+              disabled={isRemovingMember}
+              onClick={(event) => {
+                event.preventDefault();
+                void handleRemoveMember();
+              }}
+            >
+              {isRemovingMember
+                ? t("app.members.remove.removing")
+                : t("app.members.remove.confirm")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };
