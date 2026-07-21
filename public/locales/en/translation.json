@@ -112,6 +112,8 @@
     "sign_in_with": "Sign in with {{provider}}",
     "access": "Access",
     "sign_in": "Sign in",
+    "checking_access": "Checking your shelter access...",
+    "no_shelter_access": "You need to be a member of a shelter to access the shelter app. Ask a shelter administrator to invite you.",
     "dog_cat_graphic_alt": "Dog and cat graphic",
     "shelters": "Shelters"
   },

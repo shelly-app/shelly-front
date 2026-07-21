@@ -112,6 +112,8 @@
     "sign_in_with": "Iniciar sesión con {{provider}}",
     "access": "Acceder",
     "sign_in": "Iniciar sesión",
+    "checking_access": "Verificando tu acceso al refugio...",
+    "no_shelter_access": "Necesitás ser miembro de un refugio para acceder a la aplicación. Pedile a un administrador que te invite.",
     "dog_cat_graphic_alt": "Gráfico de perro y gato",
     "shelters": "Refugios"
   },

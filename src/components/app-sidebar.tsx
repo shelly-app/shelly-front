@@ -85,7 +85,7 @@ const AppSidebar = () => {
       {
         title: t("sidebar.sign_out"),
         url: "#",
-        action: signOutAction,
+        action: () => signOutAction(),
       },
     ],
     [signOutAction, t, navigate],

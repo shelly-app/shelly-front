@@ -6,12 +6,10 @@ import { AuthProvider } from "react-oidc-context";
 import { authConfig } from "@/config/auth";
 
 import { MainErrorFallback } from "@/components/errors/main";
-// import { Notifications } from '@/components/ui/notifications';
-// import { Spinner } from '@/components/ui/spinner';
-// import { AuthLoader } from '@/lib/auth';
 import { queryConfig } from "@/lib/react-query";
 import { SheltersProvider } from "@/components/providers/shelters-provider";
 import { Suspense, useState } from "react";
+import { Toaster } from "sonner";
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -39,6 +37,7 @@ const AppProvider = ({ children }: AppProviderProps) => {
             <SheltersProvider>
               {import.meta.env.DEV && <ReactQueryDevtools />}
               {children}
+              <Toaster richColors closeButton position="top-center" />
             </SheltersProvider>
           </AuthProvider>
         </QueryClientProvider>
