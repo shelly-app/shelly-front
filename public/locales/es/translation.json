@@ -6,20 +6,20 @@
       "subtitle_shelly": "vino a cambiar eso.",
       "features": {
         "visualization": {
-          "title": "Visualización",
-          "description": "Obtené un vistazo general de tu refugio en un solo lugar."
+          "title": "Tu refugio de un vistazo",
+          "description": "Consultá mascotas, adopciones y actividad en una vista clara para que tu equipo sepa siempre qué necesita atención."
         },
         "adoptions": {
-          "title": "Adopciones",
-          "description": "Gestioná las solicitudes de adopción de manera eficiente y sin complicaciones."
+          "title": "Una gestión de adopciones más simple",
+          "description": "Organizá cada solicitud en un solo lugar y ayudá a cada mascota a encontrar antes el hogar indicado."
         },
-        "chatbot": {
-          "title": "Chatbot",
-          "description": "Automatizá el proceso de seguimiento y la recepción de solicitudes de adopción mediante un bot de WhatsApp."
+        "network": {
+          "title": "Se parte de una red",
+          "description": "Centralizá tus mascotas en una página pública y conectate con otros refugios para ampliar su alcance, impulsar adopciones y colaborar."
         },
         "details": {
-          "title": "Detalle",
-          "description": "Accedé a los detalles de cada mascota con registro histórico de eventos."
+          "title": "La historia de cada mascota",
+          "description": "Mantené perfiles, registros de salud e historial de eventos juntos para que tu equipo brinde un cuidado consistente."
         }
       }
     },
@@ -85,10 +85,6 @@
           "organization_placeholder": "Nombre de tu empresa u organización",
           "phone": "Teléfono",
           "phone_placeholder": "+54 9 11 1234-5678",
-          "sponsorship_type": "Tipo de patrocinio",
-          "sponsorship_type_placeholder": "Ej: Donación única, Patrocinio mensual, etc.",
-          "budget": "Presupuesto aproximado",
-          "budget_placeholder": "Ej: $10,000 - $50,000",
           "message": "Mensaje",
           "message_placeholder": "Contanos sobre tu interés en patrocinar Shelly, cómo te gustaría colaborar, y cualquier pregunta que tengas..."
         }

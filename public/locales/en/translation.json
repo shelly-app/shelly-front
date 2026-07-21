@@ -6,20 +6,20 @@
       "subtitle_shelly": "came to change that.",
       "features": {
         "visualization": {
-          "title": "Visualization",
-          "description": "Get a general overview of your shelter in one place."
+          "title": "Your shelter at a glance",
+          "description": "See pets, adoptions, and activity in one clear view so your team always knows what needs attention."
         },
         "adoptions": {
-          "title": "Adoptions",
-          "description": "Manage adoption requests efficiently and without complications."
+          "title": "Simpler adoption management",
+          "description": "Organize every adoption request in one place and help each pet find the right home faster."
         },
-        "chatbot": {
-          "title": "Chatbot",
-          "description": "Automate the follow-up process and the reception of adoption requests through a WhatsApp bot."
+        "network": {
+          "title": "Be part of a network",
+          "description": "Bring your pets together on one public page and connect with other shelters to expand their reach, boost adoptions, and collaborate."
         },
         "details": {
-          "title": "Details",
-          "description": "Access the details of each pet with a historical record of events."
+          "title": "Every pet's story",
+          "description": "Keep profiles, health records, and event history together so your team can provide consistent care."
         }
       }
     },
@@ -85,10 +85,6 @@
           "organization_placeholder": "Name of your company or organization",
           "phone": "Phone",
           "phone_placeholder": "+1 123-456-7890",
-          "sponsorship_type": "Sponsorship type",
-          "sponsorship_type_placeholder": "Ex: One-time donation, Monthly sponsorship, etc.",
-          "budget": "Approximate budget",
-          "budget_placeholder": "Ex: $1,000 - $5,000",
           "message": "Message",
           "message_placeholder": "Tell us about your interest in sponsoring Shelly, how you would like to collaborate, and any questions you have..."
         }
@@ -137,7 +133,7 @@
   },
   "brand": {
     "name": "Shelly",
-    "email": "shelly.app.contact@gmail.com"
+    "email": "support.shellyapp@gmail.com"
   },
   "languages": {
     "en": "English",

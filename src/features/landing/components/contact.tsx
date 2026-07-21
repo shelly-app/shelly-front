@@ -326,40 +326,6 @@ export const Contact = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="contacthip-type">
-                      {t("landing.contact.sponsor.form.sponsorship_type")} *
-                    </Label>
-                    <Input
-                      id="contacthip-type"
-                      value={formData.contacthipType}
-                      onChange={(e) =>
-                        handleInputChange("contacthipType", e.target.value)
-                      }
-                      placeholder={t(
-                        "landing.contact.sponsor.form.sponsorship_type_placeholder",
-                      )}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="sponsor-budget">
-                      {t("landing.contact.sponsor.form.budget")}
-                    </Label>
-                    <Input
-                      id="sponsor-budget"
-                      value={formData.budget}
-                      onChange={(e) =>
-                        handleInputChange("budget", e.target.value)
-                      }
-                      placeholder={t(
-                        "landing.contact.sponsor.form.budget_placeholder",
-                      )}
-                    />
-                  </div>
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="sponsor-message">
                     {t("landing.contact.sponsor.form.message")} *

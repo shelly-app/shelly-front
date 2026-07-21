@@ -13,8 +13,6 @@ export interface ContactFormData {
   shelterName?: string;
   shelterLocation?: string;
   shelterType?: string;
-  contacthipType?: string;
-  budget?: string;
 }
 
 type ContactSubmissionPayload = {
@@ -27,8 +25,6 @@ type ContactSubmissionPayload = {
   shelterName?: string;
   shelterLocation?: string;
   shelterType?: string;
-  sponsorshipType?: string;
-  budget?: string;
 };
 
 const emptyFormData: ContactFormData = {
@@ -40,8 +36,6 @@ const emptyFormData: ContactFormData = {
   shelterName: "",
   shelterLocation: "",
   shelterType: "",
-  contacthipType: "",
-  budget: "",
 };
 
 const trimToUndefined = (value?: string) => {
@@ -62,8 +56,6 @@ const toPayload = (
   shelterName: trimToUndefined(data.shelterName),
   shelterLocation: trimToUndefined(data.shelterLocation),
   shelterType: trimToUndefined(data.shelterType),
-  sponsorshipType: trimToUndefined(data.contacthipType),
-  budget: trimToUndefined(data.budget),
 });
 
 export const useContactForm = () => {

@@ -7,9 +7,9 @@ import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import {
-  BotMessageSquareIcon,
   ClipboardListIcon,
   DogIcon,
+  Globe2Icon,
   UserPenIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -29,9 +29,9 @@ const ABOUT_FEATURES = {
   ],
   secondSection: [
     {
-      icon: BotMessageSquareIcon,
+      icon: Globe2Icon,
       color: "purple",
-      i18nKey: "chatbot",
+      i18nKey: "network",
     },
     {
       icon: ClipboardListIcon,
