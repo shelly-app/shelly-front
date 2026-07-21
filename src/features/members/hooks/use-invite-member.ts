@@ -1,17 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
 import { useShelters } from "@/components/providers/shelters-provider";
+import type { MemberRole } from "@/features/members/constants";
 
 export type InviteMemberData = {
   email: string;
-  role?: string;
+  role: MemberRole;
 };
 
 type InviteMemberResponse = {
   userId: number;
   name: string;
   email: string;
-  role: string;
+  role: MemberRole;
   shelterId: number;
 };
 
@@ -20,7 +21,7 @@ export const useInviteMember = () => {
   const { currentShelter } = useShelters();
 
   const mutation = useMutation<InviteMemberResponse, Error, InviteMemberData>({
-    mutationFn: ({ email, role = "volunteer" }) =>
+    mutationFn: ({ email, role }) =>
       api.post<never, InviteMemberResponse>(
         `/shelters/${currentShelter?.id}/members`,
         { email, role },

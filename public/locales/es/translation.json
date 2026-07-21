@@ -462,6 +462,7 @@
         "title": "Invitar nuevo miembro",
         "description": "El usuario recibirá un correo electrónico con un enlace para crear su cuenta y unirse al refugio.",
         "email_placeholder": "Correo electrónico del miembro",
+        "role": "Rol a asignar",
         "send": "Enviar invitación",
         "sending": "Enviando...",
         "cancel": "Cancelar",
@@ -568,6 +569,15 @@
         "phone_placeholder": "+54 11 1234-5678",
         "cancel": "Cancelar",
         "save": "Guardar cambios"
+      },
+      "role_dialog": {
+        "change": "Cambiar rol",
+        "title": "Cambiar rol del miembro",
+        "description": "Seleccioná el rol que {{name}} tendrá en este refugio.",
+        "cancel": "Cancelar",
+        "save": "Guardar rol",
+        "saving": "Guardando...",
+        "error": "No pudimos actualizar el rol del miembro. Intentá de nuevo."
       }
     }
   },

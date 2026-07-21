@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import SectionLoader from "@/components/section-loader";
@@ -34,6 +34,14 @@ import { useShelters } from "@/components/providers/shelters-provider";
 import { useInviteMember } from "@/features/members/hooks/use-invite-member";
 import { useRoleLabel } from "@/hooks/use-role-label";
 import { Text } from "@/components/ui/text";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MEMBER_ROLES, type MemberRole } from "@/features/members/constants";
 
 export const MembersListPage = () => {
   const { members, isLoading, isError } = useMembers();
@@ -61,12 +69,14 @@ export const MembersListPage = () => {
     email: z
       .string()
       .email({ message: t("app.members.validation.invalid_email") }),
+    role: z.enum(MEMBER_ROLES),
   });
 
   type InviteForm = z.infer<typeof inviteSchema>;
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
     reset,
@@ -74,7 +84,7 @@ export const MembersListPage = () => {
     resolver: zodResolver(inviteSchema),
     mode: "onSubmit",
     reValidateMode: "onChange",
-    defaultValues: { email: "" },
+    defaultValues: { email: "", role: "volunteer" },
   });
 
   if (isShelterLoading) {
@@ -115,10 +125,12 @@ export const MembersListPage = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="sm:w-64"
         />
-        <Button size="lg" onClick={() => setDialogOpen(true)}>
-          <PlusIcon className="mr-2 h-4 w-4" />
-          {t("app.members.add_member")}
-        </Button>
+        {currentShelter.role === "admin" && (
+          <Button size="lg" onClick={() => setDialogOpen(true)}>
+            <PlusIcon className="mr-2 h-4 w-4" />
+            {t("app.members.add_member")}
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-wrap justify-center gap-6 md:justify-start">
@@ -190,7 +202,10 @@ export const MembersListPage = () => {
             onSubmit={handleSubmit(async (data) => {
               setHasSubmitted(true);
               try {
-                await inviteAsync({ email: data.email });
+                await inviteAsync({
+                  email: data.email,
+                  role: data.role,
+                });
                 setDialogOpen(false);
                 reset(undefined, {
                   keepErrors: false,
@@ -202,7 +217,7 @@ export const MembersListPage = () => {
               }
             })}
           >
-            <div className="pb-8">
+            <div className="space-y-4 pb-8">
               <Input
                 placeholder={t("app.members.invite.email_placeholder")}
                 {...register("email")}
@@ -217,6 +232,34 @@ export const MembersListPage = () => {
                   {t("app.members.invite.error")}
                 </p>
               )}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  {t("app.members.invite.role")}
+                </label>
+                <Controller
+                  control={control}
+                  name="role"
+                  render={({ field }) => (
+                    <Select
+                      value={field.value}
+                      onValueChange={(value: MemberRole) =>
+                        field.onChange(value)
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {MEMBER_ROLES.map((role) => (
+                          <SelectItem key={role} value={role}>
+                            {roleLabel(role)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
             </div>
             <DialogFooter>
               <Button

@@ -27,6 +27,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Text } from "@/components/ui/text";
 import SectionLoader from "@/components/section-loader";
 import SectionError from "@/components/section-error";
@@ -38,27 +45,37 @@ import { useUser } from "@/hooks/use-user";
 import { useImageUpload } from "@/hooks/use-image-upload";
 import { useRoleLabel } from "@/hooks/use-role-label";
 import { intlFormat, parseISO } from "date-fns";
+import { useShelters } from "@/components/providers/shelters-provider";
+import { useUpdateMemberRole } from "@/features/members/hooks/use-update-member-role";
+import { MEMBER_ROLES, type MemberRole } from "@/features/members/constants";
+import type { Member } from "@/features/members/types/member";
 
 export const MemberProfilePage = () => {
   const { memberId } = useParams();
   const { t } = useTranslation();
   const roleLabel = useRoleLabel();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<MemberRole>("volunteer");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarRemoved, setAvatarRemoved] = useState(false);
 
   const { data: user, isLoading: isUserLoading } = useUser();
+  const { currentShelter } = useShelters();
   const { members, isLoading: isMembersLoading, isError } = useMembers();
   const { upload: uploadAvatar, isUploading } = useImageUpload(
     "/users/me/avatar-upload-url",
   );
 
-  const member = useMemo(() => {
+  const member = useMemo<Member | null>(() => {
     if (memberId === "me" && user && !members.length) {
       return {
         name: user.name,
         email: user.email,
-        role: user.shelters[0]?.role ?? "—",
+        avatarUrl: user.avatarUrl ?? null,
+        role: (currentShelter?.role ??
+          user.shelters[0]?.role ??
+          "volunteer") as MemberRole,
         joinedAt: new Date().toISOString(),
         userId: 0,
       };
@@ -68,7 +85,7 @@ export const MemberProfilePage = () => {
       return members.find((m) => m.email === user?.email) ?? null;
     }
     return members.find((m) => m.userId === Number(memberId)) ?? null;
-  }, [members, memberId, user]);
+  }, [currentShelter?.role, members, memberId, user]);
 
   const isOwnProfile = useMemo(() => {
     if (memberId === "me") return true;
@@ -79,6 +96,14 @@ export const MemberProfilePage = () => {
   const { updateProfileAsync, isLoading: isUpdating } = useUpdateProfile(
     member?.userId ?? 0,
   );
+  const {
+    updateMemberRoleAsync,
+    isLoading: isUpdatingRole,
+    isError: isRoleUpdateError,
+    reset: resetRoleUpdate,
+  } = useUpdateMemberRole(member?.userId ?? 0, currentShelter?.id ?? 0);
+
+  const canManageRole = currentShelter?.role === "admin" && !isOwnProfile;
 
   const showExistingAvatar =
     !!member?.avatarUrl && !avatarRemoved && !avatarFile;
@@ -123,6 +148,22 @@ export const MemberProfilePage = () => {
     setAvatarFile(null);
     setAvatarRemoved(false);
     setIsEditDialogOpen(true);
+  };
+
+  const handleOpenRoleDialog = () => {
+    if (!member) return;
+    setSelectedRole(member.role as MemberRole);
+    resetRoleUpdate();
+    setIsRoleDialogOpen(true);
+  };
+
+  const handleRoleUpdate = async () => {
+    try {
+      await updateMemberRoleAsync({ role: selectedRole });
+      setIsRoleDialogOpen(false);
+    } catch {
+      // Error is surfaced inline via `isRoleUpdateError`.
+    }
   };
 
   if (isUserLoading || isMembersLoading) {
@@ -182,18 +223,30 @@ export const MemberProfilePage = () => {
             </div>
 
             {/* Role */}
-            <div className="flex items-center gap-3">
-              <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
-                <Shield className="text-primary h-5 w-5" />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+                  <Shield className="text-primary h-5 w-5" />
+                </div>
+                <div className="flex items-baseline gap-2">
+                  <Text size="xs" variant="secondary">
+                    {t("app.profile.role")}
+                  </Text>
+                  <Text size="sm" weight="medium" variant="primary">
+                    {roleLabel(member.role)}
+                  </Text>
+                </div>
               </div>
-              <div className="flex items-baseline gap-2">
-                <Text size="xs" variant="secondary">
-                  {t("app.profile.role")}
-                </Text>
-                <Text size="sm" weight="medium" variant="primary">
-                  {roleLabel(member.role)}
-                </Text>
-              </div>
+              {canManageRole && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleOpenRoleDialog}
+                >
+                  {t("app.profile.role_dialog.change")}
+                </Button>
+              )}
             </div>
 
             {/* Member Since */}
@@ -300,6 +353,72 @@ export const MemberProfilePage = () => {
               </DialogFooter>
             </form>
           </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Change Role Dialog */}
+      <Dialog
+        open={isRoleDialogOpen}
+        onOpenChange={(open) => {
+          setIsRoleDialogOpen(open);
+          if (!open) resetRoleUpdate();
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("app.profile.role_dialog.title")}</DialogTitle>
+            <DialogDescription>
+              {t("app.profile.role_dialog.description", {
+                name: member.name,
+              })}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium">
+              {t("app.profile.role")}
+            </label>
+            <Select
+              value={selectedRole}
+              onValueChange={(value: MemberRole) => setSelectedRole(value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {MEMBER_ROLES.map((role) => (
+                  <SelectItem key={role} value={role}>
+                    {roleLabel(role)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {isRoleUpdateError && (
+              <p className="text-destructive text-sm">
+                {t("app.profile.role_dialog.error")}
+              </p>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isUpdatingRole}
+              onClick={() => setIsRoleDialogOpen(false)}
+            >
+              {t("app.profile.role_dialog.cancel")}
+            </Button>
+            <Button
+              type="button"
+              disabled={isUpdatingRole || selectedRole === member.role}
+              onClick={handleRoleUpdate}
+            >
+              {isUpdatingRole
+                ? t("app.profile.role_dialog.saving")
+                : t("app.profile.role_dialog.save")}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </section>

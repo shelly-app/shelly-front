@@ -462,6 +462,7 @@
         "title": "Invite new member",
         "description": "The user will receive an email with a link to create their account and join the shelter.",
         "email_placeholder": "Member's email",
+        "role": "Role to assign",
         "send": "Send invitation",
         "sending": "Sending...",
         "cancel": "Cancel",
@@ -563,6 +564,15 @@
         "phone_placeholder": "+1 123-456-7890",
         "cancel": "Cancel",
         "save": "Save changes"
+      },
+      "role_dialog": {
+        "change": "Change role",
+        "title": "Change member role",
+        "description": "Select the role that {{name}} should have in this shelter.",
+        "cancel": "Cancel",
+        "save": "Save role",
+        "saving": "Saving...",
+        "error": "We couldn't update this member's role. Please try again."
       }
     }
   },
