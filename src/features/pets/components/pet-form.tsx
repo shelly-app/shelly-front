@@ -73,7 +73,7 @@ const getPetFormSchema = (t: (key: string) => string) =>
     breed: z.string().optional(),
     birthDate: z
       .string()
-      .transform((value) => value || null)
+      .transform((value) => value || undefined)
       .optional(),
     ageYears: z.coerce.number().int().min(0).max(30).optional(),
     ageMonths: z.coerce.number().int().min(0).max(11).optional(),
