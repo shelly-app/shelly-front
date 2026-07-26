@@ -71,7 +71,10 @@ const getPetFormSchema = (t: (key: string) => string) =>
       },
     ),
     breed: z.string().optional(),
-    birthDate: z.string().optional(),
+    birthDate: z
+      .string()
+      .transform((value) => value || null)
+      .optional(),
     ageYears: z.coerce.number().int().min(0).max(30).optional(),
     ageMonths: z.coerce.number().int().min(0).max(11).optional(),
     sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE], {
@@ -160,7 +163,7 @@ export const PetForm = ({
       specie: (pet?.specie as PetFormData["specie"]) || PET_SPECIES.DOG,
       status: (pet?.status as PetFormData["status"]) || PET_STATUS.IN_SHELTER,
       breed: pet?.breed || "",
-      birthDate: pet?.birthDate || "",
+      birthDate: pet?.birthDate || undefined,
       ageYears: undefined,
       ageMonths: undefined,
       sex: pet?.sex as PetFormData["sex"],
@@ -292,7 +295,7 @@ export const PetForm = ({
         const updatedPet: Pet = {
           ...pet!,
           ...resolvedData,
-          birthDate: resolvedData.birthDate || null,
+          birthDate: resolvedData.birthDate,
           description: resolvedData.description || null,
           colors: resolvedData.colors || [],
         };

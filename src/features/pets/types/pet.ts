@@ -1,7 +1,7 @@
 export type Pet = {
   id: number;
   name: string;
-  birthDate: string | null;
+  birthDate?: string;
   breed: string;
   specie: string;
   sex: string;
