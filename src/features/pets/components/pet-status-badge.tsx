@@ -11,7 +11,6 @@ const statusConfig: Record<string, string> = {
   in_shelter: "shelter",
   adopted: "adopted",
   in_foster: "transit",
-  deceased: "secondary",
 };
 
 export const PetStatusBadge = ({ status, className }: PetStatusBadgeProps) => {

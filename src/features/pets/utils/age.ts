@@ -1,7 +1,7 @@
 import { differenceInMonths, differenceInYears, parseISO } from "date-fns";
 
 export const calculateAge = (
-  birthDate: string | null,
+  birthDate: string | null | undefined,
   t: (key: string, opts?: Record<string, unknown>) => string,
 ): string | null => {
   if (!birthDate) return null;

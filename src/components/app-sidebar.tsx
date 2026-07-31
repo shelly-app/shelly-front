@@ -39,7 +39,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn, getNameInitials } from "@/lib/utils";
 import { paths } from "@/config/paths";
 import { useSignOutAction } from "@/features/auth/hooks/use-sign-out-action";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ShellyGradient } from "@/components/ui/shelly-gradient";
 import { Image } from "@/components/ui/image";
 import { useTranslation } from "react-i18next";
@@ -53,6 +53,7 @@ const AppSidebar = () => {
   const roleLabel = useRoleLabel();
   const signOutAction = useSignOutAction();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const MENU_ITEMS = useMemo(
     () => [
@@ -176,6 +177,13 @@ const AppSidebar = () => {
               const shelter = shelters.find((s) => s?.id?.toString() === value);
               if (shelter) {
                 setCurrentShelter(shelter);
+
+                const isPetDetail = /^\/app\/pets\/[^/]+$/.test(
+                  location.pathname,
+                );
+                if (isPetDetail) {
+                  navigate(paths.app.pets.getHref());
+                }
               }
             }}
           >

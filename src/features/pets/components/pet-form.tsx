@@ -60,12 +60,7 @@ const getPetFormSchema = (t: (key: string) => string) =>
       required_error: t("app.pets.validation.species_required"),
     }),
     status: z.enum(
-      [
-        PET_STATUS.IN_SHELTER,
-        PET_STATUS.ADOPTED,
-        PET_STATUS.IN_FOSTER,
-        PET_STATUS.DECEASED,
-      ],
+      [PET_STATUS.IN_SHELTER, PET_STATUS.ADOPTED, PET_STATUS.IN_FOSTER],
       {
         required_error: t("app.pets.validation.status_required"),
       },

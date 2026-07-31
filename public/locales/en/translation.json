@@ -249,6 +249,14 @@
       "status": "Status",
       "no_results": "No results.",
       "search_placeholder": "Search pet...",
+      "table": {
+        "sort_by": "Sort by {{column}}: {{direction}}",
+        "sort_direction": {
+          "ascending": "ascending",
+          "descending": "descending",
+          "none": "clear sorting"
+        }
+      },
       "add_pet": "Add pet",
       "edit_pet": "Edit pet information",
       "species_labels": {
@@ -282,7 +290,18 @@
         "size_change": {
           "title": "Size change",
           "description": "Size changed from {{from}} to {{to}}"
+        },
+        "vaccination": {
+          "title": "Vaccination",
+          "description": "{{vaccine}} ({{code}})"
         }
+      },
+      "vaccine_codes": {
+        "RAB": "Rabies",
+        "DHPP": "Distemper, adenovirus, parainfluenza, and parvovirus",
+        "BORD": "Bordetella bronchiseptica",
+        "FVRCP": "Feline viral rhinotracheitis, calicivirus, and panleukopenia",
+        "FeLV": "Feline leukemia virus"
       },
       "colors": {
         "black": "Black",

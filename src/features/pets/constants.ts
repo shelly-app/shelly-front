@@ -18,14 +18,12 @@ export const PET_STATUS = {
   IN_SHELTER: "in_shelter",
   ADOPTED: "adopted",
   IN_FOSTER: "in_foster",
-  DECEASED: "deceased",
 } as const;
 
 export const PET_STATUS_LABELS = {
   in_shelter: "app.pets.status_labels.IN_SHELTER",
   adopted: "app.pets.status_labels.ADOPTED",
   in_foster: "app.pets.status_labels.IN_FOSTER",
-  deceased: "app.pets.status_labels.DECEASED",
 } as const;
 
 export type PetStatus = (typeof PET_STATUS)[keyof typeof PET_STATUS];
@@ -89,12 +87,7 @@ export const createSpeciesSchema = () =>
 
 export const createStatusSchema = () =>
   z.enum(
-    [
-      PET_STATUS.IN_SHELTER,
-      PET_STATUS.ADOPTED,
-      PET_STATUS.IN_FOSTER,
-      PET_STATUS.DECEASED,
-    ] as const,
+    [PET_STATUS.IN_SHELTER, PET_STATUS.ADOPTED, PET_STATUS.IN_FOSTER] as const,
     {
       required_error: i18n.t("app.pets.validation.status_required"),
     },

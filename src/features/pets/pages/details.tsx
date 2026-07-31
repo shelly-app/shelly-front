@@ -29,7 +29,6 @@ import {
   PET_SEX_LABELS,
   PET_SIZE_LABELS,
   PET_SPECIES_LABELS,
-  PET_STATUS_LABELS,
 } from "@/features/pets/constants";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -44,6 +43,7 @@ import {
   useUpdateEventOutcome,
 } from "@/features/pets/hooks";
 import { calculateAge } from "@/features/pets/utils/age";
+import { getPetEventContent } from "@/features/pets/utils/pet-event-content";
 import { PetAvatar } from "@/components/ui/pet-avatar";
 import { paths } from "@/config/paths";
 
@@ -96,7 +96,7 @@ const ExpandableEventDescription = ({ text }: { text: string }) => {
       : text;
 
   return (
-    <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+    <p className="text-muted-foreground mt-1 min-w-0 text-xs leading-relaxed break-words">
       {visibleText}
       {canExpand && (
         <>
@@ -157,54 +157,6 @@ export const PetDetailsPage = () => {
   const handleArchivePet = async () => {
     await deletePetAsync();
     navigate(paths.app.pets.path);
-  };
-
-  const translateValue = (
-    labels: Record<string, string>,
-    value?: string | null,
-  ) => (value ? t(labels[value] ?? value) : "");
-
-  const getEventContent = (event: DetailedPet["events"][number]) => {
-    const from = event.metadata?.from;
-    const to = event.metadata?.to;
-    // Legacy change events created before structured metadata existed only have
-    // an untranslated free-text description, so show the translated title alone.
-    const hasMetadata = from != null || to != null;
-
-    switch (event.type) {
-      case "status_change":
-        return {
-          title: t("app.pets.events.status_change.title"),
-          description: hasMetadata
-            ? t("app.pets.events.status_change.description", {
-                from: translateValue(PET_STATUS_LABELS, from),
-                to: translateValue(PET_STATUS_LABELS, to),
-              })
-            : null,
-        };
-      case "size_change":
-        return {
-          title: t("app.pets.events.size_change.title"),
-          description: hasMetadata
-            ? t("app.pets.events.size_change.description", {
-                from: translateValue(PET_SIZE_LABELS, from),
-                to: translateValue(PET_SIZE_LABELS, to),
-              })
-            : null,
-        };
-      case "name_change":
-        return {
-          title: t("app.pets.events.name_change.title"),
-          description: hasMetadata
-            ? t("app.pets.events.name_change.description", {
-                from: from ?? "",
-                to: to ?? "",
-              })
-            : null,
-        };
-      default:
-        return { title: event.name, description: event.description };
-    }
   };
 
   if (isLoading) {
@@ -490,16 +442,16 @@ export const PetDetailsPage = () => {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="max-h-80 overflow-y-auto">
+            <CardContent className="max-h-80 overflow-x-hidden overflow-y-auto">
               {upcomingEvents.length > 0 ? (
-                <ol className="border-border relative space-y-4 border-l">
+                <ol className="border-border relative min-w-0 space-y-4 border-l">
                   {upcomingEvents.map((event) => (
-                    <li key={event.id} className="ml-4">
+                    <li key={event.id} className="ml-4 min-w-0 pr-2">
                       <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
-                      <p className="text-sm leading-tight font-medium">
+                      <p className="text-sm leading-tight font-medium break-words">
                         {event.name}
                       </p>
-                      <time className="text-muted-foreground text-xs">
+                      <time className="text-muted-foreground block text-xs">
                         {formatScheduledFor(event)}
                       </time>
                       {event.description && (
@@ -524,18 +476,18 @@ export const PetDetailsPage = () => {
                 {t("app.pets.details.recent_events")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="max-h-80 overflow-y-auto">
+            <CardContent className="max-h-80 overflow-x-hidden overflow-y-auto">
               {pastEvents.length > 0 ? (
-                <ol className="border-border relative space-y-4 border-l">
+                <ol className="border-border relative min-w-0 space-y-4 border-l">
                   {pastEvents.map((event) => {
-                    const { title, description } = getEventContent(event);
+                    const { title, description } = getPetEventContent(event, t);
                     return (
-                      <li key={event.id} className="ml-4">
+                      <li key={event.id} className="ml-4 min-w-0 pr-2">
                         <div className="border-background bg-primary absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border" />
-                        <p className="text-sm leading-tight font-medium">
+                        <p className="text-sm leading-tight font-medium break-words">
                           {title}
                         </p>
-                        <time className="text-muted-foreground text-xs">
+                        <time className="text-muted-foreground block text-xs">
                           {event.scheduledFor
                             ? formatScheduledFor(event)
                             : new Date(event.createdAt).toLocaleDateString(
@@ -548,24 +500,25 @@ export const PetDetailsPage = () => {
                         {event.type === "user_event" &&
                           event.scheduledFor &&
                           (event.metadata?.outcome ? (
-                            <Badge
-                              variant="outline"
-                              className={cn(
-                                "mt-2",
-                                event.metadata.outcome === "completed"
-                                  ? "border-emerald-600 text-emerald-700"
-                                  : "border-destructive text-destructive",
-                              )}
-                            >
-                              {event.metadata.outcome === "completed" ? (
-                                <Check />
-                              ) : (
-                                <X />
-                              )}
-                              {t(
-                                `app.pets.details.event_outcome.${event.metadata.outcome}`,
-                              )}
-                            </Badge>
+                            <div className="mt-2">
+                              <Badge
+                                variant="outline"
+                                className={cn(
+                                  event.metadata.outcome === "completed"
+                                    ? "border-emerald-600 text-emerald-700"
+                                    : "border-destructive text-destructive",
+                                )}
+                              >
+                                {event.metadata.outcome === "completed" ? (
+                                  <Check />
+                                ) : (
+                                  <X />
+                                )}
+                                {t(
+                                  `app.pets.details.event_outcome.${event.metadata.outcome}`,
+                                )}
+                              </Badge>
+                            </div>
                           ) : (
                             <div className="mt-2 flex flex-wrap gap-1.5">
                               <Button

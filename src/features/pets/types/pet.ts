@@ -37,6 +37,8 @@ export type DetailedPet = Pet & {
       to?: string | null;
       hasTime?: boolean;
       outcome?: "completed" | "canceled";
+      vaccineCode?: string;
+      vaccineName?: string;
     } | null;
     scheduledFor: string | null;
     createdAt: string;
