@@ -9,6 +9,8 @@ import {
 import type { UserShelter } from "@/types/api";
 import { useUser } from "@/hooks/use-user";
 
+const CURRENT_SHELTER_STORAGE_KEY = "currentShelterId";
+
 type SheltersContextProps = {
   shelters: UserShelter[];
   currentShelter: UserShelter | null;
@@ -23,13 +25,36 @@ const SheltersProvider = ({ children }: { children: ReactNode }) => {
     null,
   );
   const { data: user, isLoading } = useUser();
-  const shelters = user?.shelters ?? [];
+  const shelters = useMemo(() => user?.shelters ?? [], [user?.shelters]);
 
   useEffect(() => {
-    if (shelters.length > 0 && !currentShelter) {
-      setCurrentShelter(shelters[0]);
+    if (shelters.length === 0) {
+      return;
     }
+
+    const currentShelterIsAvailable = shelters.some(
+      (shelter) => shelter.id === currentShelter?.id,
+    );
+    if (currentShelterIsAvailable) return;
+
+    const storedShelterId = Number(
+      window.localStorage.getItem(CURRENT_SHELTER_STORAGE_KEY),
+    );
+    const storedShelter = shelters.find(
+      (shelter) => shelter.id === storedShelterId,
+    );
+
+    setCurrentShelter(storedShelter ?? shelters[0]);
   }, [shelters, currentShelter]);
+
+  useEffect(() => {
+    if (currentShelter) {
+      window.localStorage.setItem(
+        CURRENT_SHELTER_STORAGE_KEY,
+        currentShelter.id.toString(),
+      );
+    }
+  }, [currentShelter]);
 
   const value = useMemo(
     () => ({

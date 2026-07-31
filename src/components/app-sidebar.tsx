@@ -188,10 +188,18 @@ const AppSidebar = () => {
             }}
           >
             <SelectTrigger
-              className="w-full"
+              className={cn(
+                "w-full",
+                isCollapsed && "justify-center px-0 [&>svg]:hidden",
+              )}
               size={isCollapsed ? "sm" : "default"}
+              aria-label={currentShelter?.name}
             >
-              <SelectValue placeholder={t("sidebar.select_shelter")} />
+              <SelectValue placeholder={t("sidebar.select_shelter")}>
+                {isCollapsed
+                  ? currentShelter?.name.trim().charAt(0).toUpperCase()
+                  : undefined}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
