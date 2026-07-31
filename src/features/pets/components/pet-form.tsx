@@ -53,6 +53,12 @@ import { DetailedPet, Pet } from "@/features/pets/types/pet";
 import { useTranslation } from "react-i18next";
 import { capitalize, toDateInputValue } from "@/lib/utils";
 
+const todayInputValue = () => {
+  const now = new Date();
+  const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+  return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10);
+};
+
 const getPetFormSchema = (t: (key: string) => string) =>
   z.object({
     name: z.string().min(1, t("app.pets.validation.name_required")),
@@ -69,7 +75,10 @@ const getPetFormSchema = (t: (key: string) => string) =>
     birthDate: z
       .string()
       .transform((value) => value || undefined)
-      .optional(),
+      .optional()
+      .refine((value) => !value || value <= todayInputValue(), {
+        message: t("app.pets.validation.birth_date_future"),
+      }),
     ageYears: z.coerce.number().int().min(0).max(30).optional(),
     ageMonths: z.coerce.number().int().min(0).max(11).optional(),
     sex: z.enum([PET_SEXES.MALE, PET_SEXES.FEMALE], {
@@ -651,6 +660,7 @@ export const PetForm = ({
                             <FormControl>
                               <Input
                                 type="date"
+                                max={todayInputValue()}
                                 className="h-9 w-full sm:max-w-[49%] [&::-webkit-calendar-picker-indicator]:ml-auto"
                                 {...field}
                                 value={toDateInputValue(field.value)}

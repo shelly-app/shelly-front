@@ -426,7 +426,8 @@
         "name_required": "Name is required",
         "species_required": "Species is required",
         "status_required": "Status is required",
-        "sex_required": "Sex is required"
+        "sex_required": "Sex is required",
+        "birth_date_future": "The birth date can't be in the future"
       },
       "notifications": {
         "added_successfully": "Pet added successfully",

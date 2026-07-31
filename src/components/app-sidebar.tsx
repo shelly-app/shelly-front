@@ -196,8 +196,10 @@ const AppSidebar = () => {
               aria-label={currentShelter?.name}
             >
               <SelectValue placeholder={t("sidebar.select_shelter")}>
-                {isCollapsed
-                  ? currentShelter?.name.trim().charAt(0).toUpperCase()
+                {currentShelter
+                  ? isCollapsed
+                    ? currentShelter.name.trim().charAt(0).toUpperCase()
+                    : currentShelter.name
                   : undefined}
               </SelectValue>
             </SelectTrigger>

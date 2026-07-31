@@ -426,7 +426,8 @@
         "name_required": "El nombre es requerido",
         "species_required": "La especie es requerida",
         "status_required": "El estado es requerido",
-        "sex_required": "El sexo es requerido"
+        "sex_required": "El sexo es requerido",
+        "birth_date_future": "La fecha de nacimiento no puede ser futura"
       },
       "notifications": {
         "added_successfully": "Mascota agregada exitosamente",
